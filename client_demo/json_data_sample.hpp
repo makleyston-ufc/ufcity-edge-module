@@ -15,7 +15,7 @@ std::string json_spatial_data = R"JSON(
 }
 )JSON";
 
-std::string json_discovered_resource = R"JSON(
+std::string json_register_resource = R"JSON(
 {
 	device_uuid:"111",
 	resource_uuid:"222",

@@ -7,7 +7,12 @@
 
 #include <string>
 #include <iostream>
-#include "../model/location_model.h"
+#include "../model/location.h"
+#include "../parser/parser_json.h"
+#include "../spatial_context_data/spatial_context_data.h"
+#include "../model/resource.h"
+#include "../resources_map/resources_map.h"
+#include "../semantic_annotation/semantic_annotation.h"
 
 namespace ufcity {
 
@@ -23,13 +28,14 @@ namespace ufcity {
 
         /* Interface */
         int register_resource(std::string data);
-        int remove_resource(std::string data);
-        int send_resource_data(std::string data);
-        int location_updater(std::string data);
+        int remove_resource(std::string data) const;
+        int send_resource_data(std::string data) const;
+        int location_updater(std::string data) const;
 //        void command_receiver(ufcity::ufcity_observer ufcityObserver);
-        int save_location(std::string data);
-
+        int save_location(std::string data) const;
+        static void print_log(std::string log);
     };
+
 } // ufcity
 
 #endif //UFCITY_ORCHESTRATOR_H

@@ -7,6 +7,7 @@
 
 #include <string>
 #include "observer/ufcity_observer.h"
+#include "orchestrator/orchestrator.h"
 
 namespace ufcity_interface{
 

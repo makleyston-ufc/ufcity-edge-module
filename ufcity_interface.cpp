@@ -3,7 +3,6 @@
 //
 
 #include "ufcity_interface.h"
-#include "orchestrator/orchestrator.h"
 
 using namespace ufcity;
 
@@ -13,6 +12,11 @@ int ufcity_interface::init(std::string location){
 
 int ufcity_interface::register_resource(std::string data) {
     orchestrator * orch = orchestrator::get_instance();
+    if(orch == nullptr)
+    {
+        ufcity::orchestrator::print_log("ERROR 3: Must initialize Edge Module before registering resources.");
+        return 3;
+    }
     return orch->register_resource(data);
 }
 

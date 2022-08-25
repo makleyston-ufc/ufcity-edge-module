@@ -3,39 +3,22 @@
 //
 #include <iostream>
 #include "../ufcity_interface.h"
-
-
-#include "../spatial_context_data/spatial_context_data.h"
+#include "json_data_sample.hpp"
 
 using namespace ufcity_interface;
 
 int main(){
 
-    /* Inicializando o Edge Module */
-    int r = init(json_spatial_data);
-    std::cout << r << std::endl;
+    int r; //return
 
+    /* Initializing the Edge Module */
+    r = init(samples::json_spatial_data);
+//    std::cout << r << std::endl;
 
+    /* Registering a resource */
+    r = register_resource(samples::json_register_resource);
+//    std::cout << r << std::endl;
 
-
-
-
-
-
-
-
-
-
-
-
-//    orchestrator* orchestrator = orchestrator::get_instance();
-//    std::cout << orchestrator << std::endl;
-
-//    ufcity::location_model * location = new ufcity::location_model("latXXX", "lngYYY");
-//    std::cout << location->get_lat() + " ## " + location->get_lng() << std::endl;
-
-//    init("latXXX, lngYYY");
-//    register_resource("test");
 
     return 0;
 }

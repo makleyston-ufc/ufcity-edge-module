@@ -25,14 +25,17 @@ project("ufcity")
 #        client_demo/main.cpp)
 
 set(SOURCE_FILES
-
         client_demo/main.cpp
         ufcity_interface.cpp ufcity_interface.h
-        model/discovered_resource_model.cpp model/discovered_resource_model.h
+        model/resource.cpp model/resource.h
         observer/ufcity_observer.cpp observer/ufcity_observer.h
         orchestrator/orchestrator.cpp orchestrator/orchestrator.h
-        model/location_model.cpp model/location_model.h
-        parser/parserJSON.cpp parser/parserJSON.h spatial_context_data/spatial_context_data.cpp spatial_context_data/spatial_context_data.h client_demo/json_data_sample.cpp)
+        model/location.cpp model/location.h
+        parser/parser_json.cpp parser/parser_json.h
+        spatial_context_data/spatial_context_data.cpp spatial_context_data/spatial_context_data.h
+        client_demo/json_data_sample.hpp
+        resources_map/resources_map.cpp resources_map/resources_map.h
+        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

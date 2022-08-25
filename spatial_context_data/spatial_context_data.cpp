@@ -6,11 +6,11 @@
 
 namespace ufcity_db {
 
-    ufcity::location_model * spatial_context_data::get_location(){
+    ufcity::location * spatial_context_data::get_location(){
         return this->location;
     }
 
-    void spatial_context_data::save_location(ufcity::location_model * l){
+    void spatial_context_data::save_location(ufcity::location * l){
         this->location = l;
     }
 

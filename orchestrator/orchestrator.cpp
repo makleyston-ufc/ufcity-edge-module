@@ -3,9 +3,6 @@
 //
 
 #include "orchestrator.h"
-#include "../parser/parserJSON.h"
-#include "../model/location_model.h"
-#include "../spatial_context_data/spatial_context_data.h"
 
 namespace ufcity {
 
@@ -14,6 +11,7 @@ namespace ufcity {
     int orchestrator::init(std::string location) {
         if (instance == 0){
             instance = new orchestrator(location);
+            print_log("Edge Module successfully created!");
             return 0;
         }
         return 1; // Already exists an instance
@@ -27,34 +25,54 @@ namespace ufcity {
         this->save_location(location);
     }
 
-    int orchestrator::register_resource(std::string data){
-        //Test
-        std::cout << data << std::endl;
-        return 0;
+    int orchestrator::register_resource(std::string data) {
+        resource * r_resource = resource_from_json(data);
+        if(r_resource == nullptr) {
+            print_log("ERROR : JSON parser error!");
+            return 1; //JSON parser error
+        }
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + r_resource->get_resource_uuid());
 
+        ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
+        bool res = map->find_resource_by_uuid(r_resource->get_resource_uuid());
+        if(res){
+            print_log("The resource "+ r_resource->get_resource_uuid() +" already exists!");
+            return 1;
+        }else{
+            std::string semantic = get_semantic_from_resource(r_resource);
+            print_log("Semantic annotation make successfully on " + r_resource->get_resource_uuid() +"!");
+            int res = map->register_resource(r_resource->get_resource_uuid(), semantic);
+            print_log("Resource "+ r_resource->get_resource_uuid() +" has been stored successfully! ");
+            return res;
+        }
+    }
+
+    int orchestrator::remove_resource(std::string data) const{
+        return 0;
         //TODO
     }
 
-    int orchestrator::remove_resource(std::string data){
+    int orchestrator::send_resource_data(std::string data) const{
         return 0;
         //TODO
     }
 
-    int orchestrator::send_resource_data(std::string data){
+    int orchestrator::location_updater(std::string data) const{
         return 0;
         //TODO
     }
 
-    int orchestrator::location_updater(std::string data){
-        return 0;
-        //TODO
-    }
-
-    int orchestrator::save_location(std::string data){
-        location_model * location = fromJSON(data);
+    int orchestrator::save_location(std::string data) const{
+        location * location = location_from_json(data);
         if (location == nullptr) return 1; //JSON parser error
         ufcity_db::spatial_context_data::get_instance()->save_location(location);
+        print_log("Location successfully stored! Location: Lat. "+location->get_lat()+" and Lng. "+location->get_lng());
         return 0;
+    }
+
+    void orchestrator::print_log(std::string log) {
+        bool PRINT = true;
+        if(PRINT) std::cout << ">> " + log << std::endl;
     }
 
 } // ufcity
