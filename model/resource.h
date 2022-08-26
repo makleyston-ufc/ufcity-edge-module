@@ -14,7 +14,7 @@ namespace ufcity {
     private:
         std::string device_uuid;
         std::string resource_uuid;
-        std::vector<std::string> * service_uuid_list;
+        std::vector<std::string> * service_uuid_list{};
 
     public:
         explicit resource(std::string device_uuid, std::string resource_uuid, std::vector<std::string> * services_uuid_list){

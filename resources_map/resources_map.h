@@ -22,11 +22,11 @@ namespace ufcity_db {
         static resources_map * get_instance();
         static resources_map* instance;
 
-        bool find_resource_by_uuid(std::string uuid) const;
-        std::string get_resource_by_uuid(std::string uuid) const;
+        bool find_resource_by_uuid(const std::string& uuid) const;
+        std::string get_resource_by_uuid(const std::string& uuid) const;
         std::unordered_map<std::string, std::string> * get_resources_map() const;
-        int register_resource(std::string uuid, std::string semantic) const;
-        int remove_resource(std::string uuid) const;
+        int register_resource(const std::string& uuid, const std::string& semantic) const;
+        int remove_resource(const std::string& uuid) const;
     };
 
 } // ufcity_db

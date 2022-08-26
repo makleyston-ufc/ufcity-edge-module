@@ -19,21 +19,21 @@ namespace ufcity {
     class orchestrator{
     private:
         static orchestrator* instance;
-        orchestrator(std::string location);
+        explicit orchestrator(const std::string& location);
 
     public:
         /* Static access method. */
-        static int init(std::string location);
+        static int init(const std::string& location);
         static orchestrator* get_instance();
 
         /* Interface */
-        int register_resource(std::string data);
-        int remove_resource(std::string data) const;
-        int send_resource_data(std::string data) const;
-        int location_updater(std::string data) const;
+        int register_resource(const std::string& data);
+        int remove_resource(const std::string& data) const;
+        int send_resource_data(const std::string& data) const;
+        int location_update(const std::string& data) const;
 //        void command_receiver(ufcity::ufcity_observer ufcityObserver);
-        int save_location(std::string data) const;
-        static void print_log(std::string log);
+        int save_location(const std::string& data) const;
+        static void print_log(const std::string& log);
         std::unordered_map<std::string, std::string> * get_resources_map() const;
     };
 

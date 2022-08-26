@@ -11,7 +11,7 @@ namespace ufcity_db {
 
     class spatial_context_data {
     private:
-        ufcity::location * location;
+        ufcity::location * location{};
         static spatial_context_data* instance;
         spatial_context_data();
 

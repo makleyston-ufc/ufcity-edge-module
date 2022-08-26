@@ -6,26 +6,27 @@
 
 namespace ufcity {
 
-    orchestrator* orchestrator::instance = 0;
+    orchestrator* orchestrator::instance = nullptr;
 
-    int orchestrator::init(std::string location) {
-        if (instance == 0){
+    int orchestrator::init(const std::string& location) {
+        if (instance == nullptr){
             instance = new orchestrator(location);
             print_log("Edge Module successfully created!");
             return 0;
         }
-        return 1; // Already exists an instance
+        print_log("An instance of the Edge Module already exists!");
+        return 1; // An instance of the Edge Module already exists
     }
 
     orchestrator* orchestrator::get_instance(){
         return instance;
     }
 
-    orchestrator::orchestrator(std::string location) {
+    orchestrator::orchestrator(const std::string& location) {
         this->save_location(location);
     }
 
-    int orchestrator::register_resource(std::string data) {
+    int orchestrator::register_resource(const std::string& data) {
         resource * r_resource = resource_from_json(data);
         if(r_resource == nullptr) {
             print_log("ERROR : JSON parser error!");
@@ -34,8 +35,7 @@ namespace ufcity {
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + r_resource->get_resource_uuid());
 
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
-        bool res = map->find_resource_by_uuid(r_resource->get_resource_uuid());
-        if(res){
+        if(map->find_resource_by_uuid(r_resource->get_resource_uuid())){
             print_log("The resource "+ r_resource->get_resource_uuid() +" already exists!");
             return 1;
         }else{
@@ -47,7 +47,7 @@ namespace ufcity {
         }
     }
 
-    int orchestrator::remove_resource(std::string data) const{
+    int orchestrator::remove_resource(const std::string& data) const{
         resource * r = resource_from_json(data);
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + r->get_resource_uuid());
         int res = ufcity_db::resources_map::get_instance()->remove_resource(r->get_resource_uuid());
@@ -58,17 +58,16 @@ namespace ufcity {
         return res;
     }
 
-    int orchestrator::send_resource_data(std::string data) const{
+    int orchestrator::send_resource_data(const std::string& data) const{
         return 0;
         //TODO
     }
 
-    int orchestrator::location_updater(std::string data) const{
-        return 0;
-        //TODO
+    int orchestrator::location_update(const std::string& data) const{
+        return this->save_location(data);
     }
 
-    int orchestrator::save_location(std::string data) const{
+    int orchestrator::save_location(const std::string& data) const{
         location * location = location_from_json(data);
         if (location == nullptr) return 1; //JSON parser error
         ufcity_db::spatial_context_data::get_instance()->save_location(location);
@@ -76,7 +75,7 @@ namespace ufcity {
         return 0;
     }
 
-    void orchestrator::print_log(std::string log) {
+    void orchestrator::print_log(const std::string& log) {
         bool PRINT = true;
         if(PRINT) std::cout << ">> " + log << std::endl;
     }

@@ -14,11 +14,11 @@ namespace ufcity_db {
         this->location = l;
     }
 
-    spatial_context_data::spatial_context_data() {}
+    spatial_context_data::spatial_context_data() = default;
 
-    spatial_context_data* spatial_context_data::instance = 0;
+    spatial_context_data* spatial_context_data::instance = nullptr;
     spatial_context_data* spatial_context_data::get_instance(){
-        if (instance == 0){
+        if (instance == nullptr){
             instance = new spatial_context_data();
         }
         return instance;

@@ -12,15 +12,15 @@
 
 namespace ufcity_interface{
 
-    int init(std::string location);
+    int init(const std::string& location);
 
-    int register_resource(std::string data);
+    int register_resource(const std::string& data);
 
-    int remove_resource(std::string data);
+    int remove_resource(const std::string& data);
 
-    int send_resource_data(std::string data);
+    int send_resource_data(const std::string& data);
 
-    int location_updater(std::string data);
+    int location_update(const std::string& data);
 
     void command_receiver(ufcity::ufcity_observer ufcityObserver);
 

@@ -4,9 +4,9 @@
 
 #include "location.h"
 
-namespace ufcity {
+#include <utility>
 
-//    ufcity::location(std::string lat const, std::stringlng const){}
+namespace ufcity {
 
     std::string ufcity::location::get_lat() {
         return this->lat;
@@ -17,11 +17,11 @@ namespace ufcity {
     }
 
     void ufcity::location::set_lat(std::string l) {
-        this->lat = l;
+        this->lat = std::move(l);
     }
 
     void ufcity::location::set_lng(std::string l) {
-        this->lng = l;
+        this->lng = std::move(l);
     }
 
 } // ufcity
