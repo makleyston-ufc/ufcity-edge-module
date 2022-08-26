@@ -6,7 +6,7 @@
 #define UFCITY_RESOURCE_H
 
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 namespace ufcity {
 
@@ -14,33 +14,16 @@ namespace ufcity {
     private:
         std::string device_uuid;
         std::string resource_uuid;
-        std::vector<std::string> * service_uuid_list{};
+        std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * services_uuid_map{}; //<service_uuid, <data_tag, value>>
 
     public:
-        explicit resource(std::string device_uuid, std::string resource_uuid, std::vector<std::string> * services_uuid_list){
-            this->resource_uuid = std::move(resource_uuid);
-            this->device_uuid = std::move(device_uuid);
-            this->service_uuid_list = services_uuid_list;
-        }
+        explicit resource(std::string device_uuid, std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map);
+        explicit resource(const std::string& message);
 
-        explicit resource(const std::string& message){
-            //TODO convert message in JSON to this model and to set them the params into following construct
-            auto * l = new std::vector<std::string>();
-            resource("device_uuid", "resource_uuid", l);
-        }
-
-        std::string get_device_uuid() const{
-            return this->device_uuid;
-        }
-
-        std::string get_resource_uuid() const{
-            return this->resource_uuid;
-        }
-
-        std::vector<std::string> * get_services_uuid(){
-            return this->service_uuid_list;
-        }
-
+        std::string get_device_uuid() const;
+        std::string get_resource_uuid() const;
+        std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * get_services();
+        std::unordered_map<std::string, std::string> * get_service_by_uuid(const std::string& uuid);
     };
 
 } // ufcity

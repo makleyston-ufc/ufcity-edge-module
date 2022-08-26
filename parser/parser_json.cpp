@@ -17,10 +17,12 @@ namespace ufcity {
 
     resource * resource_from_json(const std::string& string){
         //TODO
-        auto * services_uuid_list = new std::vector<std::string>();
-        services_uuid_list->push_back("s_123");
-        services_uuid_list->push_back("s_1321");
-        auto * rr = new resource("d_111", "r_222", services_uuid_list);
+        auto * services_uuid_map = new std::unordered_map<std::string, std::unordered_map<std::string, std::string>>();
+        auto * temp_data = new std::unordered_map<std::string, std::string>();
+        temp_data->insert(std::pair<std::string, std::string>("temp_tag", "23"));
+        services_uuid_map->insert(std::pair<std::string, std::unordered_map<std::string, std::string>>("temp_uuid", *temp_data));
+
+        auto * rr = new resource("d_111", "r_222", services_uuid_map);
         return rr;
     }
 

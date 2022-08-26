@@ -13,6 +13,7 @@
 #include "../model/resource.h"
 #include "../resources_map/resources_map.h"
 #include "../semantic_annotation/semantic_annotation.h"
+#include "../pre_pocessing/pre_processing.h"
 
 namespace ufcity {
 

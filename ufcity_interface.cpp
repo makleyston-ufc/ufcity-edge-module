@@ -29,6 +29,7 @@ int ufcity_interface::remove_resource(const std::string& data) {
 }
 
 int ufcity_interface::send_resource_data(const std::string& data) {
+    ufcity::orchestrator::print_log("Task: Sending resource data.");
     orchestrator * pOrchestrator = orchestrator::get_instance();
     return pOrchestrator->send_resource_data(data);
 }

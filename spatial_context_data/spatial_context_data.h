@@ -20,7 +20,7 @@ namespace ufcity_db {
 
         ufcity::location * get_location();
         void save_location(ufcity::location * location);
-        void add_spatial_context_data();
+        int add_spatial_context_data(std::string semantic);
     };
 
 } // ufcity_db

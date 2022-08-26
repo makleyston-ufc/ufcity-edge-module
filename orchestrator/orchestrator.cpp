@@ -3,6 +3,7 @@
 //
 
 #include "orchestrator.h"
+#include "../processing/processing.h"
 
 namespace ufcity {
 
@@ -59,8 +60,34 @@ namespace ufcity {
     }
 
     int orchestrator::send_resource_data(const std::string& data) const{
+        resource * r = resource_from_json(data);
+        std::string semantic = ufcity_db::resources_map::get_instance()->get_resource_semantic_by_uuid(r->get_resource_uuid());
+        if(semantic.empty()){
+            print_log("The resource "+ r->get_resource_uuid() +" has not yet been registered!");
+            return 2; //Resource not registered!
+        }
+        print_log("Resource "+ r->get_resource_uuid() +" semantics were successfully retrieved.");
+
+        int res_pp = pre_proc::handler(semantic);
+        if (res_pp != 0) { //Cada res_pp tem um print_log associado.
+            //TODO
+            return res_pp;
+        }
+
+        int res_p = proc::handler(semantic);
+        if (res_p != 0) { //Cada res_p tem um print_log associado.
+            //TODO
+            return res_p;
+        }
+
+        int res_s = ufcity_db::spatial_context_data::get_instance()->add_spatial_context_data(semantic);
+        if (res_s != 0) return res_s;
+
+
+
+
+//        std::cout << r->get_services()->begin()->first << std::endl;
         return 0;
-        //TODO
     }
 
     int orchestrator::location_update(const std::string& data) const{

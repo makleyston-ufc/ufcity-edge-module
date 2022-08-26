@@ -23,10 +23,10 @@ namespace ufcity_db {
         else return false;
     }
 
-    std::string resources_map::get_resource_by_uuid(const std::string& uuid) const{
+    std::string resources_map::get_resource_semantic_by_uuid(const std::string& uuid) const{
         auto it = this->map->find(uuid);
         if (it != this->map->end()) return it->second;
-        else return nullptr;
+        else return "";
     }
 
     int resources_map::register_resource(const std::string& uuid, const std::string& semantic) const{

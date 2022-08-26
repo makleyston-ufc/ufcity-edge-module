@@ -35,7 +35,7 @@ set(SOURCE_FILES
         spatial_context_data/spatial_context_data.cpp spatial_context_data/spatial_context_data.h
         client_demo/json_data_sample.hpp
         resources_map/resources_map.cpp resources_map/resources_map.h
-        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h)
+        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h pre_pocessing/pre_processing.cpp pre_pocessing/pre_processing.h processing/processing.cpp processing/processing.h message_sender/message_sender.cpp message_sender/message_sender.h)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
