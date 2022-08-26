@@ -25,4 +25,10 @@ std::string json_register_resource = R"JSON(
 }
 )JSON";
 
+std::string json_remove_resource = R"JSON(
+{
+	device_uuid:"r_222"
+}
+)JSON";
+
 }

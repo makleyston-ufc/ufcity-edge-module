@@ -8,7 +8,7 @@ namespace ufcity {
 
     std::string get_semantic_from_resource(resource * r) {
         //TODO
-        return "## valor semantico ##";
+        return "##r_222##";
     }
 
 } // ufcity

@@ -34,6 +34,7 @@ namespace ufcity {
 //        void command_receiver(ufcity::ufcity_observer ufcityObserver);
         int save_location(std::string data) const;
         static void print_log(std::string log);
+        std::unordered_map<std::string, std::string> * get_resources_map() const;
     };
 
 } // ufcity

@@ -19,7 +19,7 @@ namespace ufcity_db {
 
     bool resources_map::find_resource_by_uuid(std::string uuid) const{
         auto it = this->map->find(uuid);
-        if (it != this->map->end()) return true; //std::cout << it->first << ": " << it->second << "\n";
+        if (it != this->map->end()) return true;
         else return false;
     }
 
@@ -36,8 +36,13 @@ namespace ufcity_db {
     }
 
     int resources_map::remove_resource(std::string uuid) const{
-        //TODO
-        return 0;
+        if( this->map->erase(uuid) == 1)
+            return 0; //OK
+        return 1; //Resource not removed!
+    }
+
+    std::unordered_map<std::string, std::string> * resources_map::get_resources_map() const{
+        return this->map;
     }
 
 } // ufcity_db

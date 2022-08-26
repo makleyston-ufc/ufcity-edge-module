@@ -6,6 +6,7 @@
 #define UFCITY_UFCITY_INTERFACE_H
 
 #include <string>
+#include <unordered_map>
 #include "observer/ufcity_observer.h"
 #include "orchestrator/orchestrator.h"
 
@@ -22,6 +23,8 @@ namespace ufcity_interface{
     int location_updater(std::string data);
 
     void command_receiver(ufcity::ufcity_observer ufcityObserver);
+
+    std::unordered_map<std::string, std::string> * get_resources_map();
 
 }
 

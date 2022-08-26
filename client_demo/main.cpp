@@ -19,6 +19,15 @@ int main(){
     r = register_resource(samples::json_register_resource);
 //    std::cout << r << std::endl;
 
+    /* Printing all stored resources */
+    std::unordered_map<std::string, std::string> * map = get_resources_map();
+//    std::cout << map->size() << std::endl;
+//    std::cout << map->begin()->first + " && " + map->begin()->second << std::endl;
+
+    /* Removing a resource */
+    r = remove_resource(samples::json_remove_resource);
+//    std::cout << r << std::endl;
+//    std::cout << map->size() << std::endl;
 
     return 0;
 }

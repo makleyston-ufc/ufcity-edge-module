@@ -40,7 +40,7 @@ namespace ufcity {
             return 1;
         }else{
             std::string semantic = get_semantic_from_resource(r_resource);
-            print_log("Semantic annotation make successfully on " + r_resource->get_resource_uuid() +"!");
+            print_log("Semantic annotation make successfully on " + r_resource->get_resource_uuid());// +"! Semantic: " + semantic);
             int res = map->register_resource(r_resource->get_resource_uuid(), semantic);
             print_log("Resource "+ r_resource->get_resource_uuid() +" has been stored successfully! ");
             return res;
@@ -48,8 +48,14 @@ namespace ufcity {
     }
 
     int orchestrator::remove_resource(std::string data) const{
-        return 0;
-        //TODO
+        resource * r = resource_from_json(data);
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + r->get_resource_uuid());
+        int res = ufcity_db::resources_map::get_instance()->remove_resource(r->get_resource_uuid());
+        if(res == 0)
+            print_log("Resource "+ r->get_resource_uuid() + " successfully removed!");
+        else if(res == 1)
+            print_log("Resource "+ r->get_resource_uuid() + " not found!");
+        return res;
     }
 
     int orchestrator::send_resource_data(std::string data) const{
@@ -73,6 +79,10 @@ namespace ufcity {
     void orchestrator::print_log(std::string log) {
         bool PRINT = true;
         if(PRINT) std::cout << ">> " + log << std::endl;
+    }
+
+    std::unordered_map<std::string, std::string> * orchestrator::get_resources_map() const{
+        return ufcity_db::resources_map::get_instance()->get_resources_map();
     }
 
 } // ufcity

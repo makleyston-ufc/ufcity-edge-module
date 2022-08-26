@@ -24,6 +24,7 @@ namespace ufcity_db {
 
         bool find_resource_by_uuid(std::string uuid) const;
         std::string get_resource_by_uuid(std::string uuid) const;
+        std::unordered_map<std::string, std::string> * get_resources_map() const;
         int register_resource(std::string uuid, std::string semantic) const;
         int remove_resource(std::string uuid) const;
     };
