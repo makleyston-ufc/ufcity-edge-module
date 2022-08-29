@@ -6,9 +6,9 @@
 
 using namespace ufcity;
 
-int ufcity_interface::init(const std::string& location){
+int ufcity_interface::init(const std::string& location, const std::string fog_node_address){
     ufcity::orchestrator::print_log("Task: Initializing the Edge Module.");
-    return orchestrator::init(location);
+    return orchestrator::init(location, fog_node_address);
 }
 
 int ufcity_interface::register_resource(const std::string& data) {
@@ -40,12 +40,14 @@ int ufcity_interface::location_update(const std::string& data) {
     return pOrchestrator->location_update(data);
 }
 
-void ufcity_interface::command_receiver(ufcity::ufcity_observer ufcityObserver) {
-//    ufcity_middleware * middleware = ufcity_middleware::get_instance();
-    //TODO
+void ufcity_interface::register_observer(ufcity::observer * observer) {
+    ufcity::orchestrator::print_log("Task: Registering an observer to receive commands from Fog Computing.");
+    orchestrator * pOrchatrator = orchestrator::get_instance();
+    pOrchatrator->register_observer(observer);
 }
 
 std::unordered_map<std::string, std::string> * ufcity_interface::get_resources_map(){
+    ufcity::orchestrator::print_log("Task: Removing an observer client.");
     orchestrator * pOrchestrator = orchestrator::get_instance();
     return pOrchestrator->get_resources_map();
 }

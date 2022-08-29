@@ -3,15 +3,14 @@
 //
 
 #include "orchestrator.h"
-#include "../processing/processing.h"
 
 namespace ufcity {
 
     orchestrator* orchestrator::instance = nullptr;
 
-    int orchestrator::init(const std::string& location) {
+    int orchestrator::init(const std::string& location, const std::string fog_node_address) {
         if (instance == nullptr){
-            instance = new orchestrator(location);
+            instance = new orchestrator(location, fog_node_address);
             print_log("Edge Module successfully created!");
             return 0;
         }
@@ -23,8 +22,15 @@ namespace ufcity {
         return instance;
     }
 
-    orchestrator::orchestrator(const std::string& location) {
+    orchestrator::orchestrator(const std::string& location, const std::string& fog_node_address) {
         this->save_location(location);
+        this->save_fog_node_address(fog_node_address);
+    }
+
+    int orchestrator::save_fog_node_address(const std::string address) const{
+        north_interface * n_interface = north_interface::get_instance();
+        n_interface->set_fog_node_address(address);
+        return 0;
     }
 
     int orchestrator::register_resource(const std::string& data) {
@@ -83,10 +89,11 @@ namespace ufcity {
         int res_s = ufcity_db::spatial_context_data::get_instance()->add_spatial_context_data(semantic);
         if (res_s != 0) return res_s;
 
+        int res_m = data_formatter(semantic);
+        if (res_m != 0) return res_m;
 
+        north_interface::get_instance()->publish_rouserce_data(semantic);
 
-
-//        std::cout << r->get_services()->begin()->first << std::endl;
         return 0;
     }
 
@@ -109,6 +116,18 @@ namespace ufcity {
 
     std::unordered_map<std::string, std::string> * orchestrator::get_resources_map() const{
         return ufcity_db::resources_map::get_instance()->get_resources_map();
+    }
+
+    int orchestrator::register_observer(ufcity::observer *observer) const {
+       message_receiver::get_instance()->register_observer(observer);
+        print_log("Observer client successfully registered!");
+       return 0;
+    }
+
+    int orchestrator::remove_observer(ufcity::observer *observer) const {
+        message_receiver::get_instance()->remove_observer(observer);
+        print_log("Observer client successfully removal!");
+        return 0;
     }
 
 } // ufcity

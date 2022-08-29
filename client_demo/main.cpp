@@ -5,13 +5,33 @@
 #include <iostream>
 #include "../ufcity_interface.h"
 #include "json_data_sample.hpp"
+#include "../observer/observer.h"
 
 using namespace ufcity_interface;
+
+class observer_client : public ufcity::observer{
+private:
+    int id;
+public:
+    observer_client(int id);
+    void update(std::string command) override;
+};
+
+void observer_client::update(std::string msg) {
+    // print the changed values
+    std::cout << "---Client (" << id << ") " << std::endl;
+    std::cout << "Message: " + msg << std::endl;
+    std::cout << "**********" << std::endl;
+}
+
+observer_client::observer_client(int id) {
+    this->id = id;
+}
 
 int main(){
 
     /* Initializing the Edge Module */
-    init(samples::json_spatial_context_data);
+    init(samples::json_spatial_context_data, "fog_node_address");
 
     /* Registering a resource */
     register_resource(samples::json_resource);
@@ -29,10 +49,12 @@ int main(){
     location_update(samples::json_spatial_context_data);
 
     /* Sending data of sensors */
-//    send_resource_data(samples::json_resource_data);
+    send_resource_data(samples::json_resource_data);
 
-//    int a = 0 || 0 || 0;
-//    std::cout << a << std::endl;
+    /* Teste de envio de dados */
+    observer_client * observerClient = new observer_client(123);
+    register_observer(observerClient);
+    ufcity::message_receiver::get_instance()->receive_message("OOOiiii Testando");
 
     return 0;
 }

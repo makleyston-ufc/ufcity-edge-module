@@ -5,4 +5,10 @@
 #include "message_sender.h"
 
 namespace ufcity {
+
+    int data_formatter(std::string semantic){
+        //TODO
+        return 0;
+    }
+
 } // ufcity

@@ -5,11 +5,11 @@
 #ifndef UFCITY_MESSAGE_SENDER_H
 #define UFCITY_MESSAGE_SENDER_H
 
+#include <string>
+
 namespace ufcity {
 
-    class message_sender {
-
-    };
+    int data_formatter(std::string semantic);
 
 } // ufcity
 

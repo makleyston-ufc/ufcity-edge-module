@@ -7,12 +7,12 @@
 
 #include <string>
 #include <unordered_map>
-#include "observer/ufcity_observer.h"
+#include "observer/observer.h"
 #include "orchestrator/orchestrator.h"
 
 namespace ufcity_interface{
 
-    int init(const std::string& location);
+    int init(const std::string& location, const std::string fog_node_address);
 
     int register_resource(const std::string& data);
 
@@ -22,7 +22,7 @@ namespace ufcity_interface{
 
     int location_update(const std::string& data);
 
-    void command_receiver(ufcity::ufcity_observer ufcityObserver);
+    void register_observer(ufcity::observer * observer);
 
     std::unordered_map<std::string, std::string> * get_resources_map();
 
