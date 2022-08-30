@@ -24,8 +24,9 @@ namespace ufcity_db {
         return instance;
     }
 
-    int spatial_context_data::add_spatial_context_data(std::string semantic) {
+    int spatial_context_data::add_spatial_context_data(const std::string& semantic) {
         //TODO
+        return 0;
     }
 
 } // ufcity_db

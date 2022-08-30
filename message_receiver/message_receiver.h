@@ -8,6 +8,7 @@
 #include "../observer/subject.h"
 #include <vector>
 #include <algorithm>
+#include "../error/error_list.h"
 
 namespace ufcity {
 
@@ -20,8 +21,8 @@ namespace ufcity {
         static message_receiver * get_instance();
         std::vector<observer *> *observers = new std::vector<observer *>();
 
-        void register_observer(observer *observer) override;
-        void remove_observer(observer *observer) override;
+        int register_observer(observer *observer) override;
+        int remove_observer(observer *observer) override;
         void notify_observers(std::string message) override;
         void receive_message(std::string message) override;
     };

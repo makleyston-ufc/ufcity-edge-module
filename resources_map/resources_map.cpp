@@ -35,7 +35,7 @@ namespace ufcity_db {
     }
 
     int resources_map::remove_resource(const std::string& uuid) const{
-        if( this->map->erase(uuid) == 1)
+        if(this->map->erase(uuid) == 1)
             return 0; //OK
         return 1; //Resource not removed!
     }

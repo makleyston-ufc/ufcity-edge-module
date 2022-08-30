@@ -12,7 +12,7 @@
 
 namespace ufcity_interface{
 
-    int init(const std::string& location, const std::string fog_node_address);
+    int init(const std::string& location, const std::string& fog_node_address);
 
     int register_resource(const std::string& data);
 
@@ -20,9 +20,11 @@ namespace ufcity_interface{
 
     int send_resource_data(const std::string& data);
 
-    int location_update(const std::string& data);
+    int update_location(const std::string& data);
 
-    void register_observer(ufcity::observer * observer);
+    int register_observer(ufcity::observer * observer);
+
+    int remove_observer(ufcity::observer * observer);
 
     std::unordered_map<std::string, std::string> * get_resources_map();
 

@@ -19,9 +19,9 @@ namespace ufcity {
 
         void set_fog_node_address(std::string fog_node_address);
         std::string get_fog_node_address();
-        void publish_rouserce_data(std::string data);
-        void publish_resource_registration(std::string data);
-        void publish_resource_removal(std::string data);
+        void publish_resource_data(const std::string& data);
+        void publish_resource_registration(const std::string& data);
+        void publish_resource_removal(const std::string& data);
         void receive_command();
 
     };

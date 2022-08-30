@@ -21,32 +21,35 @@
 #include "../message_receiver/message_receiver.h"
 #include <vector>
 #include <algorithm>
+#include "../error/error_list.h"
 
 namespace ufcity {
 
     class orchestrator{
     private:
         static orchestrator* instance;
-        explicit orchestrator(const std::string& location, const std::string& fog_node_address);
+        explicit orchestrator(location * l, const std::string& fog_node_address);
 
     public:
         /* Static access method. */
-        static int init(const std::string& location, const std::string fog_node_address);
+        static int init(const std::string& data, const std::string& fog_node_address);
         static orchestrator* get_instance();
 
         /* Interface */
         int register_resource(const std::string& data);
         int remove_resource(const std::string& data) const;
         int send_resource_data(const std::string& data) const;
-        int location_update(const std::string& data) const;
+        int update_location(location * l) const;
 //        void register_observer(ufcity::observer ufcityObserver);
-        int save_location(const std::string& data) const;
-        int save_fog_node_address(const std::string address) const;
+        int save_location(location * l) const;
+        int save_fog_node_address(const std::string& address) const;
         static void print_log(const std::string& log);
         std::unordered_map<std::string, std::string> * get_resources_map() const;
 
         int register_observer(ufcity::observer *observer) const;
         int remove_observer(ufcity::observer *observer) const;
+
+        static int check_fog_node_address(const std::string& address);
     };
 
 } // ufcity

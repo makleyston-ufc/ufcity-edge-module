@@ -9,9 +9,9 @@
 
 namespace proc {
 
-    int handler(std::string semantic);
-    int data_filter(std::string semantic);
-    int data_grouping(std::string semantic);
+    int handler(const std::string& semantic);
+    int data_filter(const std::string& semantic);
+    int data_grouping(const std::string& semantic);
 
 } // proc
 

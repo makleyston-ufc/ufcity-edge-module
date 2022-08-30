@@ -8,7 +8,7 @@
 
 namespace security {
 
-    std::string data_crypter(std::string semantic);
+    std::string data_encrypter(const std::string& semantic);
 
 } // security
 

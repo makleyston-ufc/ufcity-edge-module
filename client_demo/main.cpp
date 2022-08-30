@@ -5,7 +5,6 @@
 #include <iostream>
 #include "../ufcity_interface.h"
 #include "json_data_sample.hpp"
-#include "../observer/observer.h"
 
 using namespace ufcity_interface;
 
@@ -13,8 +12,8 @@ class observer_client : public ufcity::observer{
 private:
     int id;
 public:
-    observer_client(int id);
-    void update(std::string command) override;
+    explicit observer_client(int id);
+    void update(std::string msg) override;
 };
 
 void observer_client::update(std::string msg) {
@@ -43,18 +42,21 @@ int main(){
     }
 
     /* Removing a resource */
-//    remove_resource(samples::json_resource);
+    remove_resource(samples::json_resource);
 
     /* Updating the location in Edge Module */
-    location_update(samples::json_spatial_context_data);
+    update_location(samples::json_spatial_context_data);
 
     /* Sending data of sensors */
     send_resource_data(samples::json_resource_data);
 
-    /* Teste de envio de dados */
+    /* Testing the observer client */
     observer_client * observerClient = new observer_client(123);
     register_observer(observerClient);
     ufcity::message_receiver::get_instance()->receive_message("OOOiiii Testando");
+
+    /* Removing an observer client */
+    remove_observer(observerClient);
 
     return 0;
 }

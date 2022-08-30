@@ -9,11 +9,11 @@
 
 namespace pre_proc {
 
-    int handler(std::string semantic);
+    int handler(const std::string& semantic);
 
-    int remove_outliers(std::string semantic);
+    int remove_outliers(const std::string& semantic);
 
-    int missing_data_insertion(std::string semantic);
+    int missing_data_insertion(const std::string& semantic);
 
 }
 

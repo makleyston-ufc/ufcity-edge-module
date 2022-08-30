@@ -15,7 +15,7 @@ namespace ufcity {
         return this->fog_node_address;
     }
 
-    north_interface::north_interface() {}
+    north_interface::north_interface() = default;
     north_interface * north_interface::instance = nullptr;
 
     north_interface *north_interface::get_instance() {
@@ -26,15 +26,15 @@ namespace ufcity {
         return instance;
     }
 
-    void north_interface::publish_rouserce_data(std::string data) {
+    void north_interface::publish_resource_data(const std::string& data) {
 
     }
 
-    void north_interface::publish_resource_registration(std::string data) {
+    void north_interface::publish_resource_registration(const std::string& data) {
 
     }
 
-    void north_interface::publish_resource_removal(std::string data) {
+    void north_interface::publish_resource_removal(const std::string& data) {
 
     }
 

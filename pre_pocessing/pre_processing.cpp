@@ -4,8 +4,8 @@
 
 #include "pre_processing.h"
 namespace pre_proc {
-    int handler(std::string semantic) {
-        int r = 0;
+    int handler(const std::string& semantic) {
+        int r;
         r = remove_outliers(semantic);
         if (r != 0) return r;
         r = missing_data_insertion(semantic);
@@ -13,11 +13,11 @@ namespace pre_proc {
         return r;
     }
 
-    int remove_outliers(std::string semantic) {
+    int remove_outliers(const std::string& semantic) {
         return 0;
     }
 
-    int missing_data_insertion(std::string semantic) {
+    int missing_data_insertion(const std::string& semantic) {
         return 0;
     }
 }

@@ -6,7 +6,7 @@
 
 namespace ufcity {
 
-    int data_formatter(std::string semantic){
+    int data_formatter(const std::string& semantic){
         //TODO
         return 0;
     }

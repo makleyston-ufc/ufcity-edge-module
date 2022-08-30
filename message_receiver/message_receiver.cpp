@@ -7,16 +7,20 @@
 namespace ufcity {
 
 
-    void message_receiver::register_observer(observer *observer) {
+    int message_receiver::register_observer(observer *observer) {
         observers->push_back(observer);
+        return 0;
     }
 
-    void message_receiver::remove_observer(observer *observer) {
+    int message_receiver::remove_observer(observer *observer) {
         auto iterator = std::find(observers->begin(), observers->end(), observer);
 
         if (iterator != observers->end()) { // observer found
             observers->erase(iterator); // remove the observer
+            return 0;
         }
+
+        return ERROR_OBSERVER_NOT_FOUND;
     }
 
     void message_receiver::notify_observers(std::string message) {
@@ -29,7 +33,7 @@ namespace ufcity {
         notify_observers(message);
     }
 
-    message_receiver::message_receiver() {}
+    message_receiver::message_receiver() = default;
     message_receiver * message_receiver::instance = nullptr;
     message_receiver *message_receiver::get_instance() {
         if(instance == nullptr){

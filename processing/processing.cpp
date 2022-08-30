@@ -6,8 +6,8 @@
 
 namespace proc {
 
-    int handler(std::string semantic){
-        int r = 0;
+    int handler(const std::string& semantic){
+        int r;
         r = data_filter(semantic);
         if (r != 0) return r;
         r = data_grouping(semantic);
@@ -15,11 +15,11 @@ namespace proc {
         return r;
     }
 
-    int data_filter(std::string semantic){
+    int data_filter(const std::string& semantic){
         return 0;
     }
 
-    int data_grouping(std::string semantic){
+    int data_grouping(const std::string& semantic){
         return 0;
     }
 
