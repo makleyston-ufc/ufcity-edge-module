@@ -1,5 +1,5 @@
 # Sobre
-O Edge Module é um componente que compõe a solução para _smart city_ UFCity. 
+O Edge Module é um componente de _software_ que integra a solução para _smart city_ UFCity. 
 Este componente atua na borda da rede de computadores oferecendo serviços locais 
 que possibilitam aos recursos da cidade obterem, dentre outros aspectos, uma 
 comunicação com os serviços da _Fog Computing_ e _Cloud Computing_, abstraindo 
