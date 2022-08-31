@@ -11,8 +11,8 @@ namespace ufcity {
     int orchestrator::init(const std::string& data, const std::string& fog_node_address) {
         if (instance == nullptr){
             //Check location data
-            location * location = location_from_json(data);
-            if (location == nullptr) return ERROR_JSON_PARSER;
+            location * _location = location_from_json(data);
+            if (_location == nullptr) return ERROR_JSON_PARSER;
             print_log("The location data is OK!");
 
             //Check fog node address
@@ -21,7 +21,7 @@ namespace ufcity {
             print_log("The fog node address is OK!");
 
             //Create an instance
-            instance = new orchestrator(location, fog_node_address);
+            instance = new orchestrator(_location, fog_node_address);
             print_log("Edge Module successfully created!");
 
             return 0;
@@ -52,52 +52,55 @@ namespace ufcity {
     }
 
     int orchestrator::register_resource(const std::string& data) {
-        resource * r_resource = resource_from_json(data);
-        if(r_resource == nullptr) {
+        resource * _resource = resource_from_json(data);
+        if(_resource == nullptr) {
             print_log("JSON parser error!");
             return ERROR_JSON_PARSER;
         }
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + r_resource->get_resource_uuid());
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
+
+//        _resource->print();
 
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
-        if(map->find_resource_by_uuid(r_resource->get_resource_uuid())){
-            print_log("The resource "+ r_resource->get_resource_uuid() +" already exists!");
+        if(map->find_resource_by_uuid(_resource->get_resource_uuid())){
+            print_log("The resource " + _resource->get_resource_uuid() + " already exists!");
             return ERROR_RESOURCE_ALREADY_EXIST;
         }else{
-            std::string semantic = get_semantic_from_resource(r_resource);
+            std::string semantic = get_semantic_from_resource(_resource);
             if(semantic.empty()) return ERROR_SEMANTIC_ANNOTATION;
-            print_log("Semantic annotation make successfully on " + r_resource->get_resource_uuid());
-            int r_reg = map->register_resource(r_resource->get_resource_uuid(), semantic);
-            if(r_reg == 0) print_log("Resource "+ r_resource->get_resource_uuid() +" has been stored successfully! ");
+            print_log("Semantic annotation make successfully on " + _resource->get_resource_uuid());
+            int r_reg = map->register_resource(_resource->get_resource_uuid(), semantic);
+            if(r_reg == 0) print_log("Resource " + _resource->get_resource_uuid() + " has been successfully stored! ");
             return r_reg;
         }
     }
 
     int orchestrator::remove_resource(const std::string& data) const{
-        resource * resource_ = resource_from_json(data);
-        if(resource_ == nullptr) return ERROR_JSON_PARSER;
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + resource_->get_resource_uuid());
-        if(ufcity_db::resources_map::get_instance()->remove_resource(resource_->get_resource_uuid()) == 0) {
-            print_log("Resource " + resource_->get_resource_uuid() + " successfully removed!");
+        resource * _resource = resource_from_json(data);
+        if(_resource == nullptr) return ERROR_JSON_PARSER;
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
+        if(ufcity_db::resources_map::get_instance()->remove_resource(_resource->get_resource_uuid()) == 0) {
+            print_log("Resource " + _resource->get_resource_uuid() + " successfully removed!");
             return 0;
         }else {
-            print_log("Resource " + resource_->get_resource_uuid() + " not found!");
+            print_log("Resource " + _resource->get_resource_uuid() + " not found!");
             return ERROR_RESOURCE_NOT_FOUND;
         }
     }
 
     int orchestrator::send_resource_data(const std::string& data) const{
         //Convert JSON to Resource
-        resource * resource_ = resource_from_json(data);
-        if(resource_ == nullptr) return ERROR_JSON_PARSER;
+        resource * _resource = resource_from_json(data);
+        if(_resource == nullptr) return ERROR_JSON_PARSER;
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
 
         //Get semantic from resource
-        std::string semantic = ufcity_db::resources_map::get_instance()->get_resource_semantic_by_uuid(resource_->get_resource_uuid());
+        std::string semantic = ufcity_db::resources_map::get_instance()->get_resource_semantic_by_uuid(_resource->get_resource_uuid());
         if(semantic.empty()){
-            print_log("The resource "+ resource_->get_resource_uuid() +" has not yet been registered!");
+            print_log("The resource " + _resource->get_resource_uuid() + " has not yet been registered!");
             return ERROR_RESOURCE_NOT_FOUND;
         }
-        print_log("Resource "+ resource_->get_resource_uuid() +" semantics were successfully retrieved.");
+        print_log("Resource " + _resource->get_resource_uuid() + " semantics were successfully retrieved.");
 
         //Pre-processing the already semantically annotated resource
         int r_pre = pre_proc::handler(semantic);

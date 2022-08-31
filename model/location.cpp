@@ -24,4 +24,13 @@ namespace ufcity {
         this->lng = std::move(l);
     }
 
+    void location::set_device_uuid(std::string lng) {
+
+    }
+
+    std::string location::get_device_uuid() {
+        return std::string();
+    }
+
+
 } // ufcity

@@ -37,9 +37,9 @@ int main(){
 
     /* Printing all stored resources */
     std::unordered_map<std::string, std::string> * map = get_resources_map();
-    for (auto const &pair: *map) {
-        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
-    }
+//    for (auto const &pair: *map) {
+//        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+//    }
 
     /* Removing a resource */
     remove_resource(samples::json_resource);
@@ -53,7 +53,7 @@ int main(){
     /* Testing the observer client */
     observer_client * observerClient = new observer_client(123);
     register_observer(observerClient);
-    ufcity::message_receiver::get_instance()->receive_message("OOOiiii Testando");
+    ufcity::message_receiver::get_instance()->receive_message("Test OK!");
 
     /* Removing an observer client */
     remove_observer(observerClient);

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <iostream>
 
 namespace ufcity {
 
@@ -17,13 +18,26 @@ namespace ufcity {
         std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * services_uuid_map{}; //<service_uuid, <data_tag, value>>
 
     public:
-        explicit resource(std::string device_uuid, std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map);
-        explicit resource(const std::string& message);
+        explicit resource(std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map);
 
         std::string get_device_uuid() const;
         std::string get_resource_uuid() const;
         std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * get_services();
         std::unordered_map<std::string, std::string> * get_service_by_uuid(const std::string& uuid);
+
+        void print(){
+            std::cout <<         "device_uuid..:" << this->device_uuid << std::endl;
+            std::cout <<         "resource_uuid:" << this->resource_uuid << std::endl;
+            std::cout <<         "qt services..:" << this->services_uuid_map->size() << std::endl;
+            for(auto service : *this->services_uuid_map){
+                std::cout <<     "service_uuid.:" << service.first << std::endl;
+                for(auto data : service.second){
+                    std::cout << "data_tag.....:" << data.first << std::endl;
+                    std::cout << "value........:" << data.second << std::endl;
+                }
+            }
+        }
+
     };
 
 } // ufcity
