@@ -36,7 +36,7 @@ int main(){
     register_resource(samples::json_resource);
 
     /* Printing all stored resources */
-    std::unordered_map<std::string, std::string> * map = get_resources_map();
+    auto * map = get_resources_map();
 //    for (auto const &pair: *map) {
 //        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
 //    }

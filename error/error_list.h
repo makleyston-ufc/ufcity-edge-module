@@ -1,7 +1,3 @@
-//
-// Created by makleyston on 30/08/22.
-//
-
 #ifndef UFCITY_ERROR_LIST_H
 #define UFCITY_ERROR_LIST_H
 
