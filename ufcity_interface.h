@@ -12,7 +12,7 @@
 
 namespace ufcity_interface{
 
-    int init(const std::string& location, const std::string& fog_node_address);
+    int init(const std::string& _location, const std::string& _fog_node_address);
 
     int register_resource(const std::string& data);
 

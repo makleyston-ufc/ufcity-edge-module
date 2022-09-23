@@ -22,6 +22,7 @@
   * [Compressor de mensagens](#anchor_compression)
   * [Procolo de comunicação](#anchor_protocol)
   * [Políticas de segurança](#anchor_security)
+* [Licenças](#anchor_licenses)
 
 # Sobre <a id="anchor_about"></a>
 O Edge Module é um componente de _software_ que integra a solução para _smart city_ UFCity. 
@@ -77,14 +78,14 @@ Para inicializar o Edge Module é preciso fornecer dois parâmetros: "location_j
 ```
 {
   "device_uuid":"",
-  "location":{
+  "device":{
     "lat":"",
     "lng":""
   }
 }
 ```
 * "**device_uuid**": é a identificação única do dispositivo a qual o Edge Module está sendo consumido.
-* "**location**": contém os dados de latitude (lat) e longitude (lng) do dispositivo. 
+* "**device**": contém os dados de latitude (lat) e longitude (lng) do dispositivo. 
 
 ### Registrando um recurso <a id="anchor_registering"></a>
 ```

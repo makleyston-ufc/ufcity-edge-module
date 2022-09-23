@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
-#include "../model/resource.h"
+#include "../../model/resource.h"
 
 namespace ufcity_db {
 

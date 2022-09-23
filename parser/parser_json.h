@@ -5,7 +5,7 @@
 #ifndef UFCITY_PARSER_JSON_H
 #define UFCITY_PARSER_JSON_H
 
-#include "../model/location.h"
+#include "../model/device.h"
 #include "../model/resource.h"
 #include "lib/json.hpp"
 #include "../error/error_list.h"
@@ -15,7 +15,7 @@
 
 namespace ufcity {
 
-    location * location_from_json(const std::string& data);
+    device * device_from_json(const std::string& data);
     resource * resource_from_json(const std::string& data);
 
 }

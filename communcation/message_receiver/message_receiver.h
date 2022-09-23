@@ -5,10 +5,10 @@
 #ifndef UFCITY_MESSAGE_RECEIVER_H
 #define UFCITY_MESSAGE_RECEIVER_H
 
-#include "../observer/subject.h"
+#include "../../observer/subject.h"
 #include <vector>
 #include <algorithm>
-#include "../error/error_list.h"
+#include "../../error/error_list.h"
 
 namespace ufcity {
 
@@ -25,6 +25,8 @@ namespace ufcity {
         int remove_observer(observer *observer) override;
         void notify_observers(std::string message) override;
         void receive_message(std::string message) override;
+
+        void subscribe();
     };
 
 } // ufcity

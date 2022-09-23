@@ -6,7 +6,6 @@
 
 namespace ufcity {
 
-
     int message_receiver::register_observer(observer *observer) {
         observers->push_back(observer);
         return 0;
@@ -42,6 +41,7 @@ namespace ufcity {
         }
         return instance;
     }
+
 
 
 } // ufcity

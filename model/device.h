@@ -2,14 +2,14 @@
 // Created by makleyston on 23/08/22.
 //
 
-#ifndef UFCITY_LOCATION_H
-#define UFCITY_LOCATION_H
+#ifndef UFCITY_DEVICE_H
+#define UFCITY_DEVICE_H
 
 #include <string>
 
 namespace ufcity {
 
-    class location {
+    class device {
     private:
         std::string lat;
         std::string lng;
@@ -27,4 +27,4 @@ namespace ufcity {
 } // ufcity
 
 
-#endif //UFCITY_LOCATION_H
+#endif //UFCITY_DEVICE_H

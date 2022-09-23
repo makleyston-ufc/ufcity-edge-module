@@ -30,18 +30,36 @@ set(SOURCE_FILES
         model/resource.cpp model/resource.h
         observer/observer.h
         orchestrator/orchestrator.cpp orchestrator/orchestrator.h
-        model/location.cpp model/location.h
+        model/device.cpp model/device.h
         parser/parser_json.cpp parser/parser_json.h
-        spatial_context_data/spatial_context_data.cpp spatial_context_data/spatial_context_data.h
-        client_demo/json_data_sample.hpp
-        resources_map/resources_map.cpp resources_map/resources_map.h
-        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h pre_pocessing/pre_processing.cpp pre_pocessing/pre_processing.h processing/processing.cpp processing/processing.h message_sender/message_sender.cpp message_sender/message_sender.h north_interface/north_interface.cpp north_interface/north_interface.h security/security.cpp security/security.h observer/subject.h message_receiver/message_receiver.cpp message_receiver/message_receiver.h error/error_list.h)
+        in_memory_storage/spatial_context_data/spatial_context_data.cpp in_memory_storage/spatial_context_data/spatial_context_data.h
+        client_demo/ext/json_data_sample.hpp
+        in_memory_storage/resources_map/resources_map.cpp in_memory_storage/resources_map/resources_map.h
+        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h
+        pre_pocessing/pre_processing.cpp pre_pocessing/pre_processing.h
+        processing/processing.cpp processing/processing.h
+        communcation/message_sender/message_sender.cpp
+        communcation/message_sender/message_sender.h
+        communcation/communication_interface/communication_interface.h
+        communcation/communication_interface/communication_interface.cpp
+        communcation/message_receiver/message_receiver.cpp
+        communcation/message_receiver/message_receiver.h
+        security/security.cpp security/security.h
+        observer/subject.h
+        error/error_list.h
+        client_demo/ext/observer_client.h
+        client_demo/ext/publish.cpp client_demo/ext/publish.h
+        communcation/lib/mqtt_settings.h
+        util/util.h
+        in_memory_storage/common/fog_node_address.cpp
+        in_memory_storage/common/fog_node_address.h communcation/communication_interface/mqtt_subscribe.h client_demo/ext/cod_for_text.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
+
 
 #find_library( # Sets the name of the path variable.
         #log-lib
@@ -63,3 +81,4 @@ set(SOURCE_FILES
 #        ${log-lib})
 
 add_executable(main ${SOURCE_FILES})
+target_link_libraries(main paho-mqttpp3 paho-mqtt3as ssl crypto)

@@ -24041,7 +24041,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
                 case patch_operations::replace:
                 {
-                    // the "path" location must exist - use at()
+                    // the "path" device must exist - use at()
                     result.at(ptr) = get_value("replace", "value", false);
                     break;
                 }
@@ -24051,13 +24051,13 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                     const auto from_path = get_value("move", "from", true).template get<std::string>();
                     json_pointer from_ptr(from_path);
 
-                    // the "from" location must exist - use at()
+                    // the "from" device must exist - use at()
                     basic_json v = result.at(from_ptr);
 
                     // The move operation is functionally identical to a
-                    // "remove" operation on the "from" location, followed
+                    // "remove" operation on the "from" device, followed
                     // immediately by an "add" operation at the target
-                    // location with the value that was just removed.
+                    // device with the value that was just removed.
                     operation_remove(from_ptr);
                     operation_add(ptr, v);
                     break;
@@ -24068,11 +24068,11 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                     const auto from_path = get_value("copy", "from", true).template get<std::string>();
                     const json_pointer from_ptr(from_path);
 
-                    // the "from" location must exist - use at()
+                    // the "from" device must exist - use at()
                     basic_json v = result.at(from_ptr);
 
                     // The copy is functionally identical to an "add"
-                    // operation at the target location using the value
+                    // operation at the target device using the value
                     // specified in the "from" member.
                     operation_add(ptr, v);
                     break;
@@ -24084,7 +24084,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                     JSON_TRY
                     {
                         // check if "value" matches the one at "path"
-                        // the "path" location must exist - use at()
+                        // the "path" device must exist - use at()
                         success = (result.at(ptr) == get_value("test", "value", false));
                     }
                     JSON_INTERNAL_CATCH (out_of_range&)

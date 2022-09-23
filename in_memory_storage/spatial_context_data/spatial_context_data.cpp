@@ -6,12 +6,12 @@
 
 namespace ufcity_db {
 
-    ufcity::location * spatial_context_data::get_location(){
-        return this->location;
+    ufcity::device * spatial_context_data::get_device(){
+        return this->device;
     }
 
-    void spatial_context_data::save_location(ufcity::location * l){
-        this->location = l;
+    void spatial_context_data::save_device(ufcity::device * location){
+        this->device = location;
     }
 
     spatial_context_data::spatial_context_data() = default;

@@ -8,11 +8,11 @@ using json = nlohmann::json;
 
 namespace ufcity {
 
-    location * location_from_json(const std::string& data) {
+    device * device_from_json(const std::string& data) {
 
         try {
             auto j = json::parse(data);
-            auto *l = new location();
+            auto *l = new device();
             l->set_device_uuid(j.at("device_uuid"));
             l->set_lat(j.at("location").at("lat"));
             l->set_lng(j.at("location").at("lng"));
