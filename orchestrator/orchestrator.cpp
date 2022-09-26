@@ -15,26 +15,16 @@ namespace ufcity {
 
     orchestrator* orchestrator::instance = nullptr;
 
-    int orchestrator::init(const std::string& _data, const std::string& _fog_node_address) {
+    int orchestrator::init(const std::string& _data) {
         if (instance == nullptr){
             /* Check device */
             device * _device = device_from_json(_data);
             if (_device == nullptr) return ERROR_JSON_PARSER;
             print_log("The device '" + _device->get_device_uuid() + "' is OK!");
 
-            /* Check fog node address */
-            int _address_error = check_fog_node_address(_fog_node_address);
-            if(_address_error != 0) return _address_error;
-            print_log("The fog node address '" + _fog_node_address + "' is OK!");
-
             /* Create an instance */
-            instance = new orchestrator(_device, _fog_node_address);
+            instance = new orchestrator(_device);
             print_log("Edge Module successfully created!");
-
-            /* Subscribing */
-            int _subscribe_error = ufcity::communication_interface::get_instance()->subscribe_receive_command();
-            if(_subscribe_error != 0) return _subscribe_error;
-            print_log("Edge Module coonected to fog node successfully! Fog node address: " + _fog_node_address);
 
             return 0;
         }
@@ -46,13 +36,13 @@ namespace ufcity {
         return instance;
     }
 
-    orchestrator::orchestrator(device * device, const std::string& fog_node_address) {
+    orchestrator::orchestrator(device * device) {
         this->save_device(device);
-        this->save_fog_node_address(fog_node_address);
     }
 
     int orchestrator::save_fog_node_address(const std::string& address) const{
-        ufcity_db::fog_node_address::get_instance()->set_fog_node_address(address);
+        std::string _full_address = "tcp://" + address + ":1883";
+        ufcity_db::fog_node_address::get_instance()->set_fog_node_address(_full_address);
         return 0;
     }
 
@@ -172,10 +162,29 @@ namespace ufcity {
     orchestrator::~orchestrator() {
         this->save_device(nullptr);
         this->save_fog_node_address("");
+
     }
 
     void orchestrator::destroy() {
         delete orchestrator::instance;
     }
+
+    int orchestrator::connect_to_fog(const std::string& _fog_node_address, const bool& reconnect) const {
+        /* Check fog node address */
+        int _address_error = check_fog_node_address(_fog_node_address);
+        if(_address_error != 0) return _address_error;
+        this->save_fog_node_address(_fog_node_address);
+        print_log("The fog node address '" + _fog_node_address + "' is OK and is stored!");
+
+        /* Subscribing */
+        int _subscribe_error = ufcity::communication_interface::get_instance()->subscribe_receive_command();
+        if(_subscribe_error != 0) return _subscribe_error;
+        print_log("Edge Module coonected to fog node successfully! Fog node address: " + _fog_node_address);
+
+        //TODO reconnect
+
+        return 0;
+    }
+
 
 } // ufcity

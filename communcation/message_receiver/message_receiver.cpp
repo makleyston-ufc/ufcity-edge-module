@@ -13,12 +13,10 @@ namespace ufcity {
 
     int message_receiver::remove_observer(observer *observer) {
         auto iterator = std::find(observers->begin(), observers->end(), observer);
-
         if (iterator != observers->end()) { // observer found
             observers->erase(iterator); // remove the observer
             return 0;
         }
-
         return ERROR_OBSERVER_NOT_FOUND;
     }
 
@@ -41,7 +39,5 @@ namespace ufcity {
         }
         return instance;
     }
-
-
 
 } // ufcity

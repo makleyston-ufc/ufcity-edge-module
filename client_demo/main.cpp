@@ -12,8 +12,21 @@ using namespace ufcity_interface;
 int main(){
 
     /* Initializing the Edge Module */
-    init(samples::json_spatial_context_data, "localhost");
-//
+    init(samples::json_spatial_context_data);
+
+    connect_to_fog("localhost");
+
+    /* Setting observer client */
+    auto * observerClient = new observer_client(123);
+    register_observer(observerClient);
+
+    /* Testing */
+    ufcity::message_receiver::get_instance()->receive_message("Test OK!");
+
+    /* Removing an observer client */
+//    remove_observer(observerClient);
+
+
 //    /* Registering a resource */
 //    register_resource(samples::json_resource);
 //
@@ -32,13 +45,7 @@ int main(){
 //    /* Sending data of sensors */
 //    send_resource_data(samples::json_resource_data);
 //
-//    /* Testing the observer client */
-//    observer_client * observerClient = new observer_client(123);
-//    register_observer(observerClient);
-//    ufcity::message_receiver::get_instance()->receive_message("Test OK!");
-//
-//    /* Removing an observer client */
-//    remove_observer(observerClient);
+
 //
 
     return 0;

@@ -33,6 +33,7 @@ namespace ufcity {
     int communication_interface::subscribe_receive_command() {
         return ufcity_mqtt::subscribe();
     }
+
 } // ufcity
 
 

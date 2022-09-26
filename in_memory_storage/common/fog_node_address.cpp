@@ -4,6 +4,8 @@
 
 #include "fog_node_address.h"
 
+#include <utility>
+
 namespace ufcity_db {
 
     fog_node_address::fog_node_address() = default;
@@ -17,7 +19,7 @@ namespace ufcity_db {
     }
 
     void fog_node_address::set_fog_node_address(std::string _address) {
-        this->address = _address;
+        this->address = std::move(_address);
     }
 
     std::string fog_node_address::get_fog_node_address() {

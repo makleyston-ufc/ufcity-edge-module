@@ -25,8 +25,6 @@ namespace ufcity {
         int remove_observer(observer *observer) override;
         void notify_observers(std::string message) override;
         void receive_message(std::string message) override;
-
-        void subscribe();
     };
 
 } // ufcity

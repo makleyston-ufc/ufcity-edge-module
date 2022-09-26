@@ -16,7 +16,6 @@ namespace ufcity {
 
     const std::string DFLT_SERVER_ADDRESS{"tcp://localhost:1883"};
     const std::string CLIENT_ID_PREFIX{"ufcity_"};
-    const std::string PERSIST_DIR{"./persist"};
     const int QOS = 0;
 
     const std::string COMMANDS_RECEIVED = "commands_received";
@@ -41,7 +40,7 @@ namespace ufcity {
     }
 
 // data_publish/uuid_device/type_resource/uuid_resource
-    std::string get_topic_publish_data(ufcity::device *device_, ufcity::resource resource_) {
+    std::string get_topic_publish_data(ufcity::device *device_, const ufcity::resource& resource_) {
         return trim(DATA_PUBLISH) + "/" + device_->get_device_uuid() + "/" + "semmantic" + "/" +
                resource_.get_resource_uuid();
     }

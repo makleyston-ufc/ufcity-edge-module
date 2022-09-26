@@ -6,9 +6,9 @@
 
 using namespace ufcity;
 
-int ufcity_interface::init(const std::string& _location, const std::string& _fog_node_address){
+int ufcity_interface::init(const std::string& _device){
     ufcity::orchestrator::print_log("Task: Initializing the Edge Module.");
-    int _init_error = orchestrator::init(_location, _fog_node_address);
+    int _init_error = orchestrator::init(_device);
     if (_init_error != 0){
         ufcity::orchestrator::destroy();
         return _init_error;
@@ -82,4 +82,16 @@ int ufcity_interface::remove_observer(ufcity::observer * observer){
     int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
     if(initialized_instance_error != 0) return initialized_instance_error;
     return orchestrator::get_instance()->remove_observer(observer);
+}
+
+int ufcity_interface::connect_to_fog(std::string _fog_node_address) {
+    ufcity::orchestrator::print_log("Task: Connecting to fog computing. Fog node dddress = " + _fog_node_address);
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    return orchestrator::get_instance()->connect_to_fog(_fog_node_address);
+}
+
+int ufcity_interface::finish() {
+    //TODO
+    return 0;
 }
