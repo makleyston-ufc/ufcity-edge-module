@@ -16,7 +16,7 @@ namespace ufcity {
         /**
          * Update the state of this observer
          */
-        virtual void update(std::string command) = 0;
+        virtual void update(std::string topic, std::string command) = 0;
 
 
     };

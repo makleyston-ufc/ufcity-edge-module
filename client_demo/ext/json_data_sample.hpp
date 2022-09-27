@@ -5,7 +5,7 @@
 
 namespace samples{
 
-std::string json_spatial_context_data = R"JSON(
+std::string json_device = R"JSON(
 {
   "device_uuid":"111",
   "location":{

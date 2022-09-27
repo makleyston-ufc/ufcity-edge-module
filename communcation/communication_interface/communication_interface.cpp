@@ -31,7 +31,13 @@ namespace ufcity {
     }
 
     int communication_interface::subscribe_receive_command() {
-        return ufcity_mqtt::subscribe();
+        std::string _address = ufcity::get_fog_node_address();
+        std::string _sub_client_id = ufcity::get_sub_client_id();
+
+        auto * ms = new ufcity_mqtt::mqtt_subscribe();
+        ms->subscribe(_address, _sub_client_id);
+
+        return 0;
     }
 
 } // ufcity

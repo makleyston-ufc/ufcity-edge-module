@@ -26,9 +26,9 @@ public:
     /**
      * Notify all the registered observers when a change happens
      */
-    virtual void notify_observers(std::string message) = 0;
+    virtual void notify_observers(std::string topic, std::string message) = 0;
 
-    virtual void receive_message(std::string message) = 0;
+    virtual void receive_message(std::string topic, std::string message) = 0;
 
 
 };

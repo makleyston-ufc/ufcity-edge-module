@@ -13,12 +13,13 @@ private:
     int id;
 public:
     explicit observer_client(int id);
-    void update(std::string msg) override;
+    void update(std::string topic, std::string msg) override;
 };
 
-void observer_client::update(std::string msg) {
+void observer_client::update(std::string topic, std::string msg) {
     // print the changed values
     std::cout << "---Client (" << id << ") " << std::endl;
+    std::cout << "Topic: " + topic << std::endl;
     std::cout << "Message: " + msg << std::endl;
     std::cout << "**********" << std::endl;
 }

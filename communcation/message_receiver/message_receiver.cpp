@@ -20,14 +20,14 @@ namespace ufcity {
         return ERROR_OBSERVER_NOT_FOUND;
     }
 
-    void message_receiver::notify_observers(std::string message) {
+    void message_receiver::notify_observers(std::string topic, std::string message) {
         for (observer *observer : *this->observers) { // notify all observers
-            observer->update(message);
+            observer->update(topic, message);
         }
     }
 
-    void message_receiver::receive_message(std::string message){
-        notify_observers(message);
+    void message_receiver::receive_message(std::string topic, std::string message){
+        notify_observers(topic, message);
     }
 
     message_receiver::message_receiver() = default;

@@ -23,8 +23,8 @@ namespace ufcity {
 
         int register_observer(observer *observer) override;
         int remove_observer(observer *observer) override;
-        void notify_observers(std::string message) override;
-        void receive_message(std::string message) override;
+        void notify_observers(std::string topic, std::string message) override;
+        void receive_message(std::string topic, std::string message) override;
     };
 
 } // ufcity
