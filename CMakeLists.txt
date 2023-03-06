@@ -25,34 +25,33 @@ project("ufcity")
 #        client_demo/main.cpp)
 
 set(SOURCE_FILES
+        ufcity_interface.h ufcity_interface.cpp
+
         client_demo/main.cpp
-        ufcity_interface.cpp ufcity_interface.h
-        model/resource.cpp model/resource.h
-        observer/observer.h
-        orchestrator/orchestrator.cpp orchestrator/orchestrator.h
-        model/device.cpp model/device.h
-        parser/parser_json.cpp parser/parser_json.h
-        in_memory_storage/spatial_context_data/spatial_context_data.cpp in_memory_storage/spatial_context_data/spatial_context_data.h
         client_demo/ext/json_data_sample.hpp
-        in_memory_storage/resources_map/resources_map.cpp in_memory_storage/resources_map/resources_map.h
-        semantic_annotation/semantic_annotation.cpp semantic_annotation/semantic_annotation.h
-        pre_pocessing/pre_processing.cpp pre_pocessing/pre_processing.h
-        processing/processing.cpp processing/processing.h
-        communcation/message_sender/message_sender.cpp
-        communcation/message_sender/message_sender.h
-        communcation/communication_interface/communication_interface.h
-        communcation/communication_interface/communication_interface.cpp
-        communcation/message_receiver/message_receiver.cpp
-        communcation/message_receiver/message_receiver.h
-        security/security.cpp security/security.h
-        observer/subject.h
-        error/error_list.h
-        client_demo/ext/observer_client.h
-        client_demo/ext/publish.cpp client_demo/ext/publish.h
-        communcation/lib/mqtt_settings.h
-        util/util.h
-        in_memory_storage/common/fog_node_address.cpp
-        in_memory_storage/common/fog_node_address.h communcation/communication_interface/mqtt_subscribe.h client_demo/ext/cod_for_text.cpp)
+
+        orchestrator/orchestrator.h orchestrator/orchestrator.cpp
+
+        parser/parser_json.h parser/parser_json.cpp
+
+        model/device.h model/device.cpp
+        model/resource.h model/resource.cpp
+
+        in_memory_storage/common/fog_node_address.h in_memory_storage/common/fog_node_address.cpp
+        in_memory_storage/resources_map/resources_map.h in_memory_storage/resources_map/resources_map.cpp
+        in_memory_storage/device_data/device_data.h in_memory_storage/device_data/device_data.cpp
+
+        communcation/message_sender/message_sender.h communcation/message_sender/message_sender.cpp
+        communcation/communication_interface/communication_interface.h communcation/communication_interface/communication_interface.cpp
+        communcation/message_receiver/message_receiver.h communcation/message_receiver/message_receiver.cpp
+
+        semantic_annotation/semantic_annotation.h semantic_annotation/semantic_annotation.cpp
+
+        pre_pocessing/pre_processing.h pre_pocessing/pre_processing.cpp
+
+        processing/processing.h processing/processing.cpp
+
+        util/util.h util/util.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -80,5 +79,9 @@ set(SOURCE_FILES
         # included in the NDK.
 #        ${log-lib})
 
+#set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+#set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
 add_executable(main ${SOURCE_FILES})
-target_link_libraries(main paho-mqttpp3 paho-mqtt3as ssl crypto)
+target_link_libraries(main paho-mqttpp3 paho-mqtt3as ssl crypto ${CMAKE_THREAD_LIBS_INIT})

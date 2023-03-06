@@ -9,7 +9,10 @@
 namespace ufcity_db {
 
     fog_node_address::fog_node_address() = default;
+
     fog_node_address* fog_node_address::instance = nullptr;
+
+    fog_node_address::~fog_node_address() {}
 
     fog_node_address *fog_node_address::get_instance() {
         if (instance == nullptr){

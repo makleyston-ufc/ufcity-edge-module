@@ -6,7 +6,9 @@
 #include "../../model/device.h"
 #include "../../model/resource.h"
 #include "../../util/util.h"
-#include "../../in_memory_storage/spatial_context_data/spatial_context_data.h"
+//#include "../../in_memory_storage/spatial_context_data/spatial_context_data.h"
+#include "../../in_memory_storage/common/fog_node_address.h"
+#include "../../in_memory_storage/device_data/device_data.h"
 
 
 #ifndef UFCITY_TOPIC_H
@@ -24,29 +26,29 @@ namespace ufcity {
     const std::string PUB = "pub_";
 
 
-    std::string get_fog_node_address() {
+    inline std::string get_fog_node_address() {
         std::string _address = ufcity_db::fog_node_address::get_instance()->get_fog_node_address();
         return (_address.empty() ? DFLT_SERVER_ADDRESS : _address);
     }
 
-    std::string get_sub_client_id(){
-        std::string _client_id = CLIENT_ID_PREFIX + SUB + ufcity_db::spatial_context_data::get_instance()->get_device()->get_device_uuid();
+    inline std::string get_sub_client_id(){
+        std::string _client_id = CLIENT_ID_PREFIX + SUB + ufcity_db::device_data::get_instance()->get_device()->get_device_uuid();
         return  _client_id;
     }
 
-    std::string get_pub_client_id(){
-        std::string _client_id = CLIENT_ID_PREFIX + PUB + ufcity_db::spatial_context_data::get_instance()->get_device()->get_device_uuid();
+    inline std::string get_pub_client_id(){
+        std::string _client_id = CLIENT_ID_PREFIX + PUB + ufcity_db::device_data::get_instance()->get_device()->get_device_uuid();
         return  _client_id;
     }
 
 // data_publish/uuid_device/type_resource/uuid_resource
-    std::string get_topic_publish_data(ufcity::device *device_, const ufcity::resource& resource_) {
+    inline std::string get_topic_publish_data(ufcity::device *device_, const ufcity::resource& resource_) {
         return trim(DATA_PUBLISH) + "/" + device_->get_device_uuid() + "/" + "semmantic" + "/" +
                resource_.get_resource_uuid();
     }
 
 // commands_received/type_resource/uuid_resource/
-    std::string get_topic_receive_commands() {
+    inline std::string get_topic_receive_commands() {
         return trim(COMMANDS_RECEIVED) + "/+/+";
     }
 

@@ -70,15 +70,14 @@ using namespace ufcity_interface;
 ## Utilização  
 ### Inicializando o Edge Module <a id="anchor_init"></a>
 ```
-init(std::string location_json, std::string fog_node_address);
+init(std::string location_json);
 ```
-Para inicializar o Edge Module é preciso fornecer dois parâmetros: "location_json" e "fog_node_address".
-* "fog_node_address": deve ser o endereço lógico do nó da "fog_node_address".
-* "location_json": deve ser representado por um json estruturado da seguinte maneira:<a id="anchor_location_json"></a>
+Para inicializar o Edge Module é preciso fornecer o parâmetro `location_json`.
+* `location_json` é um arquivo _json_ com a seguinte estrutura:<a id="anchor_location_json"></a>
 ```
 {
   "device_uuid":"",
-  "device":{
+  "location":{
     "lat":"",
     "lng":""
   }
@@ -91,8 +90,7 @@ Para inicializar o Edge Module é preciso fornecer dois parâmetros: "location_j
 ```
 register_resource(std::string resource_json);
 ```
-O registro de um recurso deve ser realizado mediante json cuja estrutura respeite o
-seguinte modelo para um _resource_:<a id="anchor_resource_json"></a> 
+Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a id="anchor_resource_json"></a> 
 ``` 
 {
   "resource_uuid":"",
@@ -103,9 +101,11 @@ seguinte modelo para um _resource_:<a id="anchor_resource_json"></a>
         {
           "tag":"",
           "value":""
-        }
+        },
+        ...
       ]
-    }
+    },
+    ...
   ]
 }
 ```
@@ -129,7 +129,7 @@ também ```std::string```, refere-se ao modelo semântico do recurso.
 
 ### Removendo um recurso <a id="anchor_removing"></a>
 ```
-remove_resource(std::string resource_json);
+remove_by_uuid(std::string resource_json);
 ```
 [Este é o modelo JSON para ```resource_json```](#anchor_resource_json).
 ### Enviando dados de recursos para a _Fog Computing_ <a id="anchor_send_resource_data"></a>

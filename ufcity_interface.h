@@ -28,7 +28,7 @@ namespace ufcity_interface{
 
     int remove_observer(ufcity::observer * observer);
 
-    std::unordered_map<std::string, std::string> * get_resources_map();
+    std::unordered_map<std::string, const ufcity::resource *> * get_resources_map();
 
     int connect_to_fog(std::string _fog_node_address);
 

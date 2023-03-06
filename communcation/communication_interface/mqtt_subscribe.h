@@ -2,6 +2,9 @@
 // Created by makleyston on 23/09/22.
 //
 
+#ifndef UFCITY_MQTT_SUBSCRIBE_H
+#define UFCITY_MQTT_SUBSCRIBE_H
+
 #include <string>
 #include <iostream>
 #include <mqtt/callback.h>
@@ -127,10 +130,12 @@ namespace ufcity_mqtt {
                           << ufcity::get_fog_node_address() << "'" << exc << std::endl;
 //                return 1; //TODO put code error correctly
             }
-
+            //TODO esse while é para ler as mensagens que chegam. Caso contrário, a thread funcionará, porém não será visível, pois outras atividades em paralelo tornarão visíveis.
+            //TODO Fazer um mecanismo para destruir essa thread quando o programa principal for finalizado.
             while(true);
-//            while (std::tolower(std::cin.get()) != 'q');
 
+//            while (std::tolower(std::cin.get()) != 'q');
+//
 //            try {
 //                std::cout << "\nDisconnecting from the MQTT server..." << std::flush;
 //                cli.disconnect()->wait();
@@ -138,11 +143,12 @@ namespace ufcity_mqtt {
 //            }
 //            catch (const mqtt::exception& exc) {
 //                std::cerr << exc << std::endl;
-//                return 1;
+//                return;
 //            }
-//
-//            return 0;
+
         }
 
     };
 }
+
+#endif //UFCITY_MQTT_SUBSCRIBE_H

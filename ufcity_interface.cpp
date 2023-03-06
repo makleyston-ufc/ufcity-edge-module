@@ -13,13 +13,13 @@ int ufcity_interface::init(const std::string& _device){
         ufcity::orchestrator::destroy();
         return _init_error;
     }
-    return 0;
+    return _init_error;
 }
 
 int check_initialized_instance(orchestrator *pOrchestrator){
     if(pOrchestrator == nullptr)
     {
-        ufcity::orchestrator::print_log("Must initialize Edge Module before registering resources. See more in 'init' command.");
+        ufcity::orchestrator::print_log("Edge Module not initialized. See more in 'init' command.");
         return ERROR_EDGE_MODULE_NOT_INITIALIZED;
     }
     return 0;
@@ -63,7 +63,7 @@ int ufcity_interface::register_observer(ufcity::observer * observer) {
     return orchestrator::get_instance()->register_observer(observer);
 }
 
-std::unordered_map<std::string, std::string> * ufcity_interface::get_resources_map(){
+std::unordered_map<std::string, const ufcity::resource *> * ufcity_interface::get_resources_map(){
     ufcity::orchestrator::print_log("Task: Retrieving all registered resources.");
     int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
     if(initialized_instance_error != 0){

@@ -2,21 +2,21 @@
 // Created by makleyston on 24/08/22.
 //
 
-#ifndef UFCITY_SPATIAL_CONTEXT_DATA_H
-#define UFCITY_SPATIAL_CONTEXT_DATA_H
+#ifndef UFCITY_DEVICE_DATA_H
+#define UFCITY_DEVICE_DATA_H
 
 #include "../../model/device.h"
 
 namespace ufcity_db {
 
-    class spatial_context_data {
+    class device_data {
     private:
         ufcity::device * device{};
-        static spatial_context_data* instance;
-        spatial_context_data();
+        static device_data* instance;
+        device_data();
 
     public:
-        static spatial_context_data* get_instance();
+        static device_data* get_instance();
 
         ufcity::device * get_device();
         void save_device(ufcity::device * d);
@@ -25,4 +25,4 @@ namespace ufcity_db {
 
 } // ufcity_db
 
-#endif //UFCITY_SPATIAL_CONTEXT_DATA_H
+#endif //UFCITY_DEVICE_DATA_H

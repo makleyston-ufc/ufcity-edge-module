@@ -6,10 +6,10 @@
 #include "orchestrator.h"
 #include "../communcation/communication_interface/communication_interface.h"
 #include "../in_memory_storage/resources_map/resources_map.h"
-#include "../in_memory_storage/spatial_context_data/spatial_context_data.h"
 #include "../communcation/message_sender/message_sender.h"
 #include "../communcation/message_receiver/message_receiver.h"
 #include "../in_memory_storage/common/fog_node_address.h"
+#include "../in_memory_storage/device_data/device_data.h"
 
 namespace ufcity {
 
@@ -55,23 +55,25 @@ namespace ufcity {
     }
 
     int orchestrator::register_resource(const std::string& data) {
-        resource * resource_ = resource_from_json(data);
-        if(resource_ == nullptr) {
+        resource * _resource = resource_from_json(data);
+        if(_resource == nullptr) {
             print_log("JSON parser error!");
             return ERROR_JSON_PARSER;
         }
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + resource_->get_resource_uuid());
+
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
 
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
-        if(map->find_resource_by_uuid(resource_->get_resource_uuid())){
-            print_log("The resource " + resource_->get_resource_uuid() + " already exists!");
+
+        if(map->find_resource_uuid(_resource->get_resource_uuid())){
+            print_log("The resource " + _resource->get_resource_uuid() + " already exists!");
             return ERROR_RESOURCE_ALREADY_EXIST;
         }else{
-            std::string semantic = get_semantic_from_resource(resource_);
+            std::string semantic = get_semantic_from_resource(_resource);
             if(semantic.empty()) return ERROR_SEMANTIC_ANNOTATION;
-            print_log("Semantic annotation make successfully on " + resource_->get_resource_uuid());
-            int r_reg = map->register_resource(resource_->get_resource_uuid(), semantic);
-            if(r_reg == 0) print_log("Resource " + resource_->get_resource_uuid() + " has been successfully stored! ");
+            print_log("Semantic annotation make successfully on " + _resource->get_resource_uuid());
+            int r_reg = map->register_resource(_resource, semantic);
+            if(r_reg == 0) print_log("Resource " + _resource->get_resource_uuid() + " has been successfully stored! ");
             return r_reg;
         }
     }
@@ -80,7 +82,7 @@ namespace ufcity {
         resource * _resource = resource_from_json(data);
         if(_resource == nullptr) return ERROR_JSON_PARSER;
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
-        if(ufcity_db::resources_map::get_instance()->remove_resource(_resource->get_resource_uuid()) == 0) {
+        if(ufcity_db::resources_map::get_instance()->remove_by_uuid(_resource->get_resource_uuid()) == 0) {
             print_log("Resource " + _resource->get_resource_uuid() + " successfully removed!");
             return 0;
         }else {
@@ -96,7 +98,7 @@ namespace ufcity {
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
 
         //Get semantic from resource
-        std::string semantic = ufcity_db::resources_map::get_instance()->get_resource_semantic_by_uuid(_resource->get_resource_uuid());
+        std::string semantic = ufcity_db::resources_map::get_instance()->get_semantic_by_uuid(_resource->get_resource_uuid());
         if(semantic.empty()){
             print_log("The resource " + _resource->get_resource_uuid() + " has not yet been registered!");
             return ERROR_RESOURCE_NOT_FOUND;
@@ -117,10 +119,10 @@ namespace ufcity {
             return res_p;
         }
 
-        int res_s = ufcity_db::spatial_context_data::get_instance()->add_spatial_context_data(semantic);
+        int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(semantic);
         if (res_s != 0) return res_s;
 
-        int res_m = data_formatter(semantic);
+        int res_m =  ufcity::message_sender::get_instance()->data_formatter(semantic);
         if (res_m != 0) return res_m;
 
         communication_interface::get_instance()->publish_resource_data(semantic);
@@ -133,7 +135,7 @@ namespace ufcity {
     }
 
     int orchestrator::save_device(device * device_) const{
-        ufcity_db::spatial_context_data::get_instance()->save_device(device_);
+        ufcity_db::device_data::get_instance()->save_device(device_);
         print_log("Location successfully stored! Location: Lat. " + device_->get_lat() + " and Lng. " + device_->get_lng());
         return 0;
     }
@@ -143,7 +145,7 @@ namespace ufcity {
         if(PRINT) std::cout << ">> " + log << std::endl;
     }
 
-    std::unordered_map<std::string, std::string> * orchestrator::get_resources_map() const{
+    std::unordered_map<std::string, const ufcity::resource *> * orchestrator::get_resources_map() const{
         return ufcity_db::resources_map::get_instance()->get_resources_map();
     }
 
@@ -162,7 +164,6 @@ namespace ufcity {
     orchestrator::~orchestrator() {
         this->save_device(nullptr);
         this->save_fog_node_address("");
-
     }
 
     void orchestrator::destroy() {

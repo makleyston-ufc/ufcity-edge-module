@@ -11,8 +11,9 @@ namespace ufcity_db {
 
     class fog_node_address {
     private:
-        fog_node_address();
         static fog_node_address* instance;
+        explicit fog_node_address();
+        ~fog_node_address();
         std::string address;
 
     public:
