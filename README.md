@@ -93,7 +93,7 @@ Para realizar uma conexão com um nó da Fog Computing é necessário especifica
 
 **Atenção 2**: garanta a destruição da `thread` caso o Edge Module seja finalizado. 
 ```
-std::thread connect_thread(&connect_to_fog, "xxx");
+std::thread connect_thread(&connect_to_fog, "xxx.xxx.xxx.xxx");
 connect_thread.detach();
 ```
 
