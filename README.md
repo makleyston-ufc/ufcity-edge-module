@@ -86,6 +86,17 @@ Para inicializar o Edge Module é preciso fornecer o parâmetro `location_json`.
 * "**device_uuid**": é a identificação única do dispositivo a qual o Edge Module está sendo consumido.
 * "**device**": contém os dados de latitude (lat) e longitude (lng) do dispositivo. 
 
+### Connectando à um nó na Fog Computing
+Para realizar uma conexão com um nó da Fog Computing é necessário especificar uma `thread` para executar a função `connect_to_fog` fornecendo o endereço lógico do nó da Fog Computing.
+
+**Atenção 1**: é importante dessasociar a `thread` da linha de execução do Edge Module. Para isso, utilize a função `detach`.
+
+**Atenção 2**: garanta a destruição da `thread` caso o Edge Module seja finalizado. 
+```
+std::thread connect_thread(&connect_to_fog, "xxx");
+connect_thread.detach();
+```
+
 ### Registrando um recurso <a id="anchor_registering"></a>
 ```
 register_resource(std::string resource_json);
