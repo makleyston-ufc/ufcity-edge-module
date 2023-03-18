@@ -6,14 +6,15 @@
 #define UFCITY_PRE_PROCESSING_H
 
 #include <string>
+#include "../model/resource.h"
 
 namespace pre_proc {
 
-    int handler(const std::string& semantic);
+    int handler(const ufcity::resource * _resource);
 
-    int remove_outliers(const std::string& semantic);
+    int remove_outliers(const ufcity::resource * semantic);
 
-    int missing_data_insertion(const std::string& semantic);
+    int missing_data_insertion(const ufcity::resource * semantic);
 
 }
 

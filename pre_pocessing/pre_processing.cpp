@@ -4,20 +4,20 @@
 
 #include "pre_processing.h"
 namespace pre_proc {
-    int handler(const std::string& semantic) {
+    int handler(const ufcity::resource * _resource) {
         int r;
-        r = remove_outliers(semantic);
+        r = remove_outliers(_resource);
         if (r != 0) return r;
-        r = missing_data_insertion(semantic);
+        r = missing_data_insertion(_resource);
         if (r != 0) return r;
         return r;
     }
 
-    int remove_outliers(const std::string& semantic) {
+    int remove_outliers(const ufcity::resource * _resource) {
         return 0;
     }
 
-    int missing_data_insertion(const std::string& semantic) {
+    int missing_data_insertion(const ufcity::resource * _resource) {
         return 0;
     }
 }

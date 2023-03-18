@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include "../in_memory_storage/device_data/location.h"
 
 namespace ufcity {
 
@@ -15,6 +16,8 @@ namespace ufcity {
     private:
         std::string device_uuid;
         std::string resource_uuid;
+        ufcity::location * location;
+
         std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * services_uuid_map{}; //<service_uuid, <data_tag, value>>
 
     public:
@@ -24,6 +27,7 @@ namespace ufcity {
         std::string get_resource_uuid() const;
         std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * get_services();
         std::unordered_map<std::string, std::string> * get_service_by_uuid(const std::string& uuid);
+        void set_location(ufcity::location * _location);
 
         void print(){
             std::cout <<         "device_uuid..:" << this->device_uuid << std::endl;

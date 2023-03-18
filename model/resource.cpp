@@ -24,6 +24,7 @@ namespace ufcity {
     }
 
     std::unordered_map<std::string, std::string> * resource::get_service_by_uuid(const std::string& uuid) {
+        //TODO
 //        auto it = this->services_uuid_map->find(uuid);
 //        if (it != this->services_uuid_map->end()) {
 //            std::unordered_map<std::string, std::string> s = it->second;
@@ -31,6 +32,10 @@ namespace ufcity {
 //        }
 //        else
             return nullptr;
+    }
+
+    void ufcity::resource::set_location(ufcity::location *_location) {
+        this->location = _location;
     }
 
 } // ufcity

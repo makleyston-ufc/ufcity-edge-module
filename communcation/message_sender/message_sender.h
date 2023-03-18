@@ -18,9 +18,9 @@ namespace ufcity {
         static message_sender * instance;
         static message_sender * get_instance();
 
-        int data_formatter(const std::string& semantic);
-        int send_resource_registration_data(const resource& resource);
-        int send_resource_data(const std::string& semantic);
+        std::string data_formatter(ufcity::resource *_resource);
+        int send_registred_resource(ufcity::resource * _resource);
+        int send_resource_data(const std::string& _data);
 
     };
 

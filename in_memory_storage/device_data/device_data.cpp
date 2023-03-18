@@ -10,8 +10,8 @@ namespace ufcity_db {
         return this->device;
     }
 
-    void device_data::save_device(ufcity::device * location){
-        this->device = location;
+    void device_data::save_device(ufcity::device * _device){
+        this->device = _device;
     }
 
     device_data::device_data() = default;
@@ -24,9 +24,15 @@ namespace ufcity_db {
         return instance;
     }
 
-    int device_data::add_spatial_context_data(const std::string& semantic) {
-        //TODO
+    int device_data::add_spatial_context_data(ufcity::resource *_resource) {
+        _resource->set_location(this->device->get_location());
         return 0;
     }
+//
+//    static int device_data::add_spatial_context_data(ufcity::resource * _resource) {
+//        this->device
+//        _resource->set_location();
+//        return 0;
+//    }
 
 } // ufcity_db

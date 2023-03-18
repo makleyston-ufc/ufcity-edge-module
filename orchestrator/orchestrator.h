@@ -10,7 +10,6 @@
 #include "../model/device.h"
 #include "../parser/parser_json.h"
 #include "../model/resource.h"
-#include "../semantic_annotation/semantic_annotation.h"
 #include "../pre_pocessing/pre_processing.h"
 #include "../processing/processing.h"
 #include "../observer/subject.h"
@@ -37,7 +36,7 @@ namespace ufcity {
         int remove_resource(const std::string& data) const;
         int send_resource_data(const std::string& data) const;
         int update_location(device * l) const;
-        int save_device(device * device_) const;
+        int save_device(device * _device) const;
         int save_fog_node_address(const std::string& address) const;
         static void print_log(const std::string& log);
         std::unordered_map<std::string, const ufcity::resource *> * get_resources_map() const;

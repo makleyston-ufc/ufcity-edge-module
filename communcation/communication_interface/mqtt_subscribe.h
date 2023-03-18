@@ -18,6 +18,7 @@
 #include "../message_receiver/message_receiver.h"
 
 const int	N_RETRY_ATTEMPTS = 5;
+const auto TIMEOUT = std::chrono::seconds(10);
 
 namespace ufcity_mqtt {
 
@@ -84,7 +85,7 @@ namespace ufcity_mqtt {
 //                          << "\tfor client " << ufcity::get_sub_client_id()
 //                          << " using QoS" << ufcity::QOS << "\n"
 //                          << "\nPress Q<Enter> to quit\n" << std::endl;
-                cli_.subscribe(ufcity::get_topic_receive_commands(), ufcity::QOS, nullptr, subListener_);
+                cli_.subscribe(ufcity::get_topic_to_receive_commands(), ufcity::QOS, nullptr, subListener_);
             }
 
             void connection_lost(const std::string& cause) override {
@@ -124,6 +125,7 @@ namespace ufcity_mqtt {
             try {
                 std::cout << "Connecting to the MQTT server..." << std::flush;
                 cli.connect(connOpts, nullptr, cb);
+                std::cout << "Ok" << std::endl;
             }
             catch (const mqtt::exception& exc) {
                 std::cerr << "\nERROR: Unable to connect to MQTT server: '"
@@ -133,9 +135,7 @@ namespace ufcity_mqtt {
             //TODO esse while é para ler as mensagens que chegam. Caso contrário, a thread funcionará, porém não será visível, pois outras atividades em paralelo tornarão visíveis.
             //TODO Fazer um mecanismo para destruir essa thread quando o programa principal for finalizado.
             while(true);
-
 //            while (std::tolower(std::cin.get()) != 'q');
-//
 //            try {
 //                std::cout << "\nDisconnecting from the MQTT server..." << std::flush;
 //                cli.disconnect()->wait();
@@ -145,9 +145,51 @@ namespace ufcity_mqtt {
 //                std::cerr << exc << std::endl;
 //                return;
 //            }
-
         }
+    };
 
+    class mqtt_publish {
+
+    public:
+        int publish(const std::string &_address, const std::string &_pub_client_id, const std::string _message) {
+            mqtt::async_client cli(_address, _pub_client_id);
+
+            int QOS = 0;
+            //TODO alterar o TOPIC
+            std::string TOPIC = "commands_received/a/b";
+
+            auto connOpts = mqtt::connect_options_builder()
+                    .clean_session()
+                    .will(mqtt::message(TOPIC, "", QOS))
+                    .finalize();
+
+            try {
+                std::cout << "\nConnecting..." << std::endl;
+                mqtt::token_ptr conntok = cli.connect(connOpts);
+                std::cout << "Waiting for the connection..." << std::endl;
+                conntok->wait();
+                std::cout << "  ...OK" << std::endl;
+
+                // First use a message pointer.
+
+                std::cout << "\nSending message..." << std::endl;
+                mqtt::message_ptr pubmsg = mqtt::make_message(TOPIC, _message);
+                pubmsg->set_qos(QOS);
+                cli.publish(pubmsg)->wait_for(TIMEOUT);
+                std::cout << "  ...OK" << std::endl;
+
+                // Disconnect
+                std::cout << "\nDisconnecting..." << std::flush;
+                cli.disconnect()->wait();
+                std::cout << "  ...OK" << std::endl;
+            }
+            catch (const mqtt::exception &exc) {
+                std::cerr << exc.what() << std::endl;
+                return 1;
+            }
+
+            return 0;
+        }
     };
 }
 

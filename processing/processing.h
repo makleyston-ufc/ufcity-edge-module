@@ -6,12 +6,13 @@
 #define UFCITY_PROCESSING_H
 
 #include <string>
+#include "../model/resource.h"
 
 namespace proc {
 
-    int handler(const std::string& semantic);
-    int data_filter(const std::string& semantic);
-    int data_grouping(const std::string& semantic);
+    int handler(const ufcity::resource * _resource);
+    int data_filter(const ufcity::resource * _resource);
+    int data_grouping(const ufcity::resource * _resource);
 
 } // proc
 

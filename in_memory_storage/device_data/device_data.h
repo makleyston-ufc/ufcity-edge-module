@@ -6,6 +6,7 @@
 #define UFCITY_DEVICE_DATA_H
 
 #include "../../model/device.h"
+#include "../../model/resource.h"
 
 namespace ufcity_db {
 
@@ -19,8 +20,8 @@ namespace ufcity_db {
         static device_data* get_instance();
 
         ufcity::device * get_device();
-        void save_device(ufcity::device * d);
-        static int add_spatial_context_data(const std::string& semantic);
+        void save_device(ufcity::device * _device);
+        int add_spatial_context_data(ufcity::resource * _resource);
     };
 
 } // ufcity_db

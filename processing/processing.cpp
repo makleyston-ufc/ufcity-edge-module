@@ -6,20 +6,20 @@
 
 namespace proc {
 
-    int handler(const std::string& semantic){
+    int handler(const ufcity::resource * _resource){
         int r;
-        r = data_filter(semantic);
+        r = data_filter(_resource);
         if (r != 0) return r;
-        r = data_grouping(semantic);
+        r = data_grouping(_resource);
         if (r != 0) return r;
         return r;
     }
 
-    int data_filter(const std::string& semantic){
+    int data_filter(const ufcity::resource * _resource){
         return 0;
     }
 
-    int data_grouping(const std::string& semantic){
+    int data_grouping(const ufcity::resource * _resource){
         return 0;
     }
 

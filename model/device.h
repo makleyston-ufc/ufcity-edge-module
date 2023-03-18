@@ -6,21 +6,18 @@
 #define UFCITY_DEVICE_H
 
 #include <string>
+#include "../in_memory_storage/device_data/location.h"
 
 namespace ufcity {
 
     class device {
     private:
-        std::string lat;
-        std::string lng;
+        ufcity::location * location;
         std::string device_uuid;
     public:
-
-        std::string get_lat();
-        std::string get_lng();
         std::string get_device_uuid();
-        void set_lat(std::string lat);
-        void set_lng(std::string lng);
+        ufcity::location * get_location();
+        void set_location(ufcity::location * _location);
         void set_device_uuid(std::string device_uuid);
     };
 

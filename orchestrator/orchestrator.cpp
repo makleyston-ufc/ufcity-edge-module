@@ -10,6 +10,7 @@
 #include "../communcation/message_receiver/message_receiver.h"
 #include "../in_memory_storage/common/fog_node_address.h"
 #include "../in_memory_storage/device_data/device_data.h"
+#include "../util/util.h"
 
 namespace ufcity {
 
@@ -62,17 +63,13 @@ namespace ufcity {
         }
 
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
-
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
 
         if(map->find_resource_uuid(_resource->get_resource_uuid())){
             print_log("The resource " + _resource->get_resource_uuid() + " already exists!");
             return ERROR_RESOURCE_ALREADY_EXIST;
         }else{
-            std::string semantic = get_semantic_from_resource(_resource);
-            if(semantic.empty()) return ERROR_SEMANTIC_ANNOTATION;
-            print_log("Semantic annotation make successfully on " + _resource->get_resource_uuid());
-            int r_reg = map->register_resource(_resource, semantic);
+            int r_reg = map->register_resource(_resource);
             if(r_reg == 0) print_log("Resource " + _resource->get_resource_uuid() + " has been successfully stored! ");
             return r_reg;
         }
@@ -97,35 +94,27 @@ namespace ufcity {
         if(_resource == nullptr) return ERROR_JSON_PARSER;
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
 
-        //Get semantic from resource
-        std::string semantic = ufcity_db::resources_map::get_instance()->get_semantic_by_uuid(_resource->get_resource_uuid());
-        if(semantic.empty()){
-            print_log("The resource " + _resource->get_resource_uuid() + " has not yet been registered!");
-            return ERROR_RESOURCE_NOT_FOUND;
-        }
-        print_log("Resource " + _resource->get_resource_uuid() + " semantics were successfully retrieved.");
-
         //Pre-processing the already semantically annotated resource
-        int r_pre = pre_proc::handler(semantic);
+        int r_pre = pre_proc::handler(_resource);
         if (r_pre != 0) {
             //TODO
             return r_pre;
         }
 
         //Pre-processing the already semantically annotated resource
-        int res_p = proc::handler(semantic);
+        int res_p = proc::handler(_resource);
         if (res_p != 0) {
             //TODO
             return res_p;
         }
 
-        int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(semantic);
+        int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
         if (res_s != 0) return res_s;
 
-        int res_m =  ufcity::message_sender::get_instance()->data_formatter(semantic);
-        if (res_m != 0) return res_m;
+        std::string _formatted_data =  ufcity::message_sender::get_instance()->data_formatter(_resource);
+        if (trim(_formatted_data) == "") return ERROR_FORMATTED_DATA;
 
-        communication_interface::get_instance()->publish_resource_data(semantic);
+        communication_interface::get_instance()->publish_resource_data(_formatted_data);
 
         return 0;
     }
@@ -134,9 +123,9 @@ namespace ufcity {
         return this->save_device(l);
     }
 
-    int orchestrator::save_device(device * device_) const{
-        ufcity_db::device_data::get_instance()->save_device(device_);
-        print_log("Location successfully stored! Location: Lat. " + device_->get_lat() + " and Lng. " + device_->get_lng());
+    int orchestrator::save_device(device * _device) const{
+        ufcity_db::device_data::get_instance()->save_device(_device);
+        print_log("Location successfully stored! Location: Lat. " + _device->get_location()->get_lat() + " and Lng. " + _device->get_location()->get_lng());
         return 0;
     }
 

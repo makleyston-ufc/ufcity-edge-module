@@ -12,11 +12,13 @@ namespace ufcity {
 
         try {
             auto j = json::parse(data);
-            auto *l = new device();
-            l->set_device_uuid(j.at("device_uuid"));
-            l->set_lat(j.at("location").at("lat"));
-            l->set_lng(j.at("location").at("lng"));
-            return l;
+            auto *pDevice = new device();
+            pDevice->set_device_uuid(j.at("device_uuid"));
+            ufcity::location * _location = new ufcity::location();
+            _location->set_lat(j.at("location").at("lat"));
+            _location->set_lng(j.at("location").at("lng"));
+            pDevice->set_location(_location);
+            return pDevice;
         } catch (int error){
             return nullptr;
         }

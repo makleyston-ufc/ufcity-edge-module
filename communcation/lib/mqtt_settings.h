@@ -41,14 +41,13 @@ namespace ufcity {
         return  _client_id;
     }
 
-// data_publish/uuid_device/type_resource/uuid_resource
-    inline std::string get_topic_publish_data(ufcity::device *device_, const ufcity::resource& resource_) {
-        return trim(DATA_PUBLISH) + "/" + device_->get_device_uuid() + "/" + "semmantic" + "/" +
-               resource_.get_resource_uuid();
+// data_publish/uuid_device/uuid_resource
+    inline std::string get_topic_to_publish(ufcity::device *_device, const ufcity::resource * _resource) {
+        return trim(DATA_PUBLISH) + "/" + _device->get_device_uuid() + "/" +  _resource->get_resource_uuid();
     }
 
 // commands_received/type_resource/uuid_resource/
-    inline std::string get_topic_receive_commands() {
+    inline std::string get_topic_to_receive_commands() {
         return trim(COMMANDS_RECEIVED) + "/+/+";
     }
 

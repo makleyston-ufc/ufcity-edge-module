@@ -24,16 +24,9 @@ namespace ufcity_db {
         static resources_map* instance;
 
         bool find_resource_uuid(const std::string& uuid) const;
-        bool find_semantic_uuid(const std::string& uuid) const;
-
         const ufcity::resource * get_resource_by_uuid(const std::string& uuid);
-        std::string get_semantic_by_uuid(const std::string& uuid) const;
-
         std::unordered_map<std::string, const ufcity::resource *> * get_resources_map() ;
-        std::unordered_map<std::string, const std::string> * get_semantics_map() ;
-
-        int register_resource(const ufcity::resource * _resource, const std::string& semantic) const;
-
+        int register_resource(ufcity::resource * _resource) const;
         int remove_by_uuid(const std::string& uuid) const;
     };
 

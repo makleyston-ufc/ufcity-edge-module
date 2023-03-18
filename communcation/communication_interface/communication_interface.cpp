@@ -19,7 +19,15 @@ namespace ufcity {
     }
 
     void communication_interface::publish_resource_data(const std::string& data) {
+        std::string _address = ufcity::get_fog_node_address();
+        std::string _pub_client_id = ufcity::get_sub_client_id();
 
+        auto * mp = new ufcity_mqtt::mqtt_publish();
+        auto r= mp->publish(_address, _pub_client_id, data);
+        if(r == 1)
+            std::cout << "Error: message not published to MQTT broker!" << std::endl;
+        else
+            std::cout << "Message published to MQTT broker successfully!" << std::endl;
     }
 
     void communication_interface::publish_resource_registration(const std::string& data) {
