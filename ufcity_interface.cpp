@@ -85,7 +85,7 @@ int ufcity_interface::remove_observer(ufcity::observer * observer){
 }
 
 int ufcity_interface::connect_to_fog(std::string _fog_node_address) {
-    ufcity::orchestrator::print_log("Task: Connecting to fog computing. Fog node dddress = " + _fog_node_address);
+    ufcity::orchestrator::print_log("Task: Connecting to fog computing. Fog node dddress = " + _fog_node_address + ".");
     int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
     if(initialized_instance_error != 0) return initialized_instance_error;
     return orchestrator::get_instance()->connect_to_fog(_fog_node_address);

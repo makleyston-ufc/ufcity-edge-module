@@ -24,7 +24,11 @@ namespace ufcity {
 //        std::string _semantic = ufcity_db::resources_map::get_instance()->get_semantic_by_uuid(_resource.get_resource_uuid());
         std::string _topic  = ufcity::get_topic_to_publish(_device, _resource);
 //        std::cout << _semantic << " - " << _topic << "  -  " << _resource.get_device_uuid() << " - " << _device->get_device_uuid();
-        return ufcity_mqtt::publish(_topic, this->data_formatter(_resource));
+//        return ufcity_mqtt::publish(_topic, this->data_formatter(_resource));
+        std::string _address = ufcity::get_fog_node_address();
+        std::string _pub_client_id = ufcity::get_pub_client_id();
+        auto mp = new ufcity_mqtt::mqtt_publish();
+        return mp->publish( _address, _pub_client_id, this->data_formatter(_resource), _topic);
     }
 
     int message_sender::send_resource_data(const std::string& _data) {
@@ -34,6 +38,6 @@ namespace ufcity {
 
     std::string message_sender::data_formatter(ufcity::resource *_resource) {
         //TODO
-        return "## formatted data ##";
+        return "## formatted data ##" + _resource->get_resource_uuid();
     }
 } // ufcity

@@ -62,7 +62,7 @@ namespace ufcity {
             return ERROR_JSON_PARSER;
         }
 
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid() + ".");
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
 
         if(map->find_resource_uuid(_resource->get_resource_uuid())){
@@ -112,7 +112,7 @@ namespace ufcity {
         if (res_s != 0) return res_s;
 
         std::string _formatted_data =  ufcity::message_sender::get_instance()->data_formatter(_resource);
-        if (trim(_formatted_data) == "") return ERROR_FORMATTED_DATA;
+        if (trim(_formatted_data).empty()) return ERROR_FORMATTED_DATA;
 
         communication_interface::get_instance()->publish_resource_data(_formatted_data);
 
@@ -167,11 +167,9 @@ namespace ufcity {
         print_log("The fog node address '" + _fog_node_address + "' is OK and is stored!");
 
         /* Subscribing */
+        print_log("Edge Module connecting and subscribing to fog node! Fog node address: " + _fog_node_address + ".");
         int _subscribe_error = ufcity::communication_interface::get_instance()->subscribe_receive_command();
         if(_subscribe_error != 0) return _subscribe_error;
-        print_log("Edge Module coonected to fog node successfully! Fog node address: " + _fog_node_address);
-
-        //TODO reconnect
 
         return 0;
     }

@@ -35,7 +35,9 @@ namespace ufcity_db {
     }
 
     int resources_map::register_resource(ufcity::resource *_resource) const{
+        /* Registering locally. */
         this->map_resource->insert(std::pair<std::string, const ufcity::resource *>(_resource->get_resource_uuid(), _resource));
+        /* Sending data to registry fog computing. */
         ufcity::message_sender::get_instance()->send_registred_resource(_resource);
         return 0; //OK
     }

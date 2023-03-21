@@ -18,7 +18,7 @@
 #include "../message_receiver/message_receiver.h"
 
 const int	N_RETRY_ATTEMPTS = 5;
-const auto TIMEOUT = std::chrono::seconds(10);
+//const auto TIMEOUT = std::chrono::seconds(10);
 
 namespace ufcity_mqtt {
 
@@ -57,7 +57,10 @@ namespace ufcity_mqtt {
 
             void reconnect() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+//                *this(cli_, connOpts_);
+//                cli_.set_callback(*this);
                 try {
+                    connOpts_.set_clean_session(false);
                     cli_.connect(connOpts_, nullptr, *this);
                 }
                 catch (const mqtt::exception& exc) {
@@ -80,18 +83,13 @@ namespace ufcity_mqtt {
 
             // (Re)connection success
             void connected(const std::string& cause) override {
-//                std::cout << "\nConnection success" << std::endl;
-//                std::cout << "\nSubscribing to topic '" << ufcity::get_topic_receive_commands() << "'\n"
-//                          << "\tfor client " << ufcity::get_sub_client_id()
-//                          << " using QoS" << ufcity::QOS << "\n"
-//                          << "\nPress Q<Enter> to quit\n" << std::endl;
                 cli_.subscribe(ufcity::get_topic_to_receive_commands(), ufcity::QOS, nullptr, subListener_);
             }
 
             void connection_lost(const std::string& cause) override {
-                std::cout << "\nConnection lost" << std::endl;
+                std::cout << "Connection lost" << std::endl;
                 if (!cause.empty())
-                    std::cout << "\tcause: " << cause << std::endl;
+                    std::cout << "cause: " << cause << std::endl;
 
                 std::cout << "Reconnecting..." << std::endl;
                 nretry_ = 0;
@@ -100,9 +98,6 @@ namespace ufcity_mqtt {
 
             void message_arrived(mqtt::const_message_ptr msg) override {
                 ufcity::message_receiver::get_instance()->receive_message(msg->get_topic(), msg->to_string());
-//                std::cout << "Message arrived" << std::endl;
-//                std::cout << "\ttopic: '" << msg->get_topic() << "'" << std::endl;
-//                std::cout << "\tpayload: '" << msg->to_string() << "'\n" << std::endl;
             }
 
             void delivery_complete(mqtt::delivery_token_ptr token) override {}
@@ -123,12 +118,12 @@ namespace ufcity_mqtt {
             cli.set_callback(cb);
 
             try {
-                std::cout << "Connecting to the MQTT server..." << std::flush;
+                std::cout << "SUB: Connecting to the MQTT server..." << std::endl;
                 cli.connect(connOpts, nullptr, cb);
-                std::cout << "Ok" << std::endl;
+//                std::cout << "Ok :SUB" << std::endl;
             }
             catch (const mqtt::exception& exc) {
-                std::cerr << "\nERROR: Unable to connect to MQTT server: '"
+                std::cerr << "SUB: ERROR: Unable to connect to MQTT server: '"
                           << ufcity::get_fog_node_address() << "'" << exc << std::endl;
 //                return 1; //TODO put code error correctly
             }
@@ -148,49 +143,49 @@ namespace ufcity_mqtt {
         }
     };
 
-    class mqtt_publish {
-
-    public:
-        int publish(const std::string &_address, const std::string &_pub_client_id, const std::string _message) {
-            mqtt::async_client cli(_address, _pub_client_id);
-
-            int QOS = 0;
-            //TODO alterar o TOPIC
-            std::string TOPIC = "commands_received/a/b";
-
-            auto connOpts = mqtt::connect_options_builder()
-                    .clean_session()
-                    .will(mqtt::message(TOPIC, "", QOS))
-                    .finalize();
-
-            try {
-                std::cout << "\nConnecting..." << std::endl;
-                mqtt::token_ptr conntok = cli.connect(connOpts);
-                std::cout << "Waiting for the connection..." << std::endl;
-                conntok->wait();
-                std::cout << "  ...OK" << std::endl;
-
-                // First use a message pointer.
-
-                std::cout << "\nSending message..." << std::endl;
-                mqtt::message_ptr pubmsg = mqtt::make_message(TOPIC, _message);
-                pubmsg->set_qos(QOS);
-                cli.publish(pubmsg)->wait_for(TIMEOUT);
-                std::cout << "  ...OK" << std::endl;
-
-                // Disconnect
-                std::cout << "\nDisconnecting..." << std::flush;
-                cli.disconnect()->wait();
-                std::cout << "  ...OK" << std::endl;
-            }
-            catch (const mqtt::exception &exc) {
-                std::cerr << exc.what() << std::endl;
-                return 1;
-            }
-
-            return 0;
-        }
-    };
+//    class mqtt_publish {
+//
+//    public:
+//        static int publish(const std::string &_address, const std::string &_pub_client_id, const std::string _message) {
+//            mqtt::async_client cli(_address, _pub_client_id);
+//
+//            int QOS = 0;
+//            //TODO alterar o TOPIC
+//            std::string TOPIC = "commands_received/a/b";
+//
+//            auto connOpts = mqtt::connect_options_builder()
+//                    .clean_session()
+//                    .will(mqtt::message(TOPIC, "", QOS))
+//                    .finalize();
+//
+//            try {
+//                if(!cli.is_connected()) {
+//                    std::cout << "\nConnecting..." << std::flush;
+//                    mqtt::token_ptr conntok = cli.connect(connOpts);
+////                std::cout << "Waiting for the connection..." << std::flush;
+//                    conntok->wait();
+//                    std::cout << "  OK" << std::endl;
+//                }
+//
+//                std::cout << "Sending message..." << std::flush;
+//                mqtt::message_ptr pubmsg = mqtt::make_message(TOPIC, _message);
+//                pubmsg->set_qos(QOS);
+//                cli.publish(pubmsg)->wait_for(TIMEOUT);
+//                std::cout << "  OK" << std::endl;
+//
+//                // Disconnect
+////                std::cout << "Disconnecting..." << std::flush;
+////                cli.disconnect()->wait();
+////                std::cout << "  OK" << std::endl;
+//            }
+//            catch (const mqtt::exception &exc) {
+//                std::cerr << exc.what() << std::endl;
+//                return 1;
+//            }
+//
+//            return 0;
+//        }
+//    };
 }
 
 #endif //UFCITY_MQTT_SUBSCRIBE_H

@@ -4,6 +4,7 @@
 
 #include "communication_interface.h"
 #include "mqtt_subscribe.h"
+#include "mqtt_publish.h"
 
 namespace ufcity {
 
@@ -20,7 +21,7 @@ namespace ufcity {
 
     void communication_interface::publish_resource_data(const std::string& data) {
         std::string _address = ufcity::get_fog_node_address();
-        std::string _pub_client_id = ufcity::get_sub_client_id();
+        std::string _pub_client_id = ufcity::get_pub_client_id();
 
         auto * mp = new ufcity_mqtt::mqtt_publish();
         auto r= mp->publish(_address, _pub_client_id, data);
@@ -31,11 +32,11 @@ namespace ufcity {
     }
 
     void communication_interface::publish_resource_registration(const std::string& data) {
-
+//TODO
     }
 
     void communication_interface::publish_resource_removal(const std::string& data) {
-
+//TODO
     }
 
     int communication_interface::subscribe_receive_command() {

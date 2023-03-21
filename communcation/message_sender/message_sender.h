@@ -20,7 +20,7 @@ namespace ufcity {
 
         std::string data_formatter(ufcity::resource *_resource);
         int send_registred_resource(ufcity::resource * _resource);
-        int send_resource_data(const std::string& _data);
+        static int send_resource_data(const std::string& _data);
 
     };
 
