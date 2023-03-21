@@ -9,7 +9,6 @@ namespace ufcity_db {
 
     resources_map::resources_map() {
         this->map_resource = new std::unordered_map<std::string, const ufcity::resource *>();
-//        this->map_semantic = new std::unordered_map<std::string, const std::string>();
     }
     resources_map * resources_map::instance = nullptr;
     resources_map * resources_map::get_instance(){
@@ -43,8 +42,10 @@ namespace ufcity_db {
     }
 
     int resources_map::remove_by_uuid(const std::string& uuid) const{
-        if(this->map_resource->erase(uuid) == 1)
+        if(this->map_resource->erase(uuid) == 1) {
+            ufcity::message_sender::get_instance()->send_resource_removal(uuid);
             return 0; //OK
+        }
         return 1; //Resource not removed!
     }
 

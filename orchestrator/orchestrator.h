@@ -40,7 +40,7 @@ namespace ufcity {
         int save_fog_node_address(const std::string& address) const;
         static void print_log(const std::string& log);
         std::unordered_map<std::string, const ufcity::resource *> * get_resources_map() const;
-        int connect_to_fog(const std::string& fog_node_address, const bool& reconnect = false) const;
+        int connect_to_fog(const std::string& fog_node_address) const;
 
         int register_observer(ufcity::observer *observer) const;
         int remove_observer(ufcity::observer *observer) const;

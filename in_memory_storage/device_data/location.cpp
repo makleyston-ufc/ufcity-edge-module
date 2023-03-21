@@ -4,8 +4,6 @@
 
 #include "location.h"
 
-#include <utility>
-
 namespace ufcity {
 
     std::string ufcity::location::get_lat(){

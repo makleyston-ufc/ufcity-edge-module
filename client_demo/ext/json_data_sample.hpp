@@ -36,6 +36,7 @@ std::string json_resource = R"JSON(
 }
 )JSON";
 
+//Se não tiver Location, como os exemplos neste documento, o Edge Module atribuirá o Location do Device.
     std::string json_resource_data = R"JSON(
 {
   "resource_uuid":"111",

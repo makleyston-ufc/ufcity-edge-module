@@ -22,7 +22,9 @@ int example2(){
     /* Connecting to Fog Computing */
     std::thread connect_thread(&connect_to_fog, "172.19.0.2"); //IP Example. Change this IP for the fog computing node IP.
     connect_thread.detach();
-//    connect_to_fog("172.19.0.2");
+
+    /* Ensuring the connection time on the fog computing node. */
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     /* Registering a resource */
     register_resource(samples::json_humidity_sensor);
@@ -32,6 +34,8 @@ int example2(){
     /* Sending data of sensors
      * Here we are simuling the several sensor data present in environment. */
     while(true) {
+        time_t end = time(nullptr) + 2; // Pass to 2 second
+        while (time(nullptr) < end);
         switch (rand() % 3) {
             case 0:
                 send_resource_data(samples::json_thermometer_sensor);
@@ -43,7 +47,5 @@ int example2(){
                 send_resource_data(samples::json_light_pole);
                 break;
         }
-        std::chrono::seconds inteval(2);
-        std::this_thread::sleep_for(inteval);
     }
 }

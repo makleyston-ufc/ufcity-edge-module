@@ -6,7 +6,6 @@
 #include "../../model/device.h"
 #include "../../model/resource.h"
 #include "../../util/util.h"
-//#include "../../in_memory_storage/spatial_context_data/spatial_context_data.h"
 #include "../../in_memory_storage/common/fog_node_address.h"
 #include "../../in_memory_storage/device_data/device_data.h"
 
@@ -22,6 +21,8 @@ namespace ufcity {
 
     const std::string COMMANDS_RECEIVED = "commands_received";
     const std::string DATA_PUBLISH = "data_publish";
+    const std::string REMOVED_RESOURCE_PUBLISH = "removed_resource_publish";
+    const std::string REGISTRED_RESOURCE_PUBLISH = "registred_resource_publish";
     const std::string SUB = "sub_";
     const std::string PUB = "pub_";
 
@@ -41,12 +42,22 @@ namespace ufcity {
         return  _client_id;
     }
 
-// data_publish/uuid_device/uuid_resource
-    inline std::string get_topic_to_publish(ufcity::device *_device, const ufcity::resource * _resource) {
+    // data_publish/uuid_device    -> Message is uuid_resource
+    inline std::string get_topic_to_publish_removed_resource(ufcity::device *_device) {
+        return trim(REMOVED_RESOURCE_PUBLISH) + "/" + _device->get_device_uuid();
+    }
+
+    // data_publish/uuid_device/uuid_resource     -> Message is resoruce data
+    inline std::string get_topic_to_publish_resource_data(ufcity::device *_device, const ufcity::resource * _resource) {
         return trim(DATA_PUBLISH) + "/" + _device->get_device_uuid() + "/" +  _resource->get_resource_uuid();
     }
 
-// commands_received/type_resource/uuid_resource/
+    // data_publish/uuid_device/uuid_resource     -> Message is resoruce data
+    inline std::string get_topic_to_publish_registred_resource(ufcity::device *_device, const ufcity::resource * _resource) {
+        return trim(REGISTRED_RESOURCE_PUBLISH) + "/" + _device->get_device_uuid() + "/" +  _resource->get_resource_uuid();
+    }
+
+    // commands_received/type_resource/uuid_resource/
     inline std::string get_topic_to_receive_commands() {
         return trim(COMMANDS_RECEIVED) + "/+/+";
     }

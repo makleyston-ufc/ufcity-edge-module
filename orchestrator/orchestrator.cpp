@@ -10,7 +10,6 @@
 #include "../communcation/message_receiver/message_receiver.h"
 #include "../in_memory_storage/common/fog_node_address.h"
 #include "../in_memory_storage/device_data/device_data.h"
-#include "../util/util.h"
 
 namespace ufcity {
 
@@ -50,7 +49,8 @@ namespace ufcity {
     int orchestrator::check_fog_node_address(const std::string& _address){
         if(_address.empty()) return ERROR_FOG_NODE_ADDRESS_EMPTY;
         if ((_address != "localhost") &&
-                (!std::regex_match (_address, std::regex("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])(?:\\.(?:[01]?\\d\\d?|2[0-4]\\d|25[0-5])){3}(?:[0-2]\\d|3[0-2])?$"))))
+                (!std::regex_match (_address, std::regex(R"(^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:[0-2]\d|3[0-2])?$)"))))
+//                (!std::regex_match (_address, std::regex("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])(?:\\.(?:[01]?\\d\\d?|2[0-4]\\d|25[0-5])){3}(?:[0-2]\\d|3[0-2])?$"))))
                 return ERROR_FOG_NODE_ADDRESS_NOT_MATCHED;
         return 0;
     }
@@ -111,16 +111,12 @@ namespace ufcity {
         int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
         if (res_s != 0) return res_s;
 
-        std::string _formatted_data =  ufcity::message_sender::get_instance()->data_formatter(_resource);
-        if (trim(_formatted_data).empty()) return ERROR_FORMATTED_DATA;
-
-        communication_interface::get_instance()->publish_resource_data(_formatted_data);
-
+        ufcity::message_sender::get_instance()->send_resource_data(_resource);
         return 0;
     }
 
-    int orchestrator::update_location(device * l) const{
-        return this->save_device(l);
+    int orchestrator::update_location(device * _device) const{
+        return this->save_device(_device);
     }
 
     int orchestrator::save_device(device * _device) const{
@@ -159,7 +155,7 @@ namespace ufcity {
         delete orchestrator::instance;
     }
 
-    int orchestrator::connect_to_fog(const std::string& _fog_node_address, const bool& reconnect) const {
+    int orchestrator::connect_to_fog(const std::string& _fog_node_address) const {
         /* Check fog node address */
         int _address_error = check_fog_node_address(_fog_node_address);
         if(_address_error != 0) return _address_error;

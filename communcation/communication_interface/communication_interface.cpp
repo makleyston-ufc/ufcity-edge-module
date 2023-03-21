@@ -19,24 +19,32 @@ namespace ufcity {
         return instance;
     }
 
-    void communication_interface::publish_resource_data(const std::string& data) {
+    void communication_interface::publish_resource_data(const std::string& data, const std::string& _topic) {
         std::string _address = ufcity::get_fog_node_address();
         std::string _pub_client_id = ufcity::get_pub_client_id();
 
         auto * mp = new ufcity_mqtt::mqtt_publish();
-        auto r= mp->publish(_address, _pub_client_id, data);
+        auto r= mp->publish(_address, _pub_client_id, data, _topic);
         if(r == 1)
             std::cout << "Error: message not published to MQTT broker!" << std::endl;
         else
             std::cout << "Message published to MQTT broker successfully!" << std::endl;
     }
 
-    void communication_interface::publish_resource_registration(const std::string& data) {
-//TODO
-    }
+    void communication_interface::publish_registred_resource(const std::string& data, const std::string& _topic) {
+        std::string _address = ufcity::get_fog_node_address();
+        std::string _pub_client_id = ufcity::get_pub_client_id();
+        auto * mp = new ufcity_mqtt::mqtt_publish();
+        mp->publish(_address, _pub_client_id, data, _topic);
+   }
 
-    void communication_interface::publish_resource_removal(const std::string& data) {
-//TODO
+    void communication_interface::publish_resource_removal(const std::string& _uuid) {
+        std::string _address = ufcity::get_fog_node_address();
+        std::string _pub_client_id = ufcity::get_pub_client_id();
+        device * _device = ufcity_db::device_data::get_instance()->get_device();
+        std::string _topic  = ufcity::get_topic_to_publish_removed_resource(_device);
+        auto * mp = new ufcity_mqtt::mqtt_publish();
+        mp->publish(_address, _pub_client_id, _uuid, _topic);
     }
 
     int communication_interface::subscribe_receive_command() {

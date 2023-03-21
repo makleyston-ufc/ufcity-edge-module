@@ -16,7 +16,6 @@ namespace ufcity_db {
     private:
         //The key is UUID and the value is a unordered_map<resource *, string semantic>
         std::unordered_map<std::string, const ufcity::resource *> * map_resource;
-        std::unordered_map<std::string, const std::string> * map_semantic;
         resources_map();
 
     public:

@@ -17,6 +17,8 @@ namespace ufcity {
 
     device * device_from_json(const std::string& data);
     resource * resource_from_json(const std::string& data);
+    std::string resource_to_json(ufcity::resource * _device);
+    std::string device_to_json(ufcity::resource * _device);
 
 }
 

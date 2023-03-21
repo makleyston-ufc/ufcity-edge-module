@@ -16,10 +16,10 @@ namespace ufcity {
         static communication_interface * instance;
         static communication_interface * get_instance();
 
-        static void publish_resource_data(const std::string& data);
-        void publish_resource_registration(const std::string& data);
-        void publish_resource_removal(const std::string& data);
-        static int subscribe_receive_command();
+        void publish_resource_data(const std::string& data, const std::string& _topic);
+        void publish_registred_resource(const std::string& data, const std::string& _topic);
+        void publish_resource_removal(const std::string& _uuid);
+        int subscribe_receive_command();
 
     };
 

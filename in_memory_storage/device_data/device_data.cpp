@@ -3,6 +3,7 @@
 //
 
 #include "device_data.h"
+#include "../../util/util.h"
 
 namespace ufcity_db {
 
@@ -25,14 +26,14 @@ namespace ufcity_db {
     }
 
     int device_data::add_spatial_context_data(ufcity::resource *_resource) {
-        _resource->set_location(this->device->get_location());
+        if(trim(_resource->get_location()->get_lat()).empty())
+            _resource->get_location()->set_lat(this->get_device()->get_location()->get_lat());
+        if(trim(_resource->get_location()->get_lng()).empty())
+            _resource->get_location()->set_lng(this->get_device()->get_location()->get_lng());
+        if(trim(_resource->get_location()->get_alt()).empty())
+            _resource->get_location()->set_alt(this->get_device()->get_location()->get_alt());
+
         return 0;
     }
-//
-//    static int device_data::add_spatial_context_data(ufcity::resource * _resource) {
-//        this->device
-//        _resource->set_location();
-//        return 0;
-//    }
 
 } // ufcity_db

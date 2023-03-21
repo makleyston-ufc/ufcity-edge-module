@@ -3,9 +3,9 @@
 //
 
 #include "message_sender.h"
-#include "../../in_memory_storage/resources_map/resources_map.h"
 #include "../lib/mqtt_settings.h"
-#include "../communication_interface/mqtt_publish.h"
+#include "../communication_interface/communication_interface.h"
+#include "../../error/error_list.h"
 
 namespace ufcity {
 
@@ -21,23 +21,30 @@ namespace ufcity {
 
     int message_sender::send_registred_resource(ufcity::resource * _resource) {
         device * _device = ufcity_db::device_data::get_instance()->get_device();
-//        std::string _semantic = ufcity_db::resources_map::get_instance()->get_semantic_by_uuid(_resource.get_resource_uuid());
-        std::string _topic  = ufcity::get_topic_to_publish(_device, _resource);
-//        std::cout << _semantic << " - " << _topic << "  -  " << _resource.get_device_uuid() << " - " << _device->get_device_uuid();
-//        return ufcity_mqtt::publish(_topic, this->data_formatter(_resource));
-        std::string _address = ufcity::get_fog_node_address();
-        std::string _pub_client_id = ufcity::get_pub_client_id();
-        auto mp = new ufcity_mqtt::mqtt_publish();
-        return mp->publish( _address, _pub_client_id, this->data_formatter(_resource), _topic);
-    }
-
-    int message_sender::send_resource_data(const std::string& _data) {
-        //TODO
+        std::string _topic  = ufcity::get_topic_to_publish_registred_resource(_device, _resource);
+        auto com = ufcity::communication_interface::get_instance();
+        com->publish_registred_resource(this->resource_data_formatter(_resource), _topic);
         return 0;
     }
 
-    std::string message_sender::data_formatter(ufcity::resource *_resource) {
-        //TODO
-        return "## formatted data ##" + _resource->get_resource_uuid();
+    int message_sender::send_resource_data(ufcity::resource *_resource) {
+
+        std::string _formatted_data = ufcity::message_sender::get_instance()->resource_data_formatter(_resource);
+        if (trim(_formatted_data).empty()) return ERROR_FORMATTED_DATA;
+
+        device * _device = ufcity_db::device_data::get_instance()->get_device();
+        std::string _topic  = ufcity::get_topic_to_publish_resource_data(_device, _resource);
+
+        communication_interface::get_instance()->publish_resource_data(_formatted_data, _topic);
+        return 0;
+    }
+
+    std::string message_sender::resource_data_formatter(ufcity::resource *_resource) {
+        return _resource->to_string();
+    }
+
+    int message_sender::send_resource_removal(const std::string &_uuid) {
+        communication_interface::get_instance()->publish_resource_removal(_uuid);
+        return 0;
     }
 } // ufcity

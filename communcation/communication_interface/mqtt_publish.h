@@ -54,55 +54,8 @@ namespace ufcity_mqtt{
         return 0;
     }
 
-    int publish(const std::string &_address, const std::string &_pub_client_id, const std::string& _message) {
-        //TODO alterar o TOPIC
-        std::string TOPIC = "commands_received/a/b";
-
-        return publish(_address, _pub_client_id, _message, TOPIC);
-    }
     };
 
-
-//    int publish(std::string _topic, std::string _data){
-//
-//        std::string _address = ufcity::get_fog_node_address();
-//        std::string _pub_client_id = ufcity::get_pub_client_id();
-//
-//        std::cout << "Initializing for server '" << _address << "'..." << std::endl;
-//        mqtt::async_client client(_address, _pub_client_id);
-//
-//        auto connOpts = mqtt::connect_options_builder()
-//                .clean_session()
-//                .finalize();
-//
-//        std::cout << "  ...OK" << std::endl;
-//
-//        try {
-//            std::cout << "Connecting..." << std::endl;
-//            mqtt::token_ptr conntok = client.connect(connOpts);
-//            std::cout << "Waiting for the connection...";
-//            conntok->wait();
-//            std::cout << "  OK" << std::endl;
-//
-//            std::cout << "Sending message...";
-//            mqtt::message_ptr pubmsg = mqtt::make_message(_topic, _data);
-//            pubmsg->set_qos(ufcity::QOS);
-//            client.publish(pubmsg)->wait_for(TIMEOUT);
-//            std::cout << "  OK" << std::endl;
-//
-//            // TODO
-//            // fazer a desconexão apenas quando não tiver nada para enviar (e.g., dados de recursos, registros de recursos, remoção de recursos, etc.)
-//            // Disconnect
-//            std::cout << "Disconnecting...";
-//            client.disconnect()->wait();
-//            std::cout << "  OK" << std::endl;
-//        }
-//        catch (const mqtt::exception& exc) {
-//            std::cerr << exc.what() << std::endl;
-//            return 1;
-//        }
-//        return 0;
-//    }
 }
 
 #endif //UFCITY_MQTT_PUBLISH_H

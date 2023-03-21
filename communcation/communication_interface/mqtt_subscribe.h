@@ -18,7 +18,6 @@
 #include "../message_receiver/message_receiver.h"
 
 const int	N_RETRY_ATTEMPTS = 5;
-//const auto TIMEOUT = std::chrono::seconds(10);
 
 namespace ufcity_mqtt {
 
@@ -57,8 +56,6 @@ namespace ufcity_mqtt {
 
             void reconnect() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-//                *this(cli_, connOpts_);
-//                cli_.set_callback(*this);
                 try {
                     connOpts_.set_clean_session(false);
                     cli_.connect(connOpts_, nullptr, *this);
@@ -108,7 +105,7 @@ namespace ufcity_mqtt {
         };
 
     public:
-        void subscribe(const std::string& _address, const std::string& _sub_client_id){
+        int subscribe(const std::string& _address, const std::string& _sub_client_id){
             mqtt::async_client cli(_address, _sub_client_id);
 
             mqtt::connect_options connOpts;
@@ -125,67 +122,14 @@ namespace ufcity_mqtt {
             catch (const mqtt::exception& exc) {
                 std::cerr << "SUB: ERROR: Unable to connect to MQTT server: '"
                           << ufcity::get_fog_node_address() << "'" << exc << std::endl;
-//                return 1; //TODO put code error correctly
+                return ERROR_SUBSCRIBE;
             }
-            //TODO esse while é para ler as mensagens que chegam. Caso contrário, a thread funcionará, porém não será visível, pois outras atividades em paralelo tornarão visíveis.
-            //TODO Fazer um mecanismo para destruir essa thread quando o programa principal for finalizado.
+
+            /* The developer must ensure the finishing this thread. */
             while(true);
-//            while (std::tolower(std::cin.get()) != 'q');
-//            try {
-//                std::cout << "\nDisconnecting from the MQTT server..." << std::flush;
-//                cli.disconnect()->wait();
-//                std::cout << "OK" << std::endl;
-//            }
-//            catch (const mqtt::exception& exc) {
-//                std::cerr << exc << std::endl;
-//                return;
-//            }
+
         }
     };
-
-//    class mqtt_publish {
-//
-//    public:
-//        static int publish(const std::string &_address, const std::string &_pub_client_id, const std::string _message) {
-//            mqtt::async_client cli(_address, _pub_client_id);
-//
-//            int QOS = 0;
-//            //TODO alterar o TOPIC
-//            std::string TOPIC = "commands_received/a/b";
-//
-//            auto connOpts = mqtt::connect_options_builder()
-//                    .clean_session()
-//                    .will(mqtt::message(TOPIC, "", QOS))
-//                    .finalize();
-//
-//            try {
-//                if(!cli.is_connected()) {
-//                    std::cout << "\nConnecting..." << std::flush;
-//                    mqtt::token_ptr conntok = cli.connect(connOpts);
-////                std::cout << "Waiting for the connection..." << std::flush;
-//                    conntok->wait();
-//                    std::cout << "  OK" << std::endl;
-//                }
-//
-//                std::cout << "Sending message..." << std::flush;
-//                mqtt::message_ptr pubmsg = mqtt::make_message(TOPIC, _message);
-//                pubmsg->set_qos(QOS);
-//                cli.publish(pubmsg)->wait_for(TIMEOUT);
-//                std::cout << "  OK" << std::endl;
-//
-//                // Disconnect
-////                std::cout << "Disconnecting..." << std::flush;
-////                cli.disconnect()->wait();
-////                std::cout << "  OK" << std::endl;
-//            }
-//            catch (const mqtt::exception &exc) {
-//                std::cerr << exc.what() << std::endl;
-//                return 1;
-//            }
-//
-//            return 0;
-//        }
-//    };
 }
 
 #endif //UFCITY_MQTT_SUBSCRIBE_H
