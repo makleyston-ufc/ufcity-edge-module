@@ -33,7 +33,7 @@ set(SOURCE_FILES
         processing/processing.h processing/processing.cpp
 
         util/util.h util/util.cpp
-        in_memory_storage/device_data/location.h in_memory_storage/device_data/location.cpp client_demo/example2.h client_demo/example1.h)
+        in_memory_storage/device_data/location.h in_memory_storage/device_data/location.cpp client_demo/example2.h client_demo/example1.h client_demo/menu.h)
 
 find_package(Threads REQUIRED)
 

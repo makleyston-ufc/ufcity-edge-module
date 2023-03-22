@@ -7,10 +7,11 @@
 
 using namespace ufcity_interface;
 
-int main(){
+int main(int argc, char *argv[]){
 
 //    example1();
-    example2();
+    example2(argc, argv);
 
-    while(true);
+    /* Must keep this process alive. */
+//    while(true);
 }

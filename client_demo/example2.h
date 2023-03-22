@@ -6,12 +6,18 @@
 #include "ext/observer_client.h"
 
 #include <thread>
+#include "menu.h"
 
 using namespace ufcity_interface;
 
 /* Send data to Fog Computing. */
 
-int example2(){
+int example2(int argc, char *argv[]){
+
+    if(menu(argc, argv) != 0) {
+        return 1;
+    }
+
     /* Initializing the Edge Module */
     init(samples::json_device);
 
@@ -20,7 +26,7 @@ int example2(){
     register_observer(observerClient);
 
     /* Connecting to Fog Computing */
-    std::thread connect_thread(&connect_to_fog, "172.19.0.2", "1883"); //IP Example. Change this IP for the fog computing node IP.
+    std::thread connect_thread(&connect_to_fog, HOST, PORT); //IP Example. Change this IP for the fog computing node IP.
     connect_thread.detach();
 
     /* Ensuring the connection time on the fog computing node. */
