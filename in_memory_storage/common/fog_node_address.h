@@ -15,11 +15,14 @@ namespace ufcity_db {
         explicit fog_node_address();
         ~fog_node_address();
         std::string address;
+        std::string port;
 
     public:
         static fog_node_address* get_instance();
         void set_fog_node_address(std::string address);
+        void set_fog_node_port(std::string port);
         std::string get_fog_node_address();
+        std::string get_fog_node_port();
 
     };
 

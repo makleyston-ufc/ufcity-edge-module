@@ -25,7 +25,15 @@ namespace ufcity_db {
         this->address = std::move(_address);
     }
 
+    void fog_node_address::set_fog_node_port(std::string _port) {
+        this->port = std::move(_port);
+    }
+
     std::string fog_node_address::get_fog_node_address() {
         return this->address;
+    }
+
+    std::string fog_node_address::get_fog_node_port() {
+        return this->port;
     }
 } // ufcity_db

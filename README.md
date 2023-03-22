@@ -185,4 +185,4 @@ remove_observer(_observer);
 
 ### Lista de erros <a id="anchor_error_list"></a>
 Cada uma dessas funções podem retornar alguns erros conhecidos. 
-Os erros conhecidos pode ser visto nesta [lista](error/error_list.h).
+Os erros conhecidos podem ser visto nesta [lista](error/error_list.h).

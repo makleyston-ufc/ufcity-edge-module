@@ -20,7 +20,7 @@ int example2(){
     register_observer(observerClient);
 
     /* Connecting to Fog Computing */
-    std::thread connect_thread(&connect_to_fog, "172.19.0.2"); //IP Example. Change this IP for the fog computing node IP.
+    std::thread connect_thread(&connect_to_fog, "172.19.0.2", "1883"); //IP Example. Change this IP for the fog computing node IP.
     connect_thread.detach();
 
     /* Ensuring the connection time on the fog computing node. */

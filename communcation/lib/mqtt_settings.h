@@ -15,21 +15,24 @@
 
 namespace ufcity {
 
-    const std::string DFLT_SERVER_ADDRESS{"tcp://localhost:1883"};
+    const std::string DFLT_SERVER_ADDRESS{"tcp://localhost:"};
+    const std::string DFLT_SERVER_PORT{"1883"};
     const std::string CLIENT_ID_PREFIX{"ufcity_"};
     const int QOS = 0;
 
-    const std::string COMMANDS_RECEIVED = "commands_received";
-    const std::string DATA_PUBLISH = "data_publish";
-    const std::string REMOVED_RESOURCE_PUBLISH = "removed_resource_publish";
-    const std::string REGISTRED_RESOURCE_PUBLISH = "registred_resource_publish";
+    const std::string COMMANDS_RECEIVED = "commands_fog_to_edge";
+    const std::string DATA_PUBLISH = "resource_data";
+    const std::string REMOVED_RESOURCE_PUBLISH = "removed_resource";
+    const std::string REGISTRED_RESOURCE_PUBLISH = "registered_resource";
     const std::string SUB = "sub_";
     const std::string PUB = "pub_";
 
-
+    // std::string _address = "tcp://" + address + ":";
     inline std::string get_fog_node_address() {
         std::string _address = ufcity_db::fog_node_address::get_instance()->get_fog_node_address();
-        return (_address.empty() ? DFLT_SERVER_ADDRESS : _address);
+        std::string _port = ufcity_db::fog_node_address::get_instance()->get_fog_node_port();
+        std::string _full_address = "tcp://"+(_address.empty() ? DFLT_SERVER_ADDRESS : _address)+":"+(_port.empty() ? DFLT_SERVER_PORT : _port);
+        return _full_address;
     }
 
     inline std::string get_sub_client_id(){
@@ -42,22 +45,22 @@ namespace ufcity {
         return  _client_id;
     }
 
-    // data_publish/uuid_device    -> Message is uuid_resource
+    // removed_resource/uuid_device    -> Message is uuid_resource
     inline std::string get_topic_to_publish_removed_resource(ufcity::device *_device) {
         return trim(REMOVED_RESOURCE_PUBLISH) + "/" + _device->get_device_uuid();
     }
 
-    // data_publish/uuid_device/uuid_resource     -> Message is resoruce data
+    // resource_data/uuid_device/uuid_resource     -> Message is resoruce data
     inline std::string get_topic_to_publish_resource_data(ufcity::device *_device, const ufcity::resource * _resource) {
         return trim(DATA_PUBLISH) + "/" + _device->get_device_uuid() + "/" +  _resource->get_resource_uuid();
     }
 
-    // data_publish/uuid_device/uuid_resource     -> Message is resoruce data
+    // resource_data/uuid_device/uuid_resource     -> Message is resource data
     inline std::string get_topic_to_publish_registred_resource(ufcity::device *_device, const ufcity::resource * _resource) {
         return trim(REGISTRED_RESOURCE_PUBLISH) + "/" + _device->get_device_uuid() + "/" +  _resource->get_resource_uuid();
     }
 
-    // commands_received/type_resource/uuid_resource/
+    // commands_received/resource_type/resource_uuid/
     inline std::string get_topic_to_receive_commands() {
         return trim(COMMANDS_RECEIVED) + "/+/+";
     }

@@ -30,7 +30,7 @@ namespace ufcity_interface{
 
     std::unordered_map<std::string, const ufcity::resource *> * get_resources_map();
 
-    int connect_to_fog(std::string _fog_node_address);
+    int connect_to_fog(const std::string& _fog_node_address, const std::string& _port = "1883");
 
 }
 
