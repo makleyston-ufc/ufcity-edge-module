@@ -4,9 +4,9 @@
 
 #include "../ufcity_interface.h"
 #include "ext/observer_client.h"
-
 #include <thread>
 #include "menu.h"
+#include "../in_memory_storage/message_queue.h"
 
 using namespace ufcity_interface;
 
@@ -26,11 +26,7 @@ int example2(int argc, char *argv[]){
     register_observer(observerClient);
 
     /* Connecting to Fog Computing */
-    std::thread connect_thread(&connect_to_fog, HOST, PORT); //IP Example. Change this IP for the fog computing node IP.
-    connect_thread.detach();
-
-    /* Ensuring the connection time on the fog computing node. */
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    connect_to_fog(HOST, PORT); //IP Example. Change this IP for the fog computing node IP.
 
     /* Registering a resource */
     register_resource(samples::json_humidity_sensor);
@@ -38,8 +34,8 @@ int example2(int argc, char *argv[]){
     register_resource(samples::json_light_pole);
 
     /* Sending data of sensors
-     * Here we are simuling the several sensor data present in environment. */
-    while(true) {
+     * Here we are simulating the several sensor data present in environment. */
+    while(alive()) {
         time_t end = time(nullptr) + 2; // Pass to 2 second
         while (time(nullptr) < end);
         switch (rand() % 3) {
@@ -53,5 +49,8 @@ int example2(int argc, char *argv[]){
                 send_resource_data(samples::json_light_pole);
                 break;
         }
+//        finish();
     }
+
+    return 0;
 }

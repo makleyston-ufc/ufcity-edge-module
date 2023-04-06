@@ -15,13 +15,13 @@ public:
      * Register an observer
      * @param observer the observer object to be registered
      */
-    virtual int register_observer(ufcity::observer *observer) = 0;
+    virtual void register_observer(ufcity::observer *observer) = 0;
 
     /**
      * Unregister an observer
      * @param observer the observer object to be unregistered
      */
-    virtual int remove_observer(ufcity::observer *observer) = 0;
+    virtual void remove_observer(ufcity::observer *observer) = 0;
 
     /**
      * Notify all the registered observers when a change happens
@@ -29,7 +29,6 @@ public:
     virtual void notify_observers(std::string topic, std::string message) = 0;
 
     virtual void receive_message(std::string topic, std::string message) = 0;
-
 
 };
 

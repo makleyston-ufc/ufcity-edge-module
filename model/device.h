@@ -13,12 +13,13 @@ namespace ufcity {
     class device {
     private:
         ufcity::location * location;
-        std::string device_uuid;
+        std::string uuid_device;
     public:
-        std::string get_device_uuid();
+        std::string get_uuid_device();
         ufcity::location * get_location();
         void set_location(ufcity::location * _location);
-        void set_device_uuid(std::string device_uuid);
+        void set_uuid_device(std::string device_uuid);
+        std::string to_string();
     };
 
 } // ufcity

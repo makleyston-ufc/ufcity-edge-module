@@ -4,6 +4,8 @@
 
 #include "device_data.h"
 #include "../../util/util.h"
+#include "../message_queue.h"
+#include "../../communication/lib/mqtt_settings.h"
 
 namespace ufcity_db {
 
@@ -34,6 +36,11 @@ namespace ufcity_db {
             _resource->get_location()->set_alt(this->get_device()->get_location()->get_alt());
 
         return 0;
+    }
+
+    void device_data::send_to_fog() {
+        ufcity_db::message_queue::get_instance()
+                ->push_to_queue_messages_to_send(ufcity::mqtt_settings::get_topic_device(), this->device->to_string());
     }
 
 } // ufcity_db

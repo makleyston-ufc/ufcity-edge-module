@@ -23,7 +23,6 @@ namespace ufcity_db {
         void set_fog_node_port(std::string port);
         std::string get_fog_node_address();
         std::string get_fog_node_port();
-
     };
 
 } // ufcity_db

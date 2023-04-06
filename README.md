@@ -54,10 +54,10 @@ da [Universidade Federal do Ceará (UFC)](https://www.ufc.br/).
 O Edge Module encontra-se atualmente na versão `v0.1`.
 
 ## Requisitos mínimos <a id="anchor_minimum_riquerements"></a>
-In developement.
+In development.
 
 ## Performance e restrições <a id="anchor_restrictions"></a>
-In developement.
+In development.
 
 # Modo de usar <a id="anchor_usage"></a>
 ## Incorporando o Edge Module <a id="anchor_include"></a>
@@ -76,14 +76,14 @@ Para inicializar o Edge Module é preciso fornecer o parâmetro `location_json`.
 * `location_json` é um arquivo _json_ com a seguinte estrutura:<a id="anchor_location_json"></a>
 ```
 {
-  "device_uuid":"",
+  "uuid_device":"",
   "location":{
     "lat":"",
     "lng":""
   }
 }
 ```
-* "**device_uuid**": é a identificação única do dispositivo a qual o Edge Module está sendo consumido.
+* "**uuid_device**": é a identificação única do dispositivo a qual o Edge Module está sendo consumido.
 * "**device**": contém os dados de latitude (lat) e longitude (lng) do dispositivo. 
 
 ### Connectando à um nó na Fog Computing
@@ -104,7 +104,7 @@ register_resource(std::string resource_json);
 Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a id="anchor_resource_json"></a> 
 ``` 
 {
-  "resource_uuid":"",
+  "uuid_resource":"",
   "services":[
     {
       "service_uuid":"",
@@ -120,7 +120,7 @@ Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a
   ]
 }
 ```
-* "**resource_uuid**" é a identificação do recurso a ser registrado.
+* "**uuid_resource**" é a identificação do recurso a ser registrado.
 * "**services**": é uma lista de serviços disponíveis pelo recurso.
   * "**service_uuid**": contém a identificação de cada serviço.
   * "**data**": possui a identificação (via _tag_) de um determinado dado, bem como o valor que essa _tag_ possui. 
@@ -130,7 +130,7 @@ Para mais exemplos consulte o diretório ```samples```.
 ```
 auto *map = get_resources_map();
 for (auto const &pair: *map) {
-    std::cout << "resource_uuid:" << pair.first << std::endl;
+    std::cout << "uuid_resource:" << pair.first << std::endl;
     std::cout << "resource semantic:" << pair.second << std::endl;
 }
 ```

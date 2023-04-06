@@ -7,14 +7,16 @@
 
 #include <string>
 #include <unordered_map>
-#include "observer/observer.h"
 #include "orchestrator/orchestrator.h"
+#include "model/observer/observer.h"
 
 namespace ufcity_interface{
 
     int init(const std::string& _device);
 
     int finish();
+
+    bool alive();
 
     int register_resource(const std::string& data);
 

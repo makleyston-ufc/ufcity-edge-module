@@ -3,13 +3,18 @@
 //
 
 #include <regex>
+#include <thread>
 #include "orchestrator.h"
-#include "../communcation/communication_interface/communication_interface.h"
 #include "../in_memory_storage/resources_map/resources_map.h"
-#include "../communcation/message_sender/message_sender.h"
-#include "../communcation/message_receiver/message_receiver.h"
+#include "../communication/message_sender/message_sender.h"
+#include "../communication/message_receiver/message_receiver.h"
 #include "../in_memory_storage/common/fog_node_address.h"
 #include "../in_memory_storage/device_data/device_data.h"
+#include "../communication/message_sender/message_sender.h"
+#include "../in_memory_storage/message_queue.h"
+#include "../model/observer/observer.h"
+#include "../in_memory_storage/observer/observer_client.h"
+#include "../communication/lib/mqtt_settings.h"
 
 namespace ufcity {
 
@@ -20,7 +25,7 @@ namespace ufcity {
             /* Check device */
             device * _device = device_from_json(_data);
             if (_device == nullptr) return ERROR_JSON_PARSER;
-            print_log("The device '" + _device->get_device_uuid() + "' is OK!");
+            print_log("The device '" + _device->get_uuid_device() + "' is OK!");
 
             /* Create an instance */
             instance = new orchestrator(_device);
@@ -38,6 +43,7 @@ namespace ufcity {
 
     orchestrator::orchestrator(device * device) {
         this->save_device(device);
+        ufcity_db::message_queue::get_instance()->set_run_state(true);
     }
 
     int orchestrator::save_fog_node_address(const std::string& _address, const std::string& _port) const{
@@ -49,9 +55,9 @@ namespace ufcity {
     int orchestrator::check_fog_node_address(const std::string& _address){
         if(_address.empty()) return ERROR_FOG_NODE_ADDRESS_EMPTY;
         if ((_address != "localhost") &&
-                (!std::regex_match (_address, std::regex(R"(^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:[0-2]\d|3[0-2])?$)"))))
+            (!std::regex_match (_address, std::regex(R"(^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:[0-2]\d|3[0-2])?$)"))))
 //                (!std::regex_match (_address, std::regex("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])(?:\\.(?:[01]?\\d\\d?|2[0-4]\\d|25[0-5])){3}(?:[0-2]\\d|3[0-2])?$"))))
-                return ERROR_FOG_NODE_ADDRESS_NOT_MATCHED;
+            return ERROR_FOG_NODE_ADDRESS_NOT_MATCHED;
         return 0;
     }
 
@@ -62,15 +68,15 @@ namespace ufcity {
             return ERROR_JSON_PARSER;
         }
 
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid() + ".");
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_uuid_resource() + ".");
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
 
-        if(map->find_resource_uuid(_resource->get_resource_uuid())){
-            print_log("The resource " + _resource->get_resource_uuid() + " already exists!");
+        if(map->find_by_uuid_resource(_resource->get_uuid_resource())){
+            print_log("The resource " + _resource->get_uuid_resource() + " already exists!");
             return ERROR_RESOURCE_ALREADY_EXIST;
         }else{
             int r_reg = map->register_resource(_resource);
-            if(r_reg == 0) print_log("Resource " + _resource->get_resource_uuid() + " has been successfully stored! ");
+            if(r_reg == 0) print_log("Resource " + _resource->get_uuid_resource() + " has been successfully stored! ");
             return r_reg;
         }
     }
@@ -78,12 +84,12 @@ namespace ufcity {
     int orchestrator::remove_resource(const std::string& data) const{
         resource * _resource = resource_from_json(data);
         if(_resource == nullptr) return ERROR_JSON_PARSER;
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
-        if(ufcity_db::resources_map::get_instance()->remove_by_uuid(_resource->get_resource_uuid()) == 0) {
-            print_log("Resource " + _resource->get_resource_uuid() + " successfully removed!");
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_uuid_resource());
+        if(ufcity_db::resources_map::get_instance()->remove_by_uuid(_resource->get_uuid_resource()) == 0) {
+            print_log("Resource " + _resource->get_uuid_resource() + " successfully removed!");
             return 0;
         }else {
-            print_log("Resource " + _resource->get_resource_uuid() + " not found!");
+            print_log("Resource " + _resource->get_uuid_resource() + " not found!");
             return ERROR_RESOURCE_NOT_FOUND;
         }
     }
@@ -92,7 +98,7 @@ namespace ufcity {
         //Convert JSON to Resource
         resource * _resource = resource_from_json(data);
         if(_resource == nullptr) return ERROR_JSON_PARSER;
-        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_resource_uuid());
+        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_uuid_resource());
 
         //Pre-processing the already semantically annotated resource
         int r_pre = pre_proc::handler(_resource);
@@ -111,7 +117,8 @@ namespace ufcity {
         int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
         if (res_s != 0) return res_s;
 
-        ufcity::message_sender::get_instance()->send_resource_data(_resource);
+        /* Sending resource data to fog computing */
+        ufcity_db::resources_map::get_instance()->send_data_to_fog(_resource);
         return 0;
     }
 
@@ -135,24 +142,36 @@ namespace ufcity {
     }
 
     int orchestrator::register_observer(ufcity::observer *observer) const {
-       message_receiver::get_instance()->register_observer(observer);
-       print_log("Observer client successfully registered!");
-       return 0;
+        ufcity_db::observer_client::get_instance()->register_observer(observer);
+        print_log("Observer client successfully registered!");
+        return 0;
     }
 
     int orchestrator::remove_observer(ufcity::observer *observer) const {
-        int m_res = message_receiver::get_instance()->remove_observer(observer);
-        if(m_res == 0) print_log("Observer client successfully removal!");
-        return m_res;
+        ufcity_db::observer_client::get_instance()->remove_observer(observer);
+        print_log("Observer client successfully removed!");
+        return 0;
     }
 
     orchestrator::~orchestrator() {
+        ufcity_db::message_queue::get_instance()->set_run_state(false);
         this->save_device(nullptr);
         this->save_fog_node_address("", "");
     }
 
     void orchestrator::destroy() {
+        ufcity_db::message_queue::get_instance()->set_run_state(false);
         delete orchestrator::instance;
+    }
+
+    void thread_publish(){
+        auto * ms = new ufcity::message_sender();
+        ms->running_thread_publish();
+    }
+
+    void thread_subscribe(){
+        auto * mr = new ufcity::message_receiver();
+        mr->running_thread_subscribe();
     }
 
     int orchestrator::connect_to_fog(const std::string& _fog_node_address, const std::string& _port) const {
@@ -160,14 +179,40 @@ namespace ufcity {
         int _address_error = check_fog_node_address(_fog_node_address);
         if(_address_error != 0) return _address_error;
         this->save_fog_node_address(_fog_node_address, _port);
-        print_log("The fog node address '" + _fog_node_address + "' is OK and is stored!");
+        print_log("The fog node address '" + _fog_node_address + " and port " + _port + "' is OK and is stored!");
 
-        /* Subscribing */
-        print_log("Edge Module connecting and subscribing to fog node! Fog node address: " + _fog_node_address + ".");
-        int _subscribe_error = ufcity::communication_interface::get_instance()->subscribe_receive_command();
-        if(_subscribe_error != 0) return _subscribe_error;
+        /* Initializing */
+        print_log("Edge Module connecting to fog node! Fog node address: " + _fog_node_address + ".");
+
+        /* Thread to publish */
+        std::thread connect_thread_publish(&thread_publish);
+        connect_thread_publish.detach();
+        print_log("Publishing ... OK.");
+
+        /* Thread to subscribe */
+        std::thread connect_thread_subscribe(&thread_subscribe);
+        connect_thread_subscribe.detach();
+        print_log("Subscribing ... OK.");
+
+        /* Ensuring the connection time on the fog computing node. */
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+
+        /* Sending device data */
+        ufcity_db::device_data::get_instance()->send_to_fog();
 
         return 0;
+    }
+
+    void orchestrator::finish() {
+        ufcity_db::message_queue::get_instance()->set_run_state(false);
+    }
+
+    bool orchestrator::alive() {
+        auto _message = ufcity_db::message_queue::get_instance()->pull_queue_received_message();
+        if(_message != nullptr) {
+            ufcity_db::observer_client::get_instance()->receive_message(_message->get_topic(), _message->get_message());
+        }
+        return ufcity_db::message_queue::get_instance()->get_run_state();
     }
 
 

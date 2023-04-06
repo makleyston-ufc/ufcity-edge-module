@@ -3,6 +3,8 @@
 //
 
 #include "ufcity_interface.h"
+#include "in_memory_storage/message_queue.h"
+#include "model/observer/observer.h"
 
 using namespace ufcity;
 
@@ -23,6 +25,12 @@ int check_initialized_instance(orchestrator *pOrchestrator){
         return ERROR_EDGE_MODULE_NOT_INITIALIZED;
     }
     return 0;
+}
+
+bool ufcity_interface::alive(){
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    return orchestrator::get_instance()->alive();
 }
 
 int ufcity_interface::register_resource(const std::string& data) {
@@ -85,13 +93,15 @@ int ufcity_interface::remove_observer(ufcity::observer * observer){
 }
 
 int ufcity_interface::connect_to_fog(const std::string& _fog_node_address, const std::string& _port) {
-    ufcity::orchestrator::print_log("Task: Connecting to fog computing. Fog node dddress = " + _fog_node_address + ".");
+    ufcity::orchestrator::print_log("Task: Connecting to fog computing. Fog node address = " + _fog_node_address + ".");
     int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
     if(initialized_instance_error != 0) return initialized_instance_error;
     return orchestrator::get_instance()->connect_to_fog(_fog_node_address, _port);
 }
 
 int ufcity_interface::finish() {
-    //TODO
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    orchestrator::get_instance()->finish();
     return 0;
 }

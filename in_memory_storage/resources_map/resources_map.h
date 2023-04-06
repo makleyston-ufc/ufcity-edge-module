@@ -22,11 +22,16 @@ namespace ufcity_db {
         static resources_map * get_instance();
         static resources_map* instance;
 
-        bool find_resource_uuid(const std::string& uuid) const;
-        const ufcity::resource * get_resource_by_uuid(const std::string& uuid);
+        bool find_by_uuid_resource(const std::string& uuid) const;
+        ufcity::resource * get_resource_by_uuid(const std::string& uuid);
         std::unordered_map<std::string, const ufcity::resource *> * get_resources_map() ;
-        int register_resource(ufcity::resource * _resource) const;
+        int register_resource(ufcity::resource * _resource);
         int remove_by_uuid(const std::string& uuid) const;
+
+        void send_register_to_fog(ufcity::resource * _resource);
+        void send_register_to_fog(std::string uuid_resource);
+
+        void send_data_to_fog(ufcity::resource * _resource);
     };
 
 } // ufcity_db

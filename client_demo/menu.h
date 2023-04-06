@@ -12,8 +12,9 @@ int menu(int argc, char *argv[]){
 
     if(argc == 2){
         if(strcmp(argv[1], "-h") == 0){
-            std::cout << "-a \t--address \tIP address of fog computing node." << std::endl;
-            std::cout << "-p \t--port    \tMQTT broker port of fog computing node." << std::endl;
+            std::cout << "Option    \tVerbose       \tDescription" << std::endl;
+            std::cout << "-a        \t--address        \tIP address of fog computing node." << std::endl;
+            std::cout << "-p        \t--port        \tMQTT broker port of fog computing node." << std::endl;
             return 1;
         }else{
             std::cout << "Invalid arguments. Type -h for help." << std::endl;

@@ -10,7 +10,7 @@
 using namespace ufcity_interface;
 
 /* This example show all commands of UFCity lib.
- * It don't have practice working, but it presents the possibles of use this lib.
+ * It doesn't have practice working, but it presents the possibles of use this lib.
  * */
 
 int example1(){
@@ -22,8 +22,7 @@ int example1(){
     register_observer(observerClient);
 
     /* Connecting to Fog Computing */
-    std::thread connect_thread(&connect_to_fog, "172.19.0.2", "1883"); //IP Example. Change this IP for the fog computing node IP.
-    connect_thread.detach();
+    connect_to_fog("172.19.0.2", "1883"); //IP Example. Change this IP for the fog computing node IP.
 
     /* Removing an observer client */
     remove_observer(observerClient);
@@ -34,7 +33,7 @@ int example1(){
     /* Printing all stored resources */
     auto * map = get_resources_map();
     for (auto const &pair: *map) {
-        std::cout << "{" << pair.first << ": " << pair.second->get_resource_uuid() << "}\n";
+        std::cout << "{" << pair.first << ": " << pair.second->get_uuid_resource() << "}\n";
     }
 
     /* Removing a resource */
@@ -45,6 +44,8 @@ int example1(){
 
     /* Sending data of sensors */
     send_resource_data(samples::json_resource_data);
+
+    finish();
 
     return 0;
 }

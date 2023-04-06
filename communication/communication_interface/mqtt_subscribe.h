@@ -16,6 +16,7 @@
 #include <utility>
 #include <unistd.h>
 #include "../message_receiver/message_receiver.h"
+#include "../../in_memory_storage/message_queue.h"
 
 const int	N_RETRY_ATTEMPTS = 5;
 
@@ -80,7 +81,9 @@ namespace ufcity_mqtt {
 
             // (Re)connection success
             void connected(const std::string& cause) override {
-                cli_.subscribe(ufcity::get_topic_to_receive_commands(), ufcity::QOS, nullptr, subListener_);
+                auto topics = mqtt::string_collection::create(ufcity::mqtt_settings::get_topics());
+                const std::vector<int> qos { 0, 0, 0};
+                cli_.subscribe(topics, qos, nullptr, subListener_);
             }
 
             void connection_lost(const std::string& cause) override {
@@ -94,7 +97,7 @@ namespace ufcity_mqtt {
             }
 
             void message_arrived(mqtt::const_message_ptr msg) override {
-                ufcity::message_receiver::get_instance()->receive_message(msg->get_topic(), msg->to_string());
+                ufcity_db::message_queue::get_instance()->push_to_queue_received_messages(msg->get_topic(), msg->to_string());
             }
 
             void delivery_complete(mqtt::delivery_token_ptr token) override {}
@@ -107,28 +110,23 @@ namespace ufcity_mqtt {
     public:
         int subscribe(const std::string& _address, const std::string& _sub_client_id){
             mqtt::async_client cli(_address, _sub_client_id);
-
             mqtt::connect_options connOpts;
             connOpts.set_clean_session(false);
-
             callback cb(cli, connOpts);
             cli.set_callback(cb);
-
             try {
                 std::cout << "SUB: Connecting to the MQTT server..." << std::endl;
                 cli.connect(connOpts, nullptr, cb);
-//                std::cout << "Ok :SUB" << std::endl;
             }
             catch (const mqtt::exception& exc) {
                 std::cerr << "SUB: ERROR: Unable to connect to MQTT server: '"
-                          << ufcity::get_fog_node_address() << "'" << exc << std::endl;
+                          << ufcity::mqtt_settings::get_fog_node_address() << "'" << exc << std::endl;
                 return ERROR_SUBSCRIBE;
             }
 
-            /* The developer must ensure the finishing this thread. */
-            while(true);
-
-        }
+            while(ufcity_db::message_queue::get_instance()->get_run_state()); /* While alive */
+            return 0;
+        };
     };
 }
 

@@ -10,13 +10,23 @@
 namespace ufcity {
 
     class observer {
+    private:
+        int id;
 
     public:
+
+        void set_id_client(int id_client){
+            this->id = id_client;
+        }
+
+        int get_id_client(){
+            return this->id;
+        }
 
         /**
          * Update the state of this observer
          */
-        virtual void update(std::string topic, std::string command) = 0;
+        virtual void update(std::string topic, std::string message) = 0;
 
 
     };

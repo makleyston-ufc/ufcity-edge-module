@@ -7,20 +7,21 @@ namespace samples{
 
 std::string json_device = R"JSON(
 {
-  "device_uuid":"111",
+  "uuid_device":"111",
   "location":{
     "lat":"123",
-    "lng":"321"
+    "lng":"321",
+    "alt":"0"
   }
 }
 )JSON";
 
 std::string json_resource = R"JSON(
 {
-  "resource_uuid":"111",
+  "uuid_resource":"111",
   "services":[
     {
-      "service_uuid":"123",
+      "uuid_service":"123",
       "data":[
         {
           "tag":"data_tag_1",
@@ -39,10 +40,10 @@ std::string json_resource = R"JSON(
 //Se não tiver Location, como os exemplos neste documento, o Edge Module atribuirá o Location do Device.
     std::string json_resource_data = R"JSON(
 {
-  "resource_uuid":"111",
+  "uuid_resource":"111",
   "services":[
     {
-      "service_uuid":"123",
+      "uuid_service":"123",
       "data":[
         {
           "tag":"data_tag_1",
@@ -65,10 +66,10 @@ std::string json_resource = R"JSON(
  * tag is only for debug */
     std::string json_light_pole = R"JSON(
 {
-  "resource_uuid":"001.000",
+  "uuid_resource":"001.000",
   "services":[
     {
-      "service_uuid":"001.001",
+      "uuid_service":"001.001",
       "data":[
         {
           "tag":"light",
@@ -85,10 +86,10 @@ std::string json_resource = R"JSON(
  * tag is only for debug */
     std::string json_thermometer_sensor = R"JSON(
 {
-  "resource_uuid":"002.000",
+  "uuid_resource":"002.000",
   "services":[
     {
-      "service_uuid":"002.001",
+      "uuid_service":"002.001",
       "data":[
         {
           "tag":"measure",
@@ -105,10 +106,10 @@ std::string json_resource = R"JSON(
  * tag is only for debug */
     std::string json_humidity_sensor = R"JSON(
 {
-  "resource_uuid":"003.000",
+  "uuid_resource":"003.000",
   "services":[
     {
-      "service_uuid":"003.001",
+      "uuid_service":"003.001",
       "data":[
         {
           "tag":"measure",

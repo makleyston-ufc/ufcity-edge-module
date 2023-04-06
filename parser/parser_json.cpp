@@ -13,10 +13,11 @@ namespace ufcity {
         try {
             auto j = json::parse(data);
             auto *pDevice = new device();
-            pDevice->set_device_uuid(j.at("device_uuid"));
-            ufcity::location * _location = new ufcity::location();
+            pDevice->set_uuid_device(j.at("uuid_device"));
+            auto * _location = new ufcity::location();
             _location->set_lat(j.at("location").at("lat"));
             _location->set_lng(j.at("location").at("lng"));
+            _location->set_alt(j.at("location").at("alt"));
             pDevice->set_location(_location);
             return pDevice;
         } catch (int error){
@@ -26,23 +27,23 @@ namespace ufcity {
 
     resource * resource_from_json(const std::string& data_json){
         auto j = json::parse(data_json);
-        auto *services_uuid_map = new std::unordered_map<std::string, std::unordered_map<std::string, std::string>>(); //service_uuid <-> values
+        auto *uuid_services_map = new std::unordered_map<std::string, std::unordered_map<std::string, std::string>>(); //service_uuid <-> values
         for(auto service : j.at("services")){
             auto *values = new std::unordered_map<std::string, std::string>(); //data_tag <-> value
             for(auto data : service.at("data")){
                 values->insert(std::pair<std::string, std::string>(data.at("tag"), data.at("value")));
             }
-            services_uuid_map->insert(
-                    std::pair<std::string, std::unordered_map<std::string, std::string>>(service.at("service_uuid"), *values));
+            uuid_services_map->insert(
+                    std::pair<std::string, std::unordered_map<std::string, std::string>>(service.at("uuid_service"), *values));
         }
-        auto *_resource = new resource(j.at("resource_uuid"), services_uuid_map);
+        auto *_resource = new resource(j.at("uuid_resource"), uuid_services_map);
         return _resource;
     }
 
     std::string resource_to_json(ufcity::resource * _resouce){
 
         json _jResource;
-        _jResource["resource_uuid"] = _resouce->get_resource_uuid();
+        _jResource["uuid_resource"] = _resouce->get_uuid_resource();
         _jResource["location"]["lat"] = _resouce->get_location()->get_lat();
         _jResource["location"]["lng"] = _resouce->get_location()->get_lng();
         json _jServices = json::array();
@@ -50,7 +51,7 @@ namespace ufcity {
 //        <service_uuid, <data_tag, value>>
         for(auto _service : *_resouce->get_services()){
             json _jService;
-            _jService["service_uuid"] = _service.first;
+            _jService["uuid_service"] = _service.first;
             json _jData = json::array();
             for(auto _data : _service.second){
                 json _jDataItem;
@@ -65,6 +66,14 @@ namespace ufcity {
         _jResource["services"] = _jServices;
 
         return _jResource.dump();
+    }
+
+    std::string device_to_json(ufcity::device * _device){
+        json _jDevice;
+        _jDevice["uuid_device"] = _device->get_uuid_device();
+        _jDevice["location"]["lat"] = _device->get_location()->get_lat();
+        _jDevice["location"]["lng"] = _device->get_location()->get_lng();
+        return _jDevice.dump();
     }
 
 } // ufcity

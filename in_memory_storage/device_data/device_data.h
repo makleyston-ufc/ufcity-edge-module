@@ -22,6 +22,7 @@ namespace ufcity_db {
         ufcity::device * get_device();
         void save_device(ufcity::device * _device);
         int add_spatial_context_data(ufcity::resource * _resource);
+        void send_to_fog();
     };
 
 } // ufcity_db

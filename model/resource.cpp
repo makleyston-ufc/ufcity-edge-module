@@ -8,8 +8,8 @@
 namespace ufcity {
 
     resource::resource(std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map){
-        this->resource_uuid = std::move(resource_uuid);
-        this->services_uuid_map = map;
+        this->uuid_resource = std::move(resource_uuid);
+        this->uuid_services_map = map;
         /* Cria-se um location vazio, pois se ele tiver locationm próprio ele será inserido pelo 'set' e caso não tenha ele será preenchido pelo location do device. */
         auto * _location = new ufcity::location();
         _location->set_alt("");
@@ -18,17 +18,17 @@ namespace ufcity {
         this->location = _location;
     }
 
-    std::string resource::get_resource_uuid() const{
-        return this->resource_uuid;
+    std::string resource::get_uuid_resource() const{
+        return this->uuid_resource;
     }
 
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * resource::get_services(){
-        return this->services_uuid_map;
+        return this->uuid_services_map;
     }
 
     std::unordered_map<std::string, std::string> resource::get_service_by_uuid(const std::string& uuid) {
-        auto it = this->services_uuid_map->find(uuid);
-        if (it != this->services_uuid_map->end()) {
+        auto it = this->uuid_services_map->find(uuid);
+        if (it != this->uuid_services_map->end()) {
             auto s = it->second;
             return s;
         }

@@ -10,12 +10,14 @@
 #include "../model/device.h"
 #include "../parser/parser_json.h"
 #include "../model/resource.h"
-#include "../pre_pocessing/pre_processing.h"
+#include "../pre_processing/pre_processing.h"
 #include "../processing/processing.h"
-#include "../observer/subject.h"
 #include <vector>
 #include <algorithm>
+#include <mutex>
+#include <list>
 #include "../error/error_list.h"
+#include "../model/observer/observer.h"
 
 namespace ufcity {
 
@@ -45,7 +47,11 @@ namespace ufcity {
         int register_observer(ufcity::observer *observer) const;
         int remove_observer(ufcity::observer *observer) const;
 
+        void finish();
+        bool alive();
+
         static int check_fog_node_address(const std::string& _address);
+
     };
 
 } // ufcity

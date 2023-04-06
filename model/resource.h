@@ -14,15 +14,15 @@ namespace ufcity {
 
     class resource {
     private:
-        std::string resource_uuid;
+        std::string uuid_resource;
         ufcity::location * location;
 
-        std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * services_uuid_map{}; //<service_uuid, <data_tag, value>>
+        std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * uuid_services_map{}; //<service_uuid, <data_tag, value>>
 
     public:
         explicit resource(std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map);
 
-        std::string get_resource_uuid() const;
+        std::string get_uuid_resource() const;
         std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * get_services();
         std::unordered_map<std::string, std::string> get_service_by_uuid(const std::string& uuid);
         void set_location(ufcity::location * _location);
@@ -30,9 +30,9 @@ namespace ufcity {
         std::string to_string();
 
         void print(){
-            std::cout <<         "resource_uuid:" << this->resource_uuid << std::endl;
-            std::cout <<         "qt services..:" << this->services_uuid_map->size() << std::endl;
-            for(const auto& service : *this->services_uuid_map){
+            std::cout << "resource_uuid:" << this->uuid_resource << std::endl;
+            std::cout << "qt services..:" << this->uuid_services_map->size() << std::endl;
+            for(const auto& service : *this->uuid_services_map){
                 std::cout <<     "service_uuid.:" << service.first << std::endl;
                 for(const auto& data : service.second){
                     std::cout << "data_tag.....:" << data.first << std::endl;
