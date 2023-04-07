@@ -23,7 +23,7 @@ namespace ufcity_mqtt{
     private:
 
     public:
-        int publish(const std::string &_address, const std::string &_pub_client_id, const std::string& _message, const std::string& _topic) {
+        static int publish(const std::string &_address, const std::string &_pub_client_id, const std::string& _message, const std::string& _topic) {
             mqtt::async_client cli(_address, _pub_client_id);
             int QOS = 0;
             auto connOpts = mqtt::connect_options_builder()

@@ -20,7 +20,6 @@ namespace ufcity {
         inline static const std::string DFLT_SERVER_ADDRESS{"tcp://localhost:"};
         inline static const std::string DFLT_SERVER_PORT{"1883"};
         inline static const std::string CLIENT_ID_PREFIX{"ufcity_"};
-        inline static const int QOS = 0;
 
         inline static const std::string DATA_PUBLISH = "resource_data";
         inline static const std::string REMOVED_RESOURCE_PUBLISH = "removed_resource";

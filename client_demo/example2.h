@@ -35,8 +35,9 @@ int example2(int argc, char *argv[]){
 
     /* Sending data of sensors
      * Here we are simulating the several sensor data present in environment. */
+    int x = 0;
     while(alive()) {
-        time_t end = time(nullptr) + 2; // Pass to 2 second
+        time_t end = time(nullptr) + 5; // Pass to 2 second
         while (time(nullptr) < end);
         switch (rand() % 3) {
             case 0:
@@ -49,7 +50,9 @@ int example2(int argc, char *argv[]){
                 send_resource_data(samples::json_light_pole);
                 break;
         }
-//        finish();
+        x++;
+        if(x == 3)
+            finish();
     }
 
     return 0;

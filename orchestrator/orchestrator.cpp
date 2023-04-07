@@ -10,9 +10,7 @@
 #include "../communication/message_receiver/message_receiver.h"
 #include "../in_memory_storage/common/fog_node_address.h"
 #include "../in_memory_storage/device_data/device_data.h"
-#include "../communication/message_sender/message_sender.h"
 #include "../in_memory_storage/message_queue.h"
-#include "../model/observer/observer.h"
 #include "../in_memory_storage/observer/observer_client.h"
 #include "../communication/lib/mqtt_settings.h"
 
@@ -205,6 +203,9 @@ namespace ufcity {
 
     void orchestrator::finish() {
         ufcity_db::message_queue::get_instance()->set_run_state(false);
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::cout << "Finishing the Edge Module." << std::endl;
+        std::cout << "Edge Module: Bye bye." << std::endl;
     }
 
     bool orchestrator::alive() {

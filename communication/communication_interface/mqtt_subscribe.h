@@ -108,7 +108,7 @@ namespace ufcity_mqtt {
         };
 
     public:
-        int subscribe(const std::string& _address, const std::string& _sub_client_id){
+        static int subscribe(const std::string& _address, const std::string& _sub_client_id){
             mqtt::async_client cli(_address, _sub_client_id);
             mqtt::connect_options connOpts;
             connOpts.set_clean_session(false);

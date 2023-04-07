@@ -14,7 +14,7 @@ namespace ufcity_db {
 
     class resources_map {
     private:
-        //The key is UUID and the value is a unordered_map<resource *, string semantic>
+        //The key is UUID and the value is unordered_map<resource *, string semantic>
         std::unordered_map<std::string, const ufcity::resource *> * map_resource;
         resources_map();
 
@@ -29,7 +29,7 @@ namespace ufcity_db {
         int remove_by_uuid(const std::string& uuid) const;
 
         void send_register_to_fog(ufcity::resource * _resource);
-        void send_register_to_fog(std::string uuid_resource);
+        void send_register_to_fog(const std::string& uuid_resource);
 
         void send_data_to_fog(ufcity::resource * _resource);
     };

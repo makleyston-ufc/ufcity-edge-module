@@ -4,7 +4,6 @@
 
 #include "message_queue.h"
 #include <string>
-#include <iostream>
 
 namespace ufcity_db {
 

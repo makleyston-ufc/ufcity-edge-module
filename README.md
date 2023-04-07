@@ -24,27 +24,15 @@
   * [Políticas de segurança](#anchor_security)
 * [Licenças](#anchor_licenses)
 
-# Sobre <a id="anchor_about"></a>
-O Edge Module é um componente de _software_ que integra a solução para _smart city_ UFCity. 
-Este componente atua na borda da rede de computadores oferecendo serviços locais 
-que possibilitam aos recursos da cidade obterem, dentre outros aspectos, uma 
-comunicação com os serviços da _Fog Computing_ e _Cloud Computing_, abstraindo 
-os protocolos de comunicação e permitindo a troca de dados tanto para o envio de dados 
-dos sensores presentes nos ambientes inteligentes quanto para o recebimento de 
-comandos para atuação dos atuadores presentes em espaços cyber físicos. 
+# About <a id="anchor_about"></a>
+The Edge Module is a software component that integrates the UFCity smart city solution. This component operates at the edge of the computer network, offering local services that allow the city's resources to obtain, among other aspects, communication with the services of Fog Computing and Cloud Computing, abstracting the communication protocols and allowing the exchange of data both for the sending data from sensors present in intelligent environments and receiving commands to actuate actuators present in physical-cyber spaces.
 
-O Edge Module realiza divesos processamentos e tratamentos de dados para resolver 
-questões de heterogeneidade dos dados, dados sujos e volume dos dados. Para mais 
-informações, consulte as publicações de trabalhos acerca dos avanços deste módulo no 
-_website_ do projeto.
+The Edge Module performs various data processing and treatments to address data heterogeneity, dirty data, and volume issues. For more information, consult the work publications about the advances of this module on the project website.
 
-# Contribuições <a id="anchor_contributions"></a>
-Este módulo de _software_, bem como os demais elementos de _softwares_ presentes 
-em todo o projeto da UFCity, é fruto de pesquisas realizadas no âmbido do curso de Ciências da 
-Computação do programa de [Mestrado e Doutorado em Ciências da Computação (MDCC)](http://www.mdcc.ufc.br/) 
-da [Universidade Federal do Ceará (UFC)](https://www.ufc.br/).
+# Contributions <a id="anchor_contributions"></a>
+This software module, as well as the other software elements present throughout the UFCity project, is the result of research carried out within the framework of the Computer Science course of the [Master and Doctorate in Computer Science (MDCC)](http://www.mdcc.ufc.br/) of the [Federal University of Ceará (UFC)](https://www.ufc.br/).
 
-**Colaboradores**: <a id="anchor_colab"></a>
+**Collaborators**: <a id="anchor_colab"></a>
 
 * [Danne Makleyston Gomes Pereira](http://lattes.cnpq.br/2002489019346835), UFC.
 * [Angelo Roncalli Alencar Brayner](http://lattes.cnpq.br/3895469714548887), UFC.

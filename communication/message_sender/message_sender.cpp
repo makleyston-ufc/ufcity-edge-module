@@ -16,12 +16,12 @@ namespace ufcity {
                 auto _address = ufcity::mqtt_settings::get_fog_node_address();
                 auto _pub_client_id = ufcity::mqtt_settings::get_pub_client_id()+"-"+std::to_string(rand());
                 /* Publishing data */
-                auto * mp = new ufcity_mqtt::mqtt_publish();
-                auto _error = mp->publish(_address, _pub_client_id, item->get_message(), item->get_topic());
+                auto _error = ufcity_mqtt::mqtt_publish::publish(_address, _pub_client_id, item->get_message(), item->get_topic());
                 if (_error != 0)
                     std::cout << "Error: " + std::to_string(_error) << std::endl;
             }
         }
+        std::cout << "Finishing the Publishing." << std::endl;
     }
 
 } // ufcity

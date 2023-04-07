@@ -10,7 +10,10 @@ namespace ufcity {
     resource::resource(std::string resource_uuid, std::unordered_map<std::string, std::unordered_map<std::string, std::string>> * map){
         this->uuid_resource = std::move(resource_uuid);
         this->uuid_services_map = map;
-        /* Cria-se um location vazio, pois se ele tiver locationm próprio ele será inserido pelo 'set' e caso não tenha ele será preenchido pelo location do device. */
+        /* An empty location is created.
+         * Case it has its own location it will be inserted
+         * by 'set_location' and if not has, it will be
+         * filled in by the location of the device.*/
         auto * _location = new ufcity::location();
         _location->set_alt("");
         _location->set_lat("");

@@ -38,10 +38,8 @@ namespace ufcity_db {
     int resources_map::register_resource(ufcity::resource *_resource) {
         /* Registering locally. */
         this->map_resource->insert(std::pair<std::string, const ufcity::resource *>(_resource->get_uuid_resource(), _resource));
-
         /* Sending to fog computing. */
         this->send_register_to_fog(_resource);
-
         return 0; //OK
     }
 
@@ -63,7 +61,7 @@ namespace ufcity_db {
                 ->push_to_queue_messages_to_send(ufcity::mqtt_settings::get_topic_registered_resource(), _resource->to_string());
     }
 
-    void resources_map::send_register_to_fog(std::string uuid_resource) {
+    void resources_map::send_register_to_fog(const std::string& uuid_resource) {
         auto _resource = this->get_resource_by_uuid(uuid_resource);
         if(_resource != nullptr)
             ufcity_db::message_queue::get_instance()

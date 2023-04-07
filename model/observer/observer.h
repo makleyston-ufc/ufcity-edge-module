@@ -19,7 +19,7 @@ namespace ufcity {
             this->id = id_client;
         }
 
-        int get_id_client(){
+        int get_id_client() const{
             return this->id;
         }
 

@@ -3,7 +3,6 @@
 //
 
 #include "parser_json.h"
-#include "../in_memory_storage/device_data/device_data.h"
 
 using json = nlohmann::json;
 
@@ -40,20 +39,20 @@ namespace ufcity {
         return _resource;
     }
 
-    std::string resource_to_json(ufcity::resource * _resouce){
+    std::string resource_to_json(ufcity::resource * _resource){
 
         json _jResource;
-        _jResource["uuid_resource"] = _resouce->get_uuid_resource();
-        _jResource["location"]["lat"] = _resouce->get_location()->get_lat();
-        _jResource["location"]["lng"] = _resouce->get_location()->get_lng();
+        _jResource["uuid_resource"] = _resource->get_uuid_resource();
+        _jResource["location"]["lat"] = _resource->get_location()->get_lat();
+        _jResource["location"]["lng"] = _resource->get_location()->get_lng();
         json _jServices = json::array();
 
 //        <service_uuid, <data_tag, value>>
-        for(auto _service : *_resouce->get_services()){
+        for(const auto& _service : *_resource->get_services()){
             json _jService;
             _jService["uuid_service"] = _service.first;
             json _jData = json::array();
-            for(auto _data : _service.second){
+            for(const auto& _data : _service.second){
                 json _jDataItem;
                 _jDataItem["tag"] = _data.first;
                 _jDataItem["value"] = _data.second;
