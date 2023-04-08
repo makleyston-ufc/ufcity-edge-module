@@ -92,6 +92,16 @@ namespace ufcity {
         }
     }
 
+    int orchestrator::remove_resource_by_uuid(const std::string& uuid_resource) const{
+        if(ufcity_db::resources_map::get_instance()->remove_by_uuid(uuid_resource) == 0) {
+            print_log("Resource " + uuid_resource + " successfully removed!");
+            return 0;
+        }else {
+            print_log("Resource " + uuid_resource + " not found!");
+            return ERROR_RESOURCE_NOT_FOUND;
+        }
+    }
+
     int orchestrator::send_resource_data(const std::string& data) const{
         //Convert JSON to Resource
         resource * _resource = resource_from_json(data);
@@ -147,6 +157,12 @@ namespace ufcity {
 
     int orchestrator::remove_observer(ufcity::observer *observer) const {
         ufcity_db::observer_client::get_instance()->remove_observer(observer);
+        print_log("Observer client successfully removed!");
+        return 0;
+    }
+
+    int orchestrator::remove_observer(int id_observer) const {
+        ufcity_db::observer_client::get_instance()->remove_observer(id_observer);
         print_log("Observer client successfully removed!");
         return 0;
     }

@@ -22,6 +22,8 @@ namespace ufcity_interface{
 
     int remove_resource(const std::string& data);
 
+    int remove_resource_by_uuid(const std::string& uuid_resource);
+
     int send_resource_data(const std::string& data);
 
     int update_location(const std::string& data);
@@ -29,6 +31,8 @@ namespace ufcity_interface{
     int register_observer(ufcity::observer * observer);
 
     int remove_observer(ufcity::observer * observer);
+
+    int remove_observer(int id_observer);
 
     std::unordered_map<std::string, const ufcity::resource *> * get_resources_map();
 

@@ -36,6 +36,7 @@ namespace ufcity {
         /* Interface */
         int register_resource(const std::string& data);
         int remove_resource(const std::string& data) const;
+        int remove_resource_by_uuid(const std::string& uuid_resource) const;
         int send_resource_data(const std::string& data) const;
         int update_location(device * l) const;
         int save_device(device * _device) const;
@@ -52,6 +53,7 @@ namespace ufcity {
 
         static int check_fog_node_address(const std::string& _address);
 
+        int remove_observer(int id_observer) const;
     };
 
 } // ufcity

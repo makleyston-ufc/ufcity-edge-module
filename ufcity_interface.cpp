@@ -46,6 +46,12 @@ int ufcity_interface::remove_resource(const std::string& data) {
     if(initialized_instance_error != 0) return initialized_instance_error;
     return orchestrator::get_instance()->remove_resource(data);
 }
+int remove_resource_by_uuid(const std::string& uuid_resource){
+    ufcity::orchestrator::print_log("Task: Removing a resource.");
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    return orchestrator::get_instance()->remove_resource_by_uuid(uuid_resource);
+}
 
 int ufcity_interface::send_resource_data(const std::string& data) {
     ufcity::orchestrator::print_log("Task: Sending resource data.");
@@ -90,6 +96,13 @@ int ufcity_interface::remove_observer(ufcity::observer * observer){
     int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
     if(initialized_instance_error != 0) return initialized_instance_error;
     return orchestrator::get_instance()->remove_observer(observer);
+}
+
+int ufcity_interface::remove_observer(int id_observer) {
+    ufcity::orchestrator::print_log("Task: Removing an observer client.");
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    return orchestrator::get_instance()->remove_observer(id_observer);
 }
 
 int ufcity_interface::connect_to_fog(const std::string& _fog_node_address, const std::string& _port) {

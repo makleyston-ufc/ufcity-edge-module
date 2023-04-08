@@ -37,55 +37,51 @@ This software module, as well as the other software elements present throughout 
 * [Danne Makleyston Gomes Pereira](http://lattes.cnpq.br/2002489019346835), UFC.
 * [Angelo Roncalli Alencar Brayner](http://lattes.cnpq.br/3895469714548887), UFC.
 
-# Especificações <a id="anchor_especifications"></a>
-## Versão
-O Edge Module encontra-se atualmente na versão `v0.1`.
+# Software specs <a id="anchor_especifications"></a>
+## Version
+Current version: `v0.1`.
 
-## Requisitos mínimos <a id="anchor_minimum_riquerements"></a>
+## Minimum requirements <a id="anchor_minimum_riquerements"></a>
 In development.
 
-## Performance e restrições <a id="anchor_restrictions"></a>
+## Performance and restrictions <a id="anchor_restrictions"></a>
 In development.
 
-# Modo de usar <a id="anchor_usage"></a>
-## Incorporando o Edge Module <a id="anchor_include"></a>
+# How to use <a id="anchor_usage"></a>
+## Embedding the Edge Module in an application <a id="anchor_include"></a>
 ```
 #include "ufcity_interface.h"
 
 using namespace ufcity_interface;
 ```
 
-## Utilização  
-### Inicializando o Edge Module <a id="anchor_init"></a>
+## Using the module  
+### Initializing the Edge Module <a id="anchor_init"></a>
 ```
 init(std::string location_json);
 ```
-Para inicializar o Edge Module é preciso fornecer o parâmetro `location_json`.
-* `location_json` é um arquivo _json_ com a seguinte estrutura:<a id="anchor_location_json"></a>
+* `location_json` is a JSON with the following structure::<a id="anchor_location_json"></a>
 ```
 {
   "uuid_device":"",
   "location":{
     "lat":"",
-    "lng":""
+    "lng":"",
+    "alt":""
   }
 }
 ```
-* "**uuid_device**": é a identificação única do dispositivo a qual o Edge Module está sendo consumido.
-* "**device**": contém os dados de latitude (lat) e longitude (lng) do dispositivo. 
+* "**uuid_device**": is the unique ID of the device from which the Edge Module is consumed.
+* "**location**": contains the latitude (lat), longitude (lng), and altitude (alt) data of the device. 
 
-### Connectando à um nó na Fog Computing
-Para realizar uma conexão com um nó da Fog Computing é necessário especificar uma `thread` para executar a função `connect_to_fog` fornecendo o endereço lógico do nó da Fog Computing.
+### Connecting to Fog Computing
 
-**Atenção 1**: é importante dessasociar a `thread` da linha de execução do Edge Module. Para isso, utilize a função `detach`.
-
-**Atenção 2**: garanta a destruição da `thread` caso o Edge Module seja finalizado. 
 ```
-std::thread connect_thread(&connect_to_fog, "xxx.xxx.xxx.xxx");
-connect_thread.detach();
+connect_to_fog(HOST, PORT);
 ```
+* HOST is the IP address of the Fog Computing node, and PORT is the communication port used to connect to the node via MQTT.
 
-### Registrando um recurso <a id="anchor_registering"></a>
+### Registering a resource <a id="anchor_registering"></a>
 ```
 register_resource(std::string resource_json);
 ```
@@ -95,7 +91,7 @@ Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a
   "uuid_resource":"",
   "services":[
     {
-      "service_uuid":"",
+      "uuid_service":"",
       "data":[
         {
           "tag":"",
@@ -108,69 +104,73 @@ Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a
   ]
 }
 ```
-* "**uuid_resource**" é a identificação do recurso a ser registrado.
-* "**services**": é uma lista de serviços disponíveis pelo recurso.
-  * "**service_uuid**": contém a identificação de cada serviço.
-  * "**data**": possui a identificação (via _tag_) de um determinado dado, bem como o valor que essa _tag_ possui. 
-Para mais exemplos consulte o diretório ```samples```.
+* "**uuid_resource**" is the ID of the resource to be registered.
+* "**services**": is a list of services available by the resource.
+  * "**uuid_service**": is the ID of a resource service.
+  * "**data**": is the data to be sent. Each piece of data has a tag and a value. For more examples, see the ```samples``` directory.
 
-### Recuperando todos os recursos registrados <a id="anchor_get_resources"></a>
+### Retrieving all registered resources <a id="anchor_get_resources"></a>
 ```
-auto *map = get_resources_map();
-for (auto const &pair: *map) {
-    std::cout << "uuid_resource:" << pair.first << std::endl;
-    std::cout << "resource semantic:" << pair.second << std::endl;
-}
+auto * map = get_resources_map();
+    for (auto const &pair: *map) 
+        std::cout << "{" << pair.first << ": " << pair.second->get_uuid_resource() << "}" std::endl;
 ```
-A função ```get_resources_map()``` retorna um ```std::unordered_map<std::string, std::string>``` onde o 
-peimeiro parâmetro ```std::string``` refere-se ao uuid do recurso e o segundo parâmetro, 
-também ```std::string```, refere-se ao modelo semântico do recurso.
+Function ```get_resources_map()``` return a ```std::unordered_map<std::string, const ufcity::resource *>```.
+* Key: uuid_resource.
+* Value: pointer to the resource (resource *).
 
-### Removendo um recurso <a id="anchor_removing"></a>
+### Removing a resource <a id="anchor_removing"></a>
 ```
-remove_by_uuid(std::string resource_json);
+remove_resource(std::string resource_json);
 ```
-[Este é o modelo JSON para ```resource_json```](#anchor_resource_json).
-### Enviando dados de recursos para a _Fog Computing_ <a id="anchor_send_resource_data"></a>
+[Click here to view the JSON structure for a resource](#anchor_resource_json).
+
+or
+```
+remove_resource_by_uuid(std::string uuid_resource);
+```
+* **uuid_resource**: is the ID of the resource to be removed.
+### Sending resource data to Fog Computing <a id="anchor_send_resource_data"></a>
 ```
 send_resource_data(std::string resource_json);
 ```
-[Este é o modelo JSON para ```resource_json```](#anchor_resource_json).
+[Click here to view the JSON structure for a resource](#anchor_resource_json).
 
-### Atualizando dados de localização <a id="anchor_update_location"></a>
+### Updating location data <a id="anchor_update_location"></a>
 ```
 update_location(std::string location_json);
 ```
-[Este é o modelo JSON para o ```location_json```](#anchor_location_json). 
+[Click here to view the JSON structure for a device](#anchor_init).
 
-### Recebendo comandos da _Fog Computing_ para atuação <a id="anchor_receive_command_data"></a>
-Para receber comandos de atuação da _Fog Computing_ é necessário implementar 
-um ```observer``` que será notificado sempre que comandos forem recebidos pelo
-Edge Module.
+### Receiving data from Fog Computing <a id="anchor_receive_command_data"></a>
+Implement an observer from ufcity's "observer" class. See the example.
 
-A aplicação cliente deve implementar o ```observer``` da seguinte forma:
 ```
 class observer_client : public ufcity::observer{
 public:
-    void update(std::string msg) override;
+    void update(std::string topic, std::string message) override;
 };
 
-void observer_client::update(std::string command) {
-    std::cout << "Message: " + command << std::endl;
+void observer_client::update(std::string topic, std::string message) {
+    std::cout << "Message: " + message << std::endl;
 }
 ```
-Uma vez implementado o ```observer_client``` o mesmo deve ser registrado para 
-ser notificado sempre que comandos forem recebidos. O registro deve ser realizado 
-da seguinte forma:
+After implementing the observer, then register it in the Edge Module.
 ```
 auto * _observer = new observer_client();
 register_observer(_observer);
 ```
-Para remover um ```observer_client``` utiliza-se a seguinte função:
+To remove an ```observer_client``` use the following function:
 ```
-remove_observer(_observer);
+remove_observer(ufcity::observer *);
 ```
-
-### Lista de erros <a id="anchor_error_list"></a>
-Cada uma dessas funções podem retornar alguns erros conhecidos. 
-Os erros conhecidos podem ser visto nesta [lista](error/error_list.h).
+or
+```
+remove_observer(int id_observer);
+```
+### Finishing the Edge Module
+```
+finish();
+```
+### Errors list <a id="anchor_error_list"></a>
+[Click here to access the errors list](error/error_list.h).

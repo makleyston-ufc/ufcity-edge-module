@@ -38,6 +38,7 @@ int example1(){
 
     /* Removing a resource */
     remove_resource(samples::json_resource);
+    //remove_resource_by_uuid(uuid_resource);
 
     /* Updating the device in Edge Module */
     update_location(samples::json_device);
