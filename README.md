@@ -1,28 +1,39 @@
-# Sumário
-* [Sobre](#anchor_about)
-* [Contribuições](#anchor_contributions)
-  * [Colaboradores](#anchor_colab)
-* [Especificações técnicas](#anchor_especifications)
-  * [Versão](#anchor_version)
-  * [Requisitos mínimos](#anchor_minimum_requirements)
-  * [Perfornamce e restrições](#anchor_restrictions)
-* [Modo de usar](#anchor_usage)
-  * [Incorporando o Edge Module](#anchor_include)
-  * [Inicializando o Edge Module](#anchor_init)
-  * [Registrando um recurso](#anchor_registering_resoruce)
-  * [Consultando todos os recursos registrados](#anchor_get_resources)
-  * [Removendo um recurso](#anchor_removing_resource)
-  * [Enviando dados para a _Fog Computing_](#anchor_send_resource_data)
-  * [Recebendo comandos para atuação](#anchor_receive_command_data)
-  * [Lista de erros conhecidos](#anchor_error_list)
-* [Abordagens e tecnologias utilizadas](#anchor_enable_tools)
-  * [Semântica](#anchor_semantic)
-  * [Limpeza de dados](#anchor_data_cleasing)
-  * [Filtro e agrupamento de dados](#anchor_aggregation)
-  * [Compressor de mensagens](#anchor_compression)
-  * [Procolo de comunicação](#anchor_protocol)
-  * [Políticas de segurança](#anchor_security)
-* [Licenças](#anchor_licenses)
+# Abstract
+* [About](#anchor_about)
+* [Contributions](#anchor_contributions)
+  * [Collaborators](#anchor_colab)
+* [Software specs](#anchor_especifications)
+  * [Version](#anchor_version)
+  * [Minimum requirements](#anchor_minimum_requirements)
+  * [Performance and restrictions](#anchor_restrictions)
+* [How to use](#anchor_usage)
+  * [Embedding the Edge Module in an application](#anchor_include)
+  * [Initializing the Edge Module](#anchor_init)
+  * [Connecting to Fog Computing](#anchor_connecting_to_fog_computing)
+  * [Registering a resource](#anchor_registering_resoruce)
+  * [Retrieving all registered resources](#anchor_get_resources)
+  * [Removing a resource](#anchor_removing_resource)
+  * [Sending resource data to Fog Computing](#anchor_send_resource_data)
+  * [Updating location data](#anchor_location_data)
+  * [Receiving data from Fog Computing](#anchor_receive_command_data)
+  * [Finishing the Edge Module](#anchor_finishing_edge_module)
+  * [Errors list](#anchor_error_list)
+
+[//]: # (* [Abordagens e tecnologias utilizadas]&#40;#anchor_enable_tools&#41;)
+
+[//]: # (  * [Semântica]&#40;#anchor_semantic&#41;)
+
+[//]: # (  * [Limpeza de dados]&#40;#anchor_data_cleasing&#41;)
+
+[//]: # (  * [Filtro e agrupamento de dados]&#40;#anchor_aggregation&#41;)
+
+[//]: # (  * [Compressor de mensagens]&#40;#anchor_compression&#41;)
+
+[//]: # (  * [Procolo de comunicação]&#40;#anchor_protocol&#41;)
+
+[//]: # (  * [Políticas de segurança]&#40;#anchor_security&#41;)
+
+[//]: # (* [Licenças]&#40;#anchor_licenses&#41;)
 
 # About <a id="anchor_about"></a>
 The Edge Module is a software component that integrates the UFCity smart city solution. This component operates at the edge of the computer network, offering local services that allow the city's resources to obtain, among other aspects, communication with the services of Fog Computing and Cloud Computing, abstracting the communication protocols and allowing the exchange of data both for the sending data from sensors present in intelligent environments and receiving commands to actuate actuators present in physical-cyber spaces.
@@ -74,7 +85,7 @@ init(std::string location_json);
 * "**uuid_device**": is the unique ID of the device from which the Edge Module is consumed.
 * "**location**": contains the latitude (lat), longitude (lng), and altitude (alt) data of the device. 
 
-### Connecting to Fog Computing
+### Connecting to Fog Computing <a id="anchor_connecting_to_fog_computing"></a>
 
 ```
 connect_to_fog(HOST, PORT);
@@ -85,7 +96,7 @@ connect_to_fog(HOST, PORT);
 ```
 register_resource(std::string resource_json);
 ```
-Um recurso deve estar representado em formato _json_ com a seguinte estrutura:<a id="anchor_resource_json"></a> 
+Example of `resource_json`:<a id="anchor_resource_json"></a> 
 ``` 
 {
   "uuid_resource":"",
@@ -136,7 +147,7 @@ send_resource_data(std::string resource_json);
 ```
 [Click here to view the JSON structure for a resource](#anchor_resource_json).
 
-### Updating location data <a id="anchor_update_location"></a>
+### Updating location data <a id="anchor_location_data"></a>
 ```
 update_location(std::string location_json);
 ```
@@ -168,7 +179,7 @@ or
 ```
 remove_observer(int id_observer);
 ```
-### Finishing the Edge Module
+### Finishing the Edge Module <a id="anchor_finishing_edge_module"></a>
 ```
 finish();
 ```
