@@ -124,7 +124,10 @@ namespace ufcity_mqtt {
                 return ERROR_SUBSCRIBE;
             }
 
-            while(ufcity_db::message_queue::get_instance()->get_run_state()); /* While alive */
+            while(ufcity_db::message_queue::get_instance()->get_run_state()){
+                /* In order not to fill 100% of the CPU */
+                std::this_thread::sleep_for(std::chrono::microseconds (500));
+            }; /* While alive */
             return 0;
         };
     };

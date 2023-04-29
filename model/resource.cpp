@@ -4,6 +4,7 @@
 
 #include "resource.h"
 #include "../orchestrator/orchestrator.h"
+#include "../util/util.h"
 
 namespace ufcity {
 

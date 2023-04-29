@@ -7,6 +7,10 @@ cmake_minimum_required(VERSION 3.18.1)
 
 project("ufcity")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/libfolder")
+
 set(SOURCE_FILES
         ufcity_interface.h ufcity_interface.cpp
 
@@ -38,9 +42,10 @@ set(SOURCE_FILES
         model/message.cpp model/message.h
         model/observer/observer.h
         model/observer/subject.h
-        in_memory_storage/observer/observer_client.cpp in_memory_storage/observer/observer_client.h)
+        in_memory_storage/observer/observer_client.cpp in_memory_storage/observer/observer_client.h model/config/data_aggregation_config.cpp model/config/data_aggregation_config.h model/config/remove_outliers_config.cpp model/config/remove_outliers_config.h model/config/missing_data_config.cpp model/config/missing_data_config.h processing/data_aggregation.h processing/data_aggregation.cpp processing/data_aggregation.h processing/missing_data.cpp processing/missing_data.h model/config/methods.h processing/remove_outliers.cpp processing/remove_outliers.h in_memory_storage/buffer/buffer.cpp in_memory_storage/buffer/buffer.h)
 
 find_package(Threads REQUIRED)
 
-add_executable(main ${SOURCE_FILES})
-target_link_libraries(main paho-mqttpp3 paho-mqtt3as ssl crypto ${CMAKE_THREAD_LIBS_INIT})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} paho-mqttpp3 paho-mqtt3as ssl crypto ${CMAKE_THREAD_LIBS_INIT})

@@ -9,6 +9,9 @@
 #include <unordered_map>
 #include "orchestrator/orchestrator.h"
 #include "model/observer/observer.h"
+#include "model/config/data_aggregation_config.h"
+#include "model/config/missing_data_config.h"
+#include "model/config/remove_outliers_config.h"
 
 namespace ufcity_interface{
 
@@ -37,6 +40,8 @@ namespace ufcity_interface{
     std::unordered_map<std::string, const ufcity::resource *> * get_resources_map();
 
     int connect_to_fog(const std::string& _fog_node_address, const std::string& _port = "1883");
+
+    void set_data_aggregation_config(ufcity::data_aggregation_config config);
 
 }
 

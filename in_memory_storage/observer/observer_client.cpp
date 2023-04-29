@@ -52,10 +52,12 @@ namespace ufcity_db {
             this->notify_observers(topic, message);
         }else if(topics[0] == ufcity::mqtt_settings::RESEND){ /* Resend data to fog */
             if(topics.size() == 2){ /* 2 topics means resend device: resend/[uuid_device] */
+                std::cout << ">> FOG: Resend device data." << std::endl;
                 /* Sending device data to fog computing */
                 ufcity_db::device_data::get_instance()->send_to_fog();
             } else { /* 3 topics means resend resource: resend/[uuid_device]/[uuid_resource] */
                 /* Sending resource data to fog computing */
+                std::cout << ">> FOG: Resend resource data." << std::endl;
                 ufcity_db::resources_map::get_instance()->send_register_to_fog(message);
             }
         }

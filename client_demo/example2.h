@@ -35,11 +35,10 @@ int example2(int argc, char *argv[]){
 
     /* Sending data of sensors
      * Here we are simulating the several sensor data present in environment. */
-    int x = 0;
     while(alive()) {
         time_t end = time(nullptr) + 5; // Pass to 2 second
         while (time(nullptr) < end);
-        switch (rand() % 3) {
+        switch (rand() % 4) {
             case 0:
                 send_resource_data(samples::json_thermometer_sensor);
                 break;
@@ -49,10 +48,19 @@ int example2(int argc, char *argv[]){
             case 2:
                 send_resource_data(samples::json_light_pole);
                 break;
+//            case 3:
+//                switch (rand() % 3) {
+//                    case 0:
+//                        remove_resource(samples::json_thermometer_sensor);
+//                        break;
+//                    case 1:
+//                        remove_resource(samples::json_humidity_sensor);
+//                        break;
+//                    case 2:
+//                        remove_resource(samples::json_light_pole);
+//                        break;
+//                }
         }
-        x++;
-        if(x == 3)
-            finish();
     }
 
     return 0;

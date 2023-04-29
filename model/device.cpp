@@ -4,13 +4,13 @@
 
 #include "device.h"
 #include "../parser/parser_json.h"
-
+#include "../util/util.h"
 #include <utility>
 
 namespace ufcity {
 
-    void ufcity::device::set_uuid_device(std::string device_uuid) {
-        this->uuid_device = std::move(device_uuid);
+    void ufcity::device::set_uuid_device(std::string uuid_device) {
+        this->uuid_device = std::move(uuid_device);
     }
 
     std::string ufcity::device::get_uuid_device() {
@@ -29,5 +29,10 @@ namespace ufcity {
         auto _json = device_to_json(this);
         return _json;
     }
+
+    device::device() {
+        this->set_uuid_device(uuid_generator());
+    }
+
 
 } // ufcity

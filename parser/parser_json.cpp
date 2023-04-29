@@ -3,6 +3,7 @@
 //
 
 #include "parser_json.h"
+#include "../util/util.h"
 
 using json = nlohmann::json;
 
@@ -11,8 +12,9 @@ namespace ufcity {
     device * device_from_json(const std::string& data) {
         try {
             auto j = json::parse(data);
-            auto *pDevice = new device();
-            pDevice->set_uuid_device(j.at("uuid_device"));
+            auto *pDevice = new device(); /* No uuid_device = generate uuid_device on constructor */
+            if(!trim(j.at("uuid_device")).empty())
+                pDevice->set_uuid_device(j.at("uuid_device"));
             auto * _location = new ufcity::location();
             _location->set_lat(j.at("location").at("lat"));
             _location->set_lng(j.at("location").at("lng"));

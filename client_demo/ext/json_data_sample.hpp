@@ -7,7 +7,7 @@ namespace samples{
 
 std::string json_device = R"JSON(
 {
-  "uuid_device":"111",
+  "uuid_device":"",
   "location":{
     "lat":"123",
     "lng":"321",
