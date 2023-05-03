@@ -34,7 +34,6 @@ namespace ufcity_db {
             _resource->get_location()->set_lng(this->get_device()->get_location()->get_lng());
         if(trim(_resource->get_location()->get_alt()).empty())
             _resource->get_location()->set_alt(this->get_device()->get_location()->get_alt());
-
         return 0;
     }
 

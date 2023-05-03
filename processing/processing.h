@@ -6,13 +6,12 @@
 #define UFCITY_PROCESSING_H
 
 #include <string>
+#include <vector>
 #include "../model/resource.h"
 
 namespace proc {
 
-    int handler(const ufcity::resource * _resource);
-    int data_filter(const ufcity::resource * _resource);
-    int data_grouping(const ufcity::resource * _resource);
+    std::vector<ufcity::resource *> handler(std::vector<std::vector<ufcity::resource *>>& _data);
 
 } // proc
 

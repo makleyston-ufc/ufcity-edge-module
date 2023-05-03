@@ -7,6 +7,8 @@
 #include <thread>
 #include "menu.h"
 #include "../in_memory_storage/message_queue.h"
+#include "../model/config/methods.h"
+#include "../model/config/config.h"
 
 using namespace ufcity_interface;
 
@@ -20,6 +22,11 @@ int example2(int argc, char *argv[]){
 
     /* Initializing the Edge Module */
     init(samples::json_device);
+
+    auto * config = new ufcity::config();
+    config->get_data_grouping_config()->set_method(methods::FIXED_SIZE_GROUPING);
+    config->get_data_grouping_config()->set_size(3);
+    set_config(config);
 
     /* Setting observer client */
     auto * observerClient = new observer_client(123);

@@ -19,30 +19,40 @@ set(SOURCE_FILES
         client_demo/example2.h client_demo/example1.h client_demo/menu.h
 
         orchestrator/orchestrator.h orchestrator/orchestrator.cpp
-
+        util/util.h util/util.cpp
         parser/parser_json.h parser/parser_json.cpp
-
-        model/device.h model/device.cpp
-        model/resource.h model/resource.cpp
 
         in_memory_storage/common/fog_node_address.h in_memory_storage/common/fog_node_address.cpp
         in_memory_storage/resources_map/resources_map.h in_memory_storage/resources_map/resources_map.cpp
         in_memory_storage/device_data/device_data.h in_memory_storage/device_data/device_data.cpp
+        in_memory_storage/device_data/location.h in_memory_storage/device_data/location.cpp
+        in_memory_storage/message_queue.cpp in_memory_storage/message_queue.h
+        in_memory_storage/observer/observer_client.cpp in_memory_storage/observer/observer_client.h
+        in_memory_storage/buffer/buffer.cpp in_memory_storage/buffer/buffer.h
 
         communication/message_sender/message_sender.h communication/message_sender/message_sender.cpp
         communication/message_receiver/message_receiver.h communication/message_receiver/message_receiver.cpp
-        in_memory_storage/device_data/location.h in_memory_storage/device_data/location.cpp
 
         pre_processing/pre_processing.h pre_processing/pre_processing.cpp
 
-        processing/processing.h processing/processing.cpp
-
-        util/util.h util/util.cpp
-        in_memory_storage/message_queue.cpp in_memory_storage/message_queue.h
+        model/device.h model/device.cpp
+        model/resource.h model/resource.cpp
         model/message.cpp model/message.h
         model/observer/observer.h
         model/observer/subject.h
-        in_memory_storage/observer/observer_client.cpp in_memory_storage/observer/observer_client.h model/config/data_aggregation_config.cpp model/config/data_aggregation_config.h model/config/remove_outliers_config.cpp model/config/remove_outliers_config.h model/config/missing_data_config.cpp model/config/missing_data_config.h processing/data_aggregation.h processing/data_aggregation.cpp processing/data_aggregation.h processing/missing_data.cpp processing/missing_data.h model/config/methods.h processing/remove_outliers.cpp processing/remove_outliers.h in_memory_storage/buffer/buffer.cpp in_memory_storage/buffer/buffer.h)
+        model/service.cpp model/service.h
+        model/service_data.cpp model/service_data.h
+        model/config/config.cpp model/config/config.h
+        model/config/data_aggregation_config.cpp model/config/data_aggregation_config.h
+        model/config/data_grouping_config.cpp model/config/data_grouping_config.h
+        model/config/remove_outliers_config.cpp model/config/remove_outliers_config.h
+        model/config/missing_data_config.cpp model/config/missing_data_config.h
+        model/config/methods.h
+
+        processing/missing_data.cpp processing/missing_data.h
+        processing/remove_outliers.cpp processing/remove_outliers.h
+        processing/processing.cpp processing/processing.h
+        )
 
 find_package(Threads REQUIRED)
 

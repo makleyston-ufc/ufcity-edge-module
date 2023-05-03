@@ -5,6 +5,7 @@
 #include "ufcity_interface.h"
 #include "in_memory_storage/message_queue.h"
 #include "model/observer/observer.h"
+#include "model/config/config.h"
 
 using namespace ufcity;
 
@@ -117,4 +118,10 @@ int ufcity_interface::finish() {
     if(initialized_instance_error != 0) return initialized_instance_error;
     orchestrator::get_instance()->finish();
     return 0;
+}
+
+int ufcity_interface::set_config(ufcity::config *config) {
+    int initialized_instance_error = check_initialized_instance(orchestrator::get_instance());
+    if(initialized_instance_error != 0) return initialized_instance_error;
+    return orchestrator::get_instance()->set_config(config);
 }

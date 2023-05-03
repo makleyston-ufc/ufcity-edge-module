@@ -18,9 +18,10 @@
 #include <list>
 #include "../error/error_list.h"
 #include "../model/observer/observer.h"
-#include "../model/config/data_aggregation_config.h"
+#include "../model/config/data_grouping_config.h"
 #include "../model/config/missing_data_config.h"
 #include "../model/config/remove_outliers_config.h"
+#include "../model/config/config.h"
 
 namespace ufcity {
 
@@ -29,7 +30,7 @@ namespace ufcity {
         static orchestrator* instance;
         explicit orchestrator(device * device);
         ~orchestrator();
-        ufcity::data_aggregation_config * da_config;
+        ufcity::config * config;
 
     public:
         /* Static access method. */
@@ -60,8 +61,8 @@ namespace ufcity {
         int remove_observer(int id_observer) const;
 
         /* Processing settings */
-        void set_data_aggregation_config(ufcity::data_aggregation_config * config);
-        data_aggregation_config * get_data_aggregation_config() const;
+        int set_config(ufcity::config * config);
+        ufcity::config * get_config() const;
 
     };
 

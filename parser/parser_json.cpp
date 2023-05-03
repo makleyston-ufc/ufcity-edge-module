@@ -28,44 +28,68 @@ namespace ufcity {
 
     resource * resource_from_json(const std::string& data_json){
         auto j = json::parse(data_json);
-        auto *uuid_services_map = new std::unordered_map<std::string, std::unordered_map<std::string, std::string>>(); //service_uuid <-> values
-        for(auto service : j.at("services")){
-            auto *values = new std::unordered_map<std::string, std::string>(); //data_tag <-> value
-            for(auto data : service.at("data")){
-                values->insert(std::pair<std::string, std::string>(data.at("tag"), data.at("value")));
+        std::vector<ufcity::service *> _services;
+        if(j.contains("services")) {
+            for (auto service: j.at("services")) {
+                auto *_service = new ufcity::service(service.at("uuid_service"));
+                for (auto data: service.at("data")) {
+                    auto *_service_data = new ufcity::service_data(data.at("tag"), data.at("value"));
+                    _service->add_data(_service_data);
+                }
+                _services.push_back(_service);
             }
-            uuid_services_map->insert(
-                    std::pair<std::string, std::unordered_map<std::string, std::string>>(service.at("uuid_service"), *values));
         }
-        auto *_resource = new resource(j.at("uuid_resource"), uuid_services_map);
+        auto * _resource = new resource(j.at("uuid_resource"));
+        _resource->set_services(_services);
+        auto * _location = new location();
+        if(j.contains("location")){
+            auto jLocation = j.at("location");
+            if(jLocation.at("lat"))
+                _location->set_lat(jLocation.at("lat"));
+            if(jLocation.at("lng"))
+                _location->set_lng(jLocation.at("lng"));
+            if(jLocation.at("alt"))
+                _location->set_alt(jLocation.at("alt"));
+        }
+        _resource->set_location(_location);
         return _resource;
     }
 
-    std::string resource_to_json(ufcity::resource * _resource){
+//    resource * resource_from_json(const std::string& data_json){
+//        auto j = json::parse(data_json);
+//        auto *uuid_services_map = new std::unordered_map<std::string, std::unordered_map<std::string, std::string>>(); //service_uuid <-> values
+//        for(auto service : j.at("services")){
+//            auto *values = new std::unordered_map<std::string, std::string>(); //data_tag <-> value
+//            for(auto data : service.at("data")){
+//                values->insert(std::pair<std::string, std::string>(data.at("tag"), data.at("value")));
+//            }
+//            uuid_services_map->insert(
+//                    std::pair<std::string, std::unordered_map<std::string, std::string>>(service.at("uuid_service"), *values));
+//        }
+//        auto *_resource = new resource(j.at("uuid_resource"), uuid_services_map);
+//        return _resource;
+//    }
 
+    std::string resource_to_json(ufcity::resource * _resource){
         json _jResource;
         _jResource["uuid_resource"] = _resource->get_uuid_resource();
         _jResource["location"]["lat"] = _resource->get_location()->get_lat();
         _jResource["location"]["lng"] = _resource->get_location()->get_lng();
         json _jServices = json::array();
-
-//        <service_uuid, <data_tag, value>>
-        for(const auto& _service : *_resource->get_services()){
+        for(auto _service : _resource->get_services()){
             json _jService;
-            _jService["uuid_service"] = _service.first;
+            _jService["uuid_service"] = _service->get_uuid_service();
             json _jData = json::array();
-            for(const auto& _data : _service.second){
+            for(auto _data : _service->get_data()){
                 json _jDataItem;
-                _jDataItem["tag"] = _data.first;
-                _jDataItem["value"] = _data.second;
+                _jDataItem["tag"] = _data->get_tag();
+                _jDataItem["value"] = _data->get_value();
                 _jData.push_back(_jDataItem);
             }
             _jService["data"] = _jData;
             _jServices.push_back(_jService);
         }
-
         _jResource["services"] = _jServices;
-
         return _jResource.dump();
     }
 

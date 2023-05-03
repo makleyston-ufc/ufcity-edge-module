@@ -14,6 +14,8 @@
 #include "../in_memory_storage/observer/observer_client.h"
 #include "../communication/lib/mqtt_settings.h"
 #include "../model/config/methods.h"
+#include "../in_memory_storage/buffer/buffer.h"
+#include "../model/config/config.h"
 
 namespace ufcity {
 
@@ -44,16 +46,8 @@ namespace ufcity {
         this->save_device(device);
 
         /* Settings to data process. All disabled.  */
-        auto _da_config = new data_aggregation_config();
-        da_config->set_method(methods::NONE);
-        auto ms_config = new missing_data_config();
-        ms_config->set_method(methods::NONE);
-        auto ro_config = new remove_outliers_config();
-        ro_config->set_method(methods::NONE);
-        da_config->set_remove_outliers_config(ro_config);
-        da_config->set_missing_data_config(ms_config);
+        this->set_config(new ufcity::config());
 
-        this->set_data_aggregation_config(_da_config);
         ufcity_db::message_queue::get_instance()->set_run_state(true);
     }
 
@@ -78,6 +72,9 @@ namespace ufcity {
             print_log("JSON parser error!");
             return ERROR_JSON_PARSER;
         }
+
+        int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
+        if (res_s != 0) return res_s;
 
         print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_uuid_resource() + ".");
         ufcity_db::resources_map * map = ufcity_db::resources_map::get_instance();
@@ -121,28 +118,32 @@ namespace ufcity {
         if(_resource == nullptr) return ERROR_JSON_PARSER;
 //        print_log("Convert from JSON to Resource successfully! Resource UUID: " + _resource->get_uuid_resource());
 
-        //Pre-processing the already semantically annotated resource
-//        int r_pre = pre_proc::handler(_resource);
-//        if (r_pre != 0) {
-//            //TODO
-//            return r_pre;
-//        }
-
-        if(get_data_aggregation_config()->get_method_char() != methods::NONE){
-            //Processing the already semantically annotated resource
-            int res_p = proc::handler(_resource);
-            if (res_p != 0) {
-                //TODO
-                return res_p;
-            }
-        }
-
         int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
         if (res_s != 0) return res_s;
 
-        /* Sending resource data to fog computing */
-        ufcity_db::resources_map::get_instance()->send_data_to_fog(_resource);
-        std::cout << "\tAdded the Resource UUID " + _resource->get_uuid_resource() + " in the submit queue. " << std::endl;
+        if(this->config->get_data_grouping_config()->get_method_char() != methods::NONE){
+            ufcity_db::buffer::get_instance()->add_resource(_resource);
+            auto _data = ufcity_db::buffer::get_instance()->get_resource_buffer();
+            std::cout << "Total resources to be send: " << _data.size() << std::endl;
+            if(_data.size() > 0){
+                auto _resources_to_send = proc::handler(_data);
+
+                for(auto _d1 : _data){
+                    for(auto _d2 : _d1){
+                        std::cout << "UUID Resource: " << _d2->get_uuid_resource() << std::endl;
+                        break;
+                    }
+                }
+
+                /* Sending resource data to fog computing */
+//                ufcity_db::resources_map::get_instance()->send_data_to_fog(_resource);
+//                std::cout << "\tAdded the Resource UUID " + _resource->get_uuid_resource() + " in the submit queue. " << std::endl;
+            }
+        }else {
+            /* Sending resource data to fog computing */
+            ufcity_db::resources_map::get_instance()->send_data_to_fog(_resource);
+            std::cout << "\tAdded the Resource UUID " + _resource->get_uuid_resource() + " in the submit queue. " << std::endl;
+        }
         return 0;
     }
 
@@ -251,12 +252,13 @@ namespace ufcity {
         return ufcity_db::message_queue::get_instance()->get_run_state();
     }
 
-    void orchestrator::set_data_aggregation_config(ufcity::data_aggregation_config *config) {
-        this->da_config = config;
+    int orchestrator::set_config(ufcity::config *config) {
+        this->config = config;
+        return 0;
     }
 
-    data_aggregation_config * orchestrator::get_data_aggregation_config() const {
-        return this->da_config;
+    ufcity::config * orchestrator::get_config() const {
+        return this->config;
     }
 
 

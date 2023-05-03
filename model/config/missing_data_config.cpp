@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "missing_data_config.h"
-#include "data_aggregation_config.h"
+#include "data_grouping_config.h"
 #include "methods.h"
 
 namespace ufcity {
@@ -18,19 +18,19 @@ namespace ufcity {
             return nullptr;
         }
         switch (this->method) {
-            case methods::MEAN_METHOD:
+            case methods::MEAN_MISSING_DATA_METHOD:
                 return "MEAN METHOD";
-            case methods::MEDIAN_METHOD:
+            case methods::MEDIAN_MISSING_DATA_METHOD:
                 return "MEDIAN METHOD";
-            case methods::LOCF_METHOD:
+            case methods::LOCF_MISSING_DATA_METHOD:
                 return "LAST OBSERVATION CARRIED FORWARD (LOCF) METHOD";
-            case methods::INTERPOLATION_METHOD:
+            case methods::INTERPOLATION_MISSING_DATA_METHOD:
                 return "INTERPOLATION METHOD";
-            case methods::NOCB_METHOD:
+            case methods::NOCB_MISSING_DATA_METHOD:
                 return "NEXT OBSERVATION CARRIED BACKWARD (NOCB) METHOD";
             case methods::NONE:
                 return "NONE";
-            case methods::MODE_METHOD:
+            case methods::MODE_MISSING_DATA_METHOD:
                 return "MODE METHOD";
         }
         return "";

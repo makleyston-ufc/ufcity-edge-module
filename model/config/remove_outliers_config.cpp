@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "remove_outliers_config.h"
-#include "data_aggregation_config.h"
+#include "data_grouping_config.h"
 #include "methods.h"
 
 void ufcity::remove_outliers_config::set_method(char _method) {
@@ -22,13 +22,13 @@ std::string ufcity::remove_outliers_config::get_method_str() {
         return nullptr;
     }
     switch (this->method) {
-        case methods::Z_SCORE_METHOD:
+        case methods::Z_SCORE_REMOVE_OUTLIERS_METHOD:
             return "Z-SCORE METHOD";
-        case methods::IQR_METHOD:
+        case methods::IQR_REMOVE_OUTLIERS_METHOD:
             return "IQR METHOD";
-        case methods::PERCENTILE_METHOD:
+        case methods::PERCENTILE_REMOVE_OUTLIERS_METHOD:
             return "PERCENTILE METHOD";
-        case methods::TUKEY_METHOD:
+        case methods::TUKEY_REMOVE_OUTLIERS_METHOD:
             return "TUKEY'S METHOD";
         case methods::NONE:
             return "NONE";

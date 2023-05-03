@@ -6,8 +6,11 @@
 #define UFCITY_MISSING_DATA_H
 
 #include <vector>
+#include "../model/resource.h"
 
 namespace proc {
+
+//    void missing_data_handler(std::vector<std::vector<ufcity::resource *>>& _data);
 
     void mean_impute(std::vector<double>& data);
     void median_impute(std::vector<double>& data);

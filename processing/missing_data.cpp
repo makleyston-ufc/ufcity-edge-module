@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "missing_data.h"
+#include "../orchestrator/orchestrator.h"
 
 namespace proc {
 
