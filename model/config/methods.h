@@ -9,7 +9,7 @@ namespace methods{
 
     static const char NONE                  = 'A';
 
-    /* fata grouping */
+    /* data grouping */
     static const char FIXED_SIZE_GROUPING            = 'B';
     static const char HAPPENS_FIRST_GROUPING         = 'C';
     static const char AT_LEAST_TIME_GROUPING         = 'D';

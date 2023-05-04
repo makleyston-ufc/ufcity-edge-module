@@ -6,6 +6,7 @@
 #define UFCITY_REMOVE_OUTLIERS_H
 
 namespace proc {
+    void remove_outliers_handler(std::vector<double>& _values);
     void remove_outliers_iqr(std::vector<double>& data, const double threshold);
     void remove_outliers_percentile(std::vector<double>& data, const double lower_percentile, const double upper_percentile);
     void remove_outliers_zscore(std::vector<double>& data, double threshold);

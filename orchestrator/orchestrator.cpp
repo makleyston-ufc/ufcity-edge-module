@@ -121,23 +121,19 @@ namespace ufcity {
         int res_s = ufcity_db::device_data::get_instance()->add_spatial_context_data(_resource);
         if (res_s != 0) return res_s;
 
-        if(this->config->get_data_grouping_config()->get_method_char() != methods::NONE){
+        if(this->config->get_data_grouping_config()->get_method_char() != methods::NONE){ //It has a config set
             ufcity_db::buffer::get_instance()->add_resource(_resource);
             auto _data = ufcity_db::buffer::get_instance()->get_resource_buffer();
             std::cout << "Total resources to be send: " << _data.size() << std::endl;
             if(_data.size() > 0){
                 auto _resources_to_send = proc::handler(_data);
 
-                for(auto _d1 : _data){
-                    for(auto _d2 : _d1){
-                        std::cout << "UUID Resource: " << _d2->get_uuid_resource() << std::endl;
-                        break;
-                    }
+                for(auto _r : _resources_to_send){
+                    /* Sending resource data to fog computing */
+                    ufcity_db::resources_map::get_instance()->send_data_to_fog(_r);
+                    std::cout << "\tAdded the Resource UUID " + _resource->get_uuid_resource() + " in the submit queue. " << std::endl;
                 }
 
-                /* Sending resource data to fog computing */
-//                ufcity_db::resources_map::get_instance()->send_data_to_fog(_resource);
-//                std::cout << "\tAdded the Resource UUID " + _resource->get_uuid_resource() + " in the submit queue. " << std::endl;
             }
         }else {
             /* Sending resource data to fog computing */

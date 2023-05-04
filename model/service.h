@@ -19,8 +19,8 @@ namespace ufcity {
         explicit service(std::string _uuid_service);
         std::string get_uuid_service() const;
         void set_data(std::vector<ufcity::service_data *> _data);
-        void add_data(ufcity::service_data * _data);
-        std::vector<ufcity::service_data *> get_data();
+        void add_service_data(ufcity::service_data * _data);
+        std::vector<ufcity::service_data *> get_service_data();
         ufcity::service_data * get_data_by_tag(std::string _tag);
     };
 

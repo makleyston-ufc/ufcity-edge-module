@@ -51,8 +51,7 @@ namespace ufcity_db {
         auto config = ufcity::orchestrator::get_instance()->get_config();
         const auto _size = config->get_data_grouping_config()->get_size();
         const auto _time = config->get_data_grouping_config()->get_time();
-        std::cout << "## " << config->get_data_grouping_config()->get_method_str() << ", SIZE: " << _size << std::endl;
-        std::vector<std::vector<ufcity::resource *>> result;
+
         switch (config->get_data_grouping_config()->get_method_char()){
             case methods::AT_LEAST_TIME_GROUPING:
                 return at_least_time_function(_time);
@@ -63,13 +62,8 @@ namespace ufcity_db {
             case methods::HAPPENS_FIRST_GROUPING:
                 return happens_first_function(_time, _size);
         }
-//        if(!result.empty()){
-//            /* missing data */
-//            proc::handler(result);
-//
-//            /*remove outliers*/
-//
-//        }
+
+        std::vector<std::vector<ufcity::resource *>> result;
         return result;
     }
 

@@ -10,7 +10,7 @@
 
 namespace proc {
 
-//    void missing_data_handler(std::vector<std::vector<ufcity::resource *>>& _data);
+    void missing_data_handler(std::vector<double>& _values);
 
     void mean_impute(std::vector<double>& data);
     void median_impute(std::vector<double>& data);

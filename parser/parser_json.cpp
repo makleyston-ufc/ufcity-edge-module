@@ -34,7 +34,7 @@ namespace ufcity {
                 auto *_service = new ufcity::service(service.at("uuid_service"));
                 for (auto data: service.at("data")) {
                     auto *_service_data = new ufcity::service_data(data.at("tag"), data.at("value"));
-                    _service->add_data(_service_data);
+                    _service->add_service_data(_service_data);
                 }
                 _services.push_back(_service);
             }
@@ -80,7 +80,7 @@ namespace ufcity {
             json _jService;
             _jService["uuid_service"] = _service->get_uuid_service();
             json _jData = json::array();
-            for(auto _data : _service->get_data()){
+            for(auto _data : _service->get_service_data()){
                 json _jDataItem;
                 _jDataItem["tag"] = _data->get_tag();
                 _jDataItem["value"] = _data->get_value();

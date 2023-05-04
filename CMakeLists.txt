@@ -52,7 +52,7 @@ set(SOURCE_FILES
         processing/missing_data.cpp processing/missing_data.h
         processing/remove_outliers.cpp processing/remove_outliers.h
         processing/processing.cpp processing/processing.h
-        )
+        processing/data_aggregation.cpp processing/data_aggregation.h)
 
 find_package(Threads REQUIRED)
 

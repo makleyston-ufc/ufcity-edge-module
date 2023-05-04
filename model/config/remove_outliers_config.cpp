@@ -45,11 +45,23 @@ ufcity::remove_outliers_config::remove_outliers_config() {
 }
 
 void ufcity::remove_outliers_config::set_lower_percentile(double _lower) {
-    this->lower_percentile = _lower;
+    this->lower_per = _lower;
 }
 
 void ufcity::remove_outliers_config::set_upper_percentile(double _upper) {
-    this->upper_percentile = _upper;
+    this->upper_per = _upper;
+}
+
+double ufcity::remove_outliers_config::get_threshold() {
+    return this->threshold;
+}
+
+double ufcity::remove_outliers_config::get_upper_percentile() {
+    return this->upper_per;
+}
+
+double ufcity::remove_outliers_config::get_lower_percentile() {
+    return this->lower_per;
 }
 
 

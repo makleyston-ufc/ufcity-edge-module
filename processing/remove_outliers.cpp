@@ -8,6 +8,8 @@
 #include <cmath>
 
 #include "remove_outliers.h"
+#include "../orchestrator/orchestrator.h"
+#include "../model/config/methods.h"
 
 namespace proc {
 
@@ -102,5 +104,22 @@ namespace proc {
         data.erase(end_iter, data.end());
     }
 
+    void remove_outliers_handler(std::vector<double>& _values) {
+        auto * config = ufcity::orchestrator::get_instance()->get_config();
+        switch (config->get_remove_outliers_config()->get_method_char()) {
+            case methods::IQR_REMOVE_OUTLIERS_METHOD:
+                remove_outliers_iqr(_values, config->get_remove_outliers_config()->get_threshold());
+                break;
+            case methods::PERCENTILE_REMOVE_OUTLIERS_METHOD:
+                remove_outliers_percentile(_values, config->get_remove_outliers_config()->get_lower_percentile(),config->get_remove_outliers_config()->get_upper_percentile() );
+                break;
+            case methods::TUKEY_REMOVE_OUTLIERS_METHOD:
+                remove_outliers_tukey(_values, config->get_remove_outliers_config()->get_threshold());
+                break;
+            case methods::Z_SCORE_REMOVE_OUTLIERS_METHOD:
+                remove_outliers_zscore(_values, config->get_remove_outliers_config()->get_threshold());
+                break;
+        }
+    }
 
 } // proc

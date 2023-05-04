@@ -25,7 +25,11 @@ int example2(int argc, char *argv[]){
 
     auto * config = new ufcity::config();
     config->get_data_grouping_config()->set_method(methods::FIXED_SIZE_GROUPING);
-    config->get_data_grouping_config()->set_size(3);
+    config->get_data_grouping_config()->set_size(2);
+    config->get_data_aggregation_config()->set_method(methods::MEAN_AGGREGATION_METHOD);
+//    config->get_remove_outliers_config()->set_method(methods::Z_SCORE_REMOVE_OUTLIERS_METHOD);
+//    config->get_remove_outliers_config()->set_threshold(1.5);
+//    config->get_missing_data_config()->set_method(methods::MEDIAN_MISSING_DATA_METHOD);
     set_config(config);
 
     /* Setting observer client */
@@ -47,13 +51,13 @@ int example2(int argc, char *argv[]){
         while (time(nullptr) < end);
         switch (rand() % 4) {
             case 0:
-                send_resource_data(samples::json_thermometer_sensor);
+                send_resource_data(samples::get_thermometer_sensor_json());
                 break;
             case 1:
-                send_resource_data(samples::json_humidity_sensor);
+                send_resource_data(samples::get_humidity_sensor_json());
                 break;
             case 2:
-                send_resource_data(samples::json_light_pole);
+                send_resource_data(samples::get_light_pole_json());
                 break;
 //            case 3:
 //                switch (rand() % 3) {

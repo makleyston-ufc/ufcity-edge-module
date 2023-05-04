@@ -13,8 +13,8 @@ namespace ufcity {
     private:
         double threshold;
         char method;
-        double upper_percentile;
-        double lower_percentile;
+        double upper_per;
+        double lower_per;
 
     public:
         remove_outliers_config();
@@ -22,6 +22,9 @@ namespace ufcity {
         void set_threshold(double _threshold);
         std::string get_method_str();
         char get_method_char();
+        double get_threshold();
+        double get_upper_percentile();
+        double get_lower_percentile();
         void set_lower_percentile(double _lower);
         void set_upper_percentile(double _upper);
     };

@@ -3,6 +3,11 @@
 //
 
 #include "processing.h"
+#include "../orchestrator/orchestrator.h"
+#include "missing_data.h"
+#include "remove_outliers.h"
+#include "data_aggregation.h"
+
 namespace proc {
 
     double convert_to_double(std::string _value){
@@ -35,15 +40,16 @@ namespace proc {
     }
 
 
-    /* ### Hoje o código está implementado considerando que os serviços de sensoriamento são lidos sempre igualmente. É necssário fazer alterações no código
+//    void missing_data(std::vector<double> _values);
+
+    void remove_outliers(std::vector<double> _values);
+
+/* ### Hoje o código está implementado considerando que os serviços de sensoriamento são lidos sempre igualmente. É necssário fazer alterações no código
      * para permitir o missing data e a remove outliers por serviço, pois um recurso pode ter vários serviços e esses serviços pdoem oferecer sensoriamentos
      * em tempos distintos. Logo, uma amostragem de um resource pode ter um determinado serviço, enquanto que outra amostragem pode não ter e isso não necessariamente
-     * é um missing data, mas sim à possibilidade do recurso ainda não ter realizado a leitura.
-     * ### Um outro ponto que deve conter em futuras atualizações é a consideração de vários dados para um mesmo serviço, e.g., location que possui lat, long e alt. Ćomo
-     * está codificado hoje é como se cada serviço possui no máximo um dado. */
+     * é um missing data, mas sim à possibilidade do recurso ainda não ter realizado a leitura. */
 
     std::vector<ufcity::resource *> handler(std::vector<std::vector<ufcity::resource *>>& _data) {
-
         std::vector<ufcity::resource *> _result;
 
         for(auto each_resource_list : _data){
@@ -54,50 +60,49 @@ namespace proc {
             for(auto _service_model : _resource_model->get_services()){
                 auto * _new_service = new ufcity::service(_service_model->get_uuid_service());
 
-                for(auto _service_data_model : _service_model->get_data()){
-                    if(can_convert_to_double(_service_data_model->get_value())) {
-                        std::vector<double> _value;
+                for(auto _service_data_model : _service_model->get_service_data()){
+//                    if(can_convert_to_double(_service_data_model->get_value())) {
+                        std::vector<double> _values_dbl;
+                        std::vector<std::string> _values_str;
                         for (auto _resource: each_resource_list) {
                             auto _v = _resource->get_service_by_uuid(
                                     _service_model->get_uuid_service()).get_data_by_tag(
                                     _service_data_model->get_tag())->get_value();
-                            double _v_double = convert_to_double(_v);
-                            _value.push_back(_v_double);
+                            if(can_convert_to_double(_service_data_model->get_value())) {
+                                double _v_double = convert_to_double(_v);
+                                _values_dbl.push_back(_v_double);
+                            }else {
+                                _values_str.push_back(_v);
+                            }
                         }
-                        //missing data
-                        //TODO
-                        //remove outliers
-                        //TODO
-                    }else{
+                        std::string _result_value;
+                        if(!_values_dbl.empty()) {
+                            //missing data
+                            proc::missing_data_handler(_values_dbl);
 
-                    }
+                            //remove outliers
+                            proc::remove_outliers_handler(_values_dbl);
 
+                            //data aggregation
+                            _result_value = std::to_string(proc::data_aggregation_handler(_values_dbl));
+                        }else if(!_values_str.empty()) {
+                            /* Caso o value seja uma string, então a o value mais frequente será escolhido */
+                            //data aggregation
+                            _result_value = proc::data_aggregation_handler(_values_str);
+                        }
 
-
-//                    ufcity::service_data * _new_service_data;
-//                    auto _service_data = _service_model->get_data_by_tag(_service_data_model->get_tag());
-//                    if(can_convert_to_double(_service_data->get_value())){
-//                        double _double = convert_to_double(_service_data->get_value());
-//                        _value.push_back(_double);
-//                    }else{
-//
-//                    }
+                        auto * _new_service_data = new ufcity::service_data(_service_data_model->get_tag(), _result_value);
+                        _new_service->add_service_data(_new_service_data);
                 }
+                _new_resource->add_service(_new_service);
             }
 
-
-            //Missing data
-
-
-            //Remove outliers
-
-//            _result.push_back(_resource);
+            _result.push_back(_new_resource);
         }
 
         return _result;
 
     }
-
 
 
 }// proc

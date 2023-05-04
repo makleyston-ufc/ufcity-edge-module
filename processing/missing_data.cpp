@@ -9,6 +9,7 @@
 
 #include "missing_data.h"
 #include "../orchestrator/orchestrator.h"
+#include "../model/config/methods.h"
 
 namespace proc {
 
@@ -121,6 +122,35 @@ namespace proc {
                     data[i] = linear_interpolation(j, data[j], i, data[i-1], i);
                 }
             }
+        }
+    }
+
+    void missing_data_handler(std::vector<double>& _values) {
+
+        for(double x : _values){
+            std::cout << "####### -> " << x << std::endl;
+        }
+
+        auto * config = ufcity::orchestrator::get_instance()->get_config();
+        switch (config->get_missing_data_config()->get_method_char()) {
+                case methods::MEAN_MISSING_DATA_METHOD:
+                    mean_impute(_values);
+                    break;
+                case methods::MEDIAN_MISSING_DATA_METHOD:
+                    median_impute(_values);
+                    break;
+                case methods::LOCF_MISSING_DATA_METHOD:
+                    locf_impute(_values);
+                    break;
+                case methods::INTERPOLATION_MISSING_DATA_METHOD:
+                    interpolation_impute(_values);
+                    break;
+                case methods::NOCB_MISSING_DATA_METHOD:
+                    nocb_impute(_values);
+                    break;
+                case methods::MODE_MISSING_DATA_METHOD:
+                    mode_impute(_values);
+                    break;
         }
     }
 
