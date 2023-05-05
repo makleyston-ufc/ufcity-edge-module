@@ -203,8 +203,8 @@ namespace ufcity {
 
     int orchestrator::connect_to_fog(const std::string& _fog_node_address, const std::string& _port) const {
         /* Check fog node address */
-        int _address_error = check_fog_node_address(_fog_node_address);
-        if(_address_error != 0) return _address_error;
+//        int _address_error = check_fog_node_address(_fog_node_address);
+//        if(_address_error != 0) return _address_error;
         this->save_fog_node_address(_fog_node_address, _port);
         print_log("The fog node address '" + _fog_node_address + " and port " + _port + "' is OK and is stored!");
 

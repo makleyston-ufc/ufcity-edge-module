@@ -17,6 +17,7 @@ namespace ufcity {
                 auto _address = ufcity::mqtt_settings::get_fog_node_address();
                 auto _pub_client_id = ufcity::mqtt_settings::get_pub_client_id()+"-"+std::to_string(rand());
                 /* Publishing data */
+                std::cout << "MQTT Broker address: " << _address << std::endl;
                 auto _error = ufcity_mqtt::mqtt_publish::publish(_address, _pub_client_id, item->get_message(), item->get_topic());
                 std::cout << "\tMessage sent to Fog Computing. \n\t\tTopic:  "+item->get_topic()+", \n\t\tMessage: "+item->get_message() << std::endl;
                 if (_error != 0)
