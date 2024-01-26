@@ -39,7 +39,8 @@ namespace ufcity_db {
 
     void device_data::send_to_fog() {
         ufcity_db::message_queue::get_instance()
-                ->push_to_queue_messages_to_send(ufcity::mqtt_settings::get_topic_device(), this->device->to_string());
+                ->push_to_queue_messages_to_send(ufcity::mqtt_settings::get_topic_device(),
+                                                 this->device->to_string());
     }
 
 } // ufcity_db

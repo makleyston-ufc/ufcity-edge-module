@@ -149,7 +149,10 @@ namespace ufcity {
 
     int orchestrator::save_device(device * _device) const{
         ufcity_db::device_data::get_instance()->save_device(_device);
-        print_log("Location successfully stored! Location: Lat. " + _device->get_location()->get_lat() + " and Lng. " + _device->get_location()->get_lng());
+        print_log("Location successfully stored! "
+                  "Location: Lat. " + _device->get_location()->get_lat() +
+                  ", Lng. " + _device->get_location()->get_lng() +
+                  ", and Alt. " + _device->get_location()->get_alt());
         return 0;
     }
 

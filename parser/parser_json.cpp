@@ -75,6 +75,7 @@ namespace ufcity {
         _jResource["uuid_resource"] = _resource->get_uuid_resource();
         _jResource["location"]["lat"] = _resource->get_location()->get_lat();
         _jResource["location"]["lng"] = _resource->get_location()->get_lng();
+        _jResource["location"]["alt"] = _resource->get_location()->get_alt();
         json _jServices = json::array();
         for(auto _service : _resource->get_services()){
             json _jService;
@@ -98,6 +99,7 @@ namespace ufcity {
         _jDevice["uuid_device"] = _device->get_uuid_device();
         _jDevice["location"]["lat"] = _device->get_location()->get_lat();
         _jDevice["location"]["lng"] = _device->get_location()->get_lng();
+        _jDevice["location"]["alt"] = _device->get_location()->get_alt();
         return _jDevice.dump();
     }
 

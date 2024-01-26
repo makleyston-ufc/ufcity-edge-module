@@ -61,6 +61,17 @@ In development.
 
 using namespace ufcity_interface;
 ```
+* The examples are in the directory `client_demo`, and the path of the main example is defined in `CMakeLists.txt` since this module uses CMake in compilation. 
+So, change the line in `CMakeLists.txt` about `main` to point out the `main` of your project.
+```  
+...
+# Comment to the following line.
+# client_demo/main.cpp
+
+# Insert the new path.
+[the path of the main file of your project]
+...
+```
 
 ## Using the Module  
 ### Initializing the Edge Module <a id="anchor_init"></a>
