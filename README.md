@@ -1,4 +1,15 @@
-# Abstract
+<div class="view">
+<img src="https://makleyston-ufc.github.io/ufcity/assets/img/ufcity-logo.png" alt="UFCity" width="200"/>
+<p><b>Building smart cities smartly.</b></p>
+</div>
+
+<div class="view">
+  <a href="https://makleyston-ufc.github.io/ufcity"> <img src="https://img.shields.io/badge/UFCity_webpage-0076D6?style=for-the-badge&logo=internetexplorer&logoColor=white"> </a>
+
+  <a href="https://github.com/makleyston-ufc/ufcity-edge-module"> <img src="https://img.shields.io/badge/View_on_GitHub-181717?style=for-the-badge&logo=github&logoColor=white"> </a>
+</div>
+
+## Abstract
 * [About](#anchor_about)
 * [Contributions](#anchor_contributions)
   * [Collaborators](#anchor_colab)
@@ -31,12 +42,12 @@
 
 [//]: # (* [Licenças]&#40;#anchor_licenses&#41;)
 
-# About <a id="anchor_about"></a>
+## About <a id="anchor_about"></a>
 The Edge Module is a software component that integrates with the UFCity smart city solution. This component operates at the edge of the computer network, offering local services that allow the city's resources to communicate with the services of Fog Computing and Cloud Computing, abstracting the communication protocols and enabling the exchange of data. This includes both sending data from sensors present in intelligent environments and receiving commands to actuate actuators present in physical-cyber spaces.
 
 The Edge Module performs various data processing and treatments to address issues such as data heterogeneity, dirty data, and volume. For more information, please refer to the project website's publications on the advances of this module.
 
-# Contributions <a id="anchor_contributions"></a>
+## Contributions <a id="anchor_contributions"></a>
 This software module, along with the other software elements present throughout the UFCity project, is the result of research carried out within the framework of the Computer Science course of the [Master's and Doctorate in Computer Science (MDCC)](http://www.mdcc.ufc.br/) program at the [Federal University of Ceará (UFC)](https://www.ufc.br/).
 
 **Collaborators**: <a id="anchor_colab"></a>
@@ -44,18 +55,18 @@ This software module, along with the other software elements present throughout 
 * [Danne Makleyston Gomes Pereira](http://lattes.cnpq.br/2002489019346835), UFC.
 * [Angelo Roncalli Alencar Brayner](http://lattes.cnpq.br/3895469714548887), UFC.
 
-# Software Specifications <a id="anchor_especifications"></a>
-## Version
+## Software Specifications <a id="anchor_especifications"></a>
+### Version
 Current version: `v0.1`.
 
-## Minimum Requirements <a id="anchor_minimum_riquerements"></a>
+### Minimum Requirements <a id="anchor_minimum_riquerements"></a>
 In development.
 
-## Performance and Restrictions <a id="anchor_restrictions"></a>
+### Performance and Restrictions <a id="anchor_restrictions"></a>
 In development.
 
-# How to Use <a id="anchor_usage"></a>
-## Embedding the Edge Module in an Application <a id="anchor_include"></a>
+## How to Use <a id="anchor_usage"></a>
+### Embedding the Edge Module in an Application <a id="anchor_include"></a>
 ```
 #include "ufcity_interface.h"
 
@@ -73,8 +84,8 @@ So, change the line in `CMakeLists.txt` about `main` to point out the `main` of 
 ...
 ```
 
-## Using the Module  
-### Initializing the Edge Module <a id="anchor_init"></a>
+### Using the Module  
+#### Initializing the Edge Module <a id="anchor_init"></a>
 ```
 init(std::string device_json);
 ```
@@ -92,7 +103,7 @@ init(std::string device_json);
 * "**uuid_device**": is the unique ID of the device from which the Edge Module is consumed.
 * "**location**": contains the latitude (lat), longitude (lng), and altitude (alt) data of the device. 
 
-### Configuring data grouping and processing methods <a id="anchor_data_processing"></a> 
+#### Configuring data grouping and processing methods <a id="anchor_data_processing"></a> 
 ```cpp
 /* Instantiating a "ufcity::config" */
 auto * config = new ufcity::config();
@@ -143,14 +154,14 @@ Note: Don't forget to enter the necessary data for the chosen method. For exampl
 * To group by time, use set_time(seconds).
 * To remove outliers via z-score, use set_threshold(double).
 
-### Connecting to Fog Computing <a id="anchor_connecting_to_fog_computing"></a>
+#### Connecting to Fog Computing <a id="anchor_connecting_to_fog_computing"></a>
 
 ```
 connect_to_fog(HOST, PORT);
 ```
 * HOST is the IP address of the Fog Computing node, and PORT is the communication port used to connect to the node via MQTT.
 
-### Registering a Resource <a id="anchor_registering"></a>
+#### Registering a Resource <a id="anchor_registering"></a>
 ```
 register_resource(std::string resource_json);
 ```
@@ -178,7 +189,7 @@ Example of `resource_json`:<a id="anchor_resource_json"></a>
   * "**uuid_service**": is the ID of a resource service.
   * "**data**": is the data to be sent. Each piece of data has a tag and a value. For more examples, see the ```samples``` directory.
 
-### Retrieving All Registered Resources <a id="anchor_get_resources"></a>
+#### Retrieving All Registered Resources <a id="anchor_get_resources"></a>
 ```
 auto * map = get_resources_map();
     for (auto const &pair: *map) 
@@ -188,7 +199,7 @@ Function ```get_resources_map()``` return a ```std::unordered_map<std::string, c
 * Key: uuid_resource.
 * Value: pointer to the resource (resource *).
 
-### Removing a Resource <a id="anchor_removing"></a>
+#### Removing a Resource <a id="anchor_removing"></a>
 ```
 remove_resource(std::string resource_json);
 ```
@@ -199,19 +210,19 @@ or
 remove_resource_by_uuid(std::string uuid_resource);
 ```
 * **uuid_resource**: is the ID of the resource to be removed.
-### Sending Resource Data to Fog Computing <a id="anchor_send_resource_data"></a>
+#### Sending Resource Data to Fog Computing <a id="anchor_send_resource_data"></a>
 ```
 send_resource_data(std::string resource_json);
 ```
 [Click here to view the JSON structure for a resource](#anchor_resource_json).
 
-### Updating Location Data <a id="anchor_location_data"></a>
+#### Updating Location Data <a id="anchor_location_data"></a>
 ```
 update_location(std::string location_json);
 ```
 [Click here to view the JSON structure for a device](#anchor_init).
 
-### Receiving Data from Fog Computing <a id="anchor_receive_command_data"></a>
+#### Receiving Data from Fog Computing <a id="anchor_receive_command_data"></a>
 Implement an observer from ufcity's "observer" class. See the example.
 
 ```
@@ -237,9 +248,9 @@ or
 ```
 remove_observer(int id_observer);
 ```
-### Finishing the Edge Module <a id="anchor_finishing_edge_module"></a>
+#### Finishing the Edge Module <a id="anchor_finishing_edge_module"></a>
 ```
 finish();
 ```
-### List of Errors <a id="anchor_error_list"></a>
+#### List of Errors <a id="anchor_error_list"></a>
 [Click here to access the errors list](error/error_list.h).
